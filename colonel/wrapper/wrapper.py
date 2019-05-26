@@ -2,6 +2,7 @@ import subprocess
 from subprocess import CalledProcessError
 import os
 from .errors import *
+from typing import List
 
 # sample cd++ command
 # cd++ -m2Voronoi.ma -ooutput -t00:01:00:00 -llogs
@@ -18,6 +19,56 @@ class SimulationProcessFailedException(CalledProcessError):
 class SimulationExecutedButFailedException(Exception):
     pass
 
+# Common interface
+class ExecutableDiscoverer():
+    def __init__(self):
+        pass
+
+    def discover(self) -> bool:
+        return self.do_discover()
+
+    # Discoverer implementation
+    def do_discover(self) -> bool:
+        raise NotImplementedError()
+    
+    @staticmethod
+    def is_executable_file(filepath : str) -> bool:
+        return os.path.isfile(filepath) and os.access(filepath, os.X_OK)
+
+class CompoundExecutableDiscoverer(ExecutableDiscoverer):
+    def __init__(self, *discoverers : List[ExecutableDiscoverer]):
+        self.discoverers = discoverers
+
+    def do_discover(self):
+        found = False
+        for discoverer in self.discoverers:
+            found = discoverer.discover()
+            if found:
+                return True
+        return False
+
+class PathEnvironmentVarExecutableDiscoverer(ExecutableDiscoverer):
+    PATH_ENV_VAR = "PATH"
+    def do_discover(self) -> bool:
+        for path in os.environ.get(PathEnvironmentVarExecutableDiscoverer.PATH_ENV_VAR).split(os.pathsep):
+            executable_route = os.path.join(path, Wrapper.CDPP_BIN)
+            if ExecutableDiscoverer.is_executable_file(executable_route):
+                return True
+        return False
+
+class LibraryEnvironmentVarExecutableDiscoverer(ExecutableDiscoverer):
+    def do_discover(self):
+        try:
+            cdpp_bin_directory = os.environ.get(Wrapper.CDPP_EXECUTABLE_ENV_VAR)
+            if cdpp_bin_directory != None:
+                executable_route = os.path.join(cdpp_bin_directory, Wrapper.CDPP_BIN)
+                if ExecutableDiscoverer.is_executable_file(executable_route):
+                    return True
+        except KeyError as e:
+            pass
+        return False
+
+
 class Wrapper:
     CDPP_BIN = 'cd++'
     CDPP_EXECUTABLE_ENV_VAR = 'CDPP_BIN'
@@ -25,23 +76,11 @@ class Wrapper:
     simulationAbortedErrorMessage = 'Aborting simulation...\n'
 
     def __init__(self):
-        # Discover in $PATH env var
-        found = False
-        for path in os.environ.get("PATH").split(os.pathsep):
-            executable_route = os.path.join(path, self.__class__.CDPP_BIN)
-            if os.path.isfile(executable_route) and os.access(executable_route, os.X_OK):
-                found = True
-                break
-        # Discover in $Wrapper.CDPP_EXECUTABLE_ENV_VAR env var
-        if not found:
-            try:
-                cdpp_bin_directory = os.environ.get(self.__class__.CDPP_EXECUTABLE_ENV_VAR)
-                if cdpp_bin_directory != None:
-                    executable_route = os.path.join(cdpp_bin_directory, self.__class__.CDPP_BIN)
-                    if os.path.isfile(executable_route) and os.access(executable_route, os.X_OK):
-                        found = True
-            except KeyError as e:
-                pass
+        discoverer = CompoundExecutableDiscoverer(\
+            PathEnvironmentVarExecutableDiscoverer(),\
+            LibraryEnvironmentVarExecutableDiscoverer()\
+            )
+        found = discoverer.discover()        
         if not found:
             raise SimulatorExecutableNotFound()
 
