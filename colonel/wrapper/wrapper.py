@@ -1,5 +1,6 @@
 import subprocess
 from subprocess import CalledProcessError
+import os
 from .errors import *
 
 # sample cd++ command
@@ -35,7 +36,15 @@ class Wrapper:
     simulationAbortedErrorMessage = 'Aborting simulation...\n'
 
     def __init__(self):
-        raise SimulatorExecutableNotFound()
+        # Discover in $PATH env var
+        found = False
+        for path in os.environ.get("PATH").split(os.pathsep):
+            executable_route = os.path.join(path, self.__class__.CDPP_BIN)
+            if os.path.isfile(executable_route) and os.access(executable_route, os.X_OK):
+                found = True
+                break
+        if not found:
+            raise SimulatorExecutableNotFound()
 
     def run(self):
         simulationArguments = self.getArguments()
