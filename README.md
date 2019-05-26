@@ -1,0 +1,2 @@
+## Colonel Pringles - A DEVS model composition python
+Colonel pringles is a DEVS model composition library, which makes easy to assemble and link multiple atomic/coupled models. It works as a Python library, and in its road ahead, will easily integrate with the Jupyter environment.
