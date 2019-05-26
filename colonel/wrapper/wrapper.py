@@ -1,6 +1,6 @@
 import subprocess
 from subprocess import CalledProcessError
-from .file_helpers import getRandomFilename, getRandomFilePath
+from .errors import *
 
 # sample cd++ command
 # cd++ -m2Voronoi.ma -ooutput -t00:01:00:00 -llogs
@@ -28,19 +28,14 @@ class DrawlogFailedException(CalledProcessError):
     pass
 
 # TODO: Add some custom excepetions, which contain the STDOUT and STDERR contents
-class CDPPWrapper:
+class Wrapper:
 
     CDPP_BIN = 'cd++'
     DRAWLOG_BIN = 'drawlog'
     simulationAbortedErrorMessage = 'Aborting simulation...\n'
 
-    # TODO: Add type checking to constructor
-    def __init__(self, aModel, aSimulationTime):
-        self.logsFileName = getRandomFilePath('log')
-        self.outputFileName = getRandomFilePath('out')
-        self.model = aModel
-        self.endTime = aSimulationTime
-        self.simulationProcessData = None
+    def __init__(self):
+        raise SimulatorExecutableNotFound()
 
     def run(self):
         simulationArguments = self.getArguments()
@@ -52,22 +47,6 @@ class CDPPWrapper:
             raise SimulationProcessFailedException(e.returncode, e.cmd, e.output, e.stderr)
         if self.getSimulationStdOut().endswith(self.__class__.simulationAbortedErrorMessage):
             raise SimulationExecutedButFailedException()
-
-    def drawlog(self, anInterval):
-        if not self.simulationWasExecuted():
-            raise SimulationNotExectutedException()
-
-        self.drawlogNPPath = getRandomFilePath('npz')
-
-        drawlogArguments = [self.__class__.DRAWLOG_BIN, f'-m{self.model.get_path()}', f'-l{self.getLogsPath()}' , \
-                            f'-c{self.model.name}', f'-i{anInterval}', f'-z{self.drawlogNPPath}']
-
-        try:
-            subprocess.run(drawlogArguments, capture_output=True, check=True)
-            return self.drawlogNPPath
-        except CalledProcessError as e:
-            # The exception contains information about the failed simulation process
-            raise DrawlogFailedException(e.returncode, e.cmd, e.output, e.stderr)
 
         # TODO: Add check on 'Aborting simulation...' stdout last line, and throw error
 
@@ -92,7 +71,7 @@ class CDPPWrapper:
 
     def getArguments(self):
         self.generateOutfilesPaths()
-        arguments = [self.__class__.CDPP_BIN, f'-m{self.model.get_path()}',\
+        arguments = [self.Wrapper.CDPP_BIN, f'-m{self.model.get_path()}',\
             f'-o{self.outputFileName}', f'-t{self.endTime}', f'-l{self.logsFileName}']
         return arguments
 

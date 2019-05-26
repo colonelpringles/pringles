@@ -1,0 +1,2 @@
+class SimulatorExecutableNotFound(Exception):
+    pass
