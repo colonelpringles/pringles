@@ -32,6 +32,7 @@ class DrawlogFailedException(CalledProcessError):
 class Wrapper:
 
     CDPP_BIN = 'cd++'
+    CDPP_EXECUTABLE_ENV_VAR = 'CDPP_BIN'
     DRAWLOG_BIN = 'drawlog'
     simulationAbortedErrorMessage = 'Aborting simulation...\n'
 
@@ -43,6 +44,16 @@ class Wrapper:
             if os.path.isfile(executable_route) and os.access(executable_route, os.X_OK):
                 found = True
                 break
+        # Discover in $Wrapper.CDPP_EXECUTABLE_ENV_VAR env var
+        if not found:
+            try:
+                cdpp_bin_directory = os.environ.get(self.__class__.CDPP_EXECUTABLE_ENV_VAR)
+                if cdpp_bin_directory != None:
+                    executable_route = os.path.join(cdpp_bin_directory, self.__class__.CDPP_BIN)
+                    if os.path.isfile(executable_route) and os.access(executable_route, os.X_OK):
+                        found = True
+            except KeyError as e:
+                pass
         if not found:
             raise SimulatorExecutableNotFound()
 
