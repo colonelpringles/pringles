@@ -24,11 +24,11 @@ class ExecutableDiscoverer():
     def __init__(self):
         pass
 
-    def discover(self) -> bool:
+    def discover(self) -> str:
         return self.do_discover()
 
     # Discoverer implementation
-    def do_discover(self) -> bool:
+    def do_discover(self) -> str:
         raise NotImplementedError()
     
     @staticmethod
@@ -39,22 +39,22 @@ class CompoundExecutableDiscoverer(ExecutableDiscoverer):
     def __init__(self, *discoverers : List[ExecutableDiscoverer]):
         self.discoverers = discoverers
 
-    def do_discover(self):
-        found = False
+    def do_discover(self) -> str:
+        found_route = None
         for discoverer in self.discoverers:
-            found = discoverer.discover()
-            if found:
-                return True
-        return False
+            found_route = discoverer.discover()
+            if found_route:
+                return found_route
+        return None
 
 class PathEnvironmentVarExecutableDiscoverer(ExecutableDiscoverer):
     PATH_ENV_VAR = "PATH"
-    def do_discover(self) -> bool:
+    def do_discover(self) -> str:
         for path in os.environ.get(PathEnvironmentVarExecutableDiscoverer.PATH_ENV_VAR).split(os.pathsep):
             executable_route = os.path.join(path, Wrapper.CDPP_BIN)
             if ExecutableDiscoverer.is_executable_file(executable_route):
-                return True
-        return False
+                return executable_route
+        return None
 
 class LibraryEnvironmentVarExecutableDiscoverer(ExecutableDiscoverer):
     def do_discover(self):
@@ -63,11 +63,10 @@ class LibraryEnvironmentVarExecutableDiscoverer(ExecutableDiscoverer):
             if cdpp_bin_directory != None:
                 executable_route = os.path.join(cdpp_bin_directory, Wrapper.CDPP_BIN)
                 if ExecutableDiscoverer.is_executable_file(executable_route):
-                    return True
+                    return executable_route
         except KeyError as e:
             pass
-        return False
-
+        return None
 
 class Wrapper:
     CDPP_BIN = 'cd++'
@@ -76,13 +75,17 @@ class Wrapper:
     simulationAbortedErrorMessage = 'Aborting simulation...\n'
 
     def __init__(self):
+        self.executable_route = self.discover_executable_route()
+
+    def discover_executable_route(self):
         discoverer = CompoundExecutableDiscoverer(\
             PathEnvironmentVarExecutableDiscoverer(),\
             LibraryEnvironmentVarExecutableDiscoverer()\
             )
-        found = discoverer.discover()        
-        if not found:
+        found_route = discoverer.discover()        
+        if found_route == None:
             raise SimulatorExecutableNotFound()
+        return found_route
 
     def run(self):
         simulationArguments = self.getArguments()
