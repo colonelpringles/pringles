@@ -18,19 +18,7 @@ class SimulationProcessFailedException(CalledProcessError):
 class SimulationExecutedButFailedException(Exception):
     pass
 
-# TODO: Find a way to use this as a general simulation exception
-class SimulationException(Exception):
-    def __init__(self, actualCause):
-        self.cause = actualCause
-    def getCause(self):
-        return self.cause
-
-class DrawlogFailedException(CalledProcessError):
-    pass
-
-# TODO: Add some custom excepetions, which contain the STDOUT and STDERR contents
 class Wrapper:
-
     CDPP_BIN = 'cd++'
     CDPP_EXECUTABLE_ENV_VAR = 'CDPP_BIN'
     DRAWLOG_BIN = 'drawlog'
