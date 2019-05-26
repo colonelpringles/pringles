@@ -68,6 +68,14 @@ class LibraryEnvironmentVarExecutableDiscoverer(ExecutableDiscoverer):
             pass
         return None
 
+class LibraryDefinedDirectoryExecutableDiscoverer(ExecutableDiscoverer):
+    def do_discover(self):
+        executable_route = os.path.join(Wrapper.CDPP_LIBRARY_DEFINED_EXECUTABLE_PATH, Wrapper.CDPP_BIN)
+        if ExecutableDiscoverer.is_executable_file(executable_route):
+            return executable_route
+        else:
+            return None
+
 class Wrapper:
     CDPP_BIN = 'cd++'
     CDPP_EXECUTABLE_ENV_VAR = 'CDPP_BIN'
@@ -82,7 +90,8 @@ class Wrapper:
     def discover_executable_route(self):
         discoverer = CompoundExecutableDiscoverer(\
             PathEnvironmentVarExecutableDiscoverer(),\
-            LibraryEnvironmentVarExecutableDiscoverer()\
+            LibraryEnvironmentVarExecutableDiscoverer(),\
+            LibraryDefinedDirectoryExecutableDiscoverer(),\
             )
         found_route = discoverer.discover()        
         if found_route == None:
