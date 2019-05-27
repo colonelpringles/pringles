@@ -1,0 +1,4 @@
+.pytest_cache/
+colonel/__pycache__/
+colonel/wrapper/__pycache__/
+tests/__pycache__/
