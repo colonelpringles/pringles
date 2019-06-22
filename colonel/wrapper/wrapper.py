@@ -1,16 +1,18 @@
 import os
-from .errors import *
-from typing import List
+
+from typing import Optional
+
+from colonel.wrapper.errors import SimulatorExecutableNotFound
 
 class ExecutableDiscoverer():
     def __init__(self):
         pass
 
-    def discover(self) -> str:
+    def discover(self) -> Optional[str]:
         return self.do_discover()
 
     # Discoverer implementation
-    def do_discover(self) -> str:
+    def do_discover(self) -> Optional[str]:
         raise NotImplementedError()
     
     @staticmethod
@@ -18,10 +20,10 @@ class ExecutableDiscoverer():
         return os.path.isfile(filepath) and os.access(filepath, os.X_OK)
 
 class CompoundExecutableDiscoverer(ExecutableDiscoverer):
-    def __init__(self, *discoverers : List[ExecutableDiscoverer]):
+    def __init__(self, *discoverers : ExecutableDiscoverer):
         self.discoverers = discoverers
 
-    def do_discover(self) -> str:
+    def do_discover(self) -> Optional[str]:
         found_route = None
         for discoverer in self.discoverers:
             found_route = discoverer.discover()
@@ -31,8 +33,8 @@ class CompoundExecutableDiscoverer(ExecutableDiscoverer):
 
 class PathEnvironmentVarExecutableDiscoverer(ExecutableDiscoverer):
     PATH_ENV_VAR = "PATH"
-    def do_discover(self) -> str:
-        for path in os.environ.get(PathEnvironmentVarExecutableDiscoverer.PATH_ENV_VAR).split(os.pathsep):
+    def do_discover(self) -> Optional[str]:
+        for path in os.environ.get(PathEnvironmentVarExecutableDiscoverer.PATH_ENV_VAR, '').split(os.pathsep):
             executable_route = os.path.join(path, Wrapper.CDPP_BIN)
             if ExecutableDiscoverer.is_executable_file(executable_route):
                 return executable_route
