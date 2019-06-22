@@ -6,3 +6,6 @@ install:
 script:
   - pytest
   - mypy -p colonel
+  notifications:
+    webhooks: 
+      - https://fathomless-fjord-24024.herokuapp.com/notify
