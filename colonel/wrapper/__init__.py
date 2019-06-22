@@ -1,2 +1,2 @@
 import colonel.wrapper.errors
-import colonel.wrapper.wrapper
+from colonel.wrapper import *
