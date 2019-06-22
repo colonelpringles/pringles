@@ -7,5 +7,6 @@ script:
   - pytest
   - mypy -p colonel
 notifications:
-  webhooks: 
-    - https://fathomless-fjord-24024.herokuapp.com/notify
+  webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
+  on_success: never
+  on_failure: always
