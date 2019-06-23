@@ -1,2 +1,2 @@
-import colonel.wrapper.errors
-from colonel.wrapper import *
+import colonel.wrapper.errors # noqa
+from colonel.wrapper.wrapper import * # noqa

@@ -1,1 +1,1 @@
-import colonel.wrapper
+import colonel.wrapper # noqa
