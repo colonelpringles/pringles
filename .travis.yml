@@ -2,7 +2,9 @@ language: python
 python:
   - "3.6"
 install:
-  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
 script:
-  - pytest
+  - pytest --cov colonel/ --cov-report term-missing
   - mypy -p colonel
+  - flake8 --max-complexity 10 colonel/
+  - pylint --errors-only --rcfile .pylintrc colonel/ # The errors only should be deleted in the future
