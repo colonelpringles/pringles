@@ -6,9 +6,6 @@ from colonel.wrapper.errors import SimulatorExecutableNotFound
 
 
 class ExecutableDiscoverer():
-    def __init__(self):
-        pass
-
     def discover(self) -> Optional[str]:
         return self.do_discover()
 
@@ -38,8 +35,8 @@ class PathEnvironmentVarExecutableDiscoverer(ExecutableDiscoverer):
     PATH_ENV_VAR = "PATH"
 
     def do_discover(self) -> Optional[str]:
-        PATH = os.environ.get(PathEnvironmentVarExecutableDiscoverer.PATH_ENV_VAR, '')
-        for directory in PATH.split(os.pathsep):
+        path = os.environ.get(PathEnvironmentVarExecutableDiscoverer.PATH_ENV_VAR, '')
+        for directory in path.split(os.pathsep):
             executable_route = os.path.join(directory, Wrapper.CDPP_BIN)
             if ExecutableDiscoverer.is_executable_file(executable_route):
                 return executable_route
@@ -65,8 +62,7 @@ class LibraryDefinedDirectoryExecutableDiscoverer(ExecutableDiscoverer):
                                         Wrapper.CDPP_BIN)
         if ExecutableDiscoverer.is_executable_file(executable_route):
             return executable_route
-        else:
-            return None
+        return None
 
 
 class Wrapper:
