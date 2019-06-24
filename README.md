@@ -1,2 +1,2 @@
-## Colonel Pringles - A DEVS model composition python
+## Colonel Pringles - A DEVS model composition Python [![Build Status](https://travis-ci.org/colonelpringles/pringles.svg?branch=master)](https://travis-ci.org/colonelpringles/pringles) [![Coverage](https://codecov.io/gh/colonelpringles/pringles/branch/master/graphs/badge.svg)](https://codecov.io/gh/colonelpringles/pringles/branch/master) 
 Colonel pringles is a DEVS model composition library, which makes easy to assemble and link multiple atomic/coupled models. It works as a Python library, and in its road ahead, will easily integrate with the Jupyter environment.
