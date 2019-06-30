@@ -68,7 +68,7 @@ class LibraryDefinedDirectoryExecutableDiscoverer(ExecutableDiscoverer):
 class Wrapper:
     CDPP_BIN = 'cd++'
     CDPP_EXECUTABLE_ENV_VAR = 'CDPP_BIN'
-    CDPP_LIBRARY_DEFINED_EXECUTABLE_PATH = '~/Facultad/pringles/cdpp_kernel/bin/'
+    CDPP_LIBRARY_DEFINED_EXECUTABLE_PATH = '../../'
 
     DRAWLOG_BIN = 'drawlog'
     simulationAbortedErrorMessage = 'Aborting simulation...\n'
