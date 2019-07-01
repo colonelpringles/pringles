@@ -1,0 +1,3 @@
+[submodule "CD++ Simulator"]
+	path = cdpp
+	url = https://github.com/SimulationEverywhere/CDPP_ExtendedStates-codename-Santi.git

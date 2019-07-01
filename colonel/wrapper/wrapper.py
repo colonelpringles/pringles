@@ -4,6 +4,8 @@ from typing import Optional
 
 from colonel.wrapper.errors import SimulatorExecutableNotFound
 
+from colonel.wrapper.config import CDPP_BIN_PATH
+
 
 class ExecutableDiscoverer():
     def discover(self) -> Optional[str]:
@@ -58,7 +60,7 @@ class LibraryEnvironmentVarExecutableDiscoverer(ExecutableDiscoverer):
 
 class LibraryDefinedDirectoryExecutableDiscoverer(ExecutableDiscoverer):
     def do_discover(self):
-        executable_route = os.path.join(Wrapper.CDPP_LIBRARY_DEFINED_EXECUTABLE_PATH,
+        executable_route = os.path.join(CDPP_BIN_PATH,
                                         Wrapper.CDPP_BIN)
         if ExecutableDiscoverer.is_executable_file(executable_route):
             return executable_route
@@ -68,7 +70,6 @@ class LibraryDefinedDirectoryExecutableDiscoverer(ExecutableDiscoverer):
 class Wrapper:
     CDPP_BIN = 'cd++'
     CDPP_EXECUTABLE_ENV_VAR = 'CDPP_BIN'
-    CDPP_LIBRARY_DEFINED_EXECUTABLE_PATH = '~/Facultad/pringles/cdpp_kernel/bin/'
 
     DRAWLOG_BIN = 'drawlog'
     simulationAbortedErrorMessage = 'Aborting simulation...\n'
@@ -78,8 +79,6 @@ class Wrapper:
 
     def discover_executable_route(self):
         discoverer = CompoundExecutableDiscoverer(
-            PathEnvironmentVarExecutableDiscoverer(),
-            LibraryEnvironmentVarExecutableDiscoverer(),
             LibraryDefinedDirectoryExecutableDiscoverer(),
         )
         found_route = discoverer.discover()
