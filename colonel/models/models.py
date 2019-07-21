@@ -22,7 +22,7 @@ class Link:
 
 
 class ExtInputLink(Link):
-    def __init__(self, from_port: InPort, to_port: OutPort):
+    def __init__(self, from_port: InPort, to_port: InPort):
         super().__init__(from_port, to_port)
 
 
@@ -41,13 +41,14 @@ class Model:
 
 
 class Atomic(Model):
-    def __init__(self, inports: Sequence[InPort], outports: Sequence[OutPort]):
+    def __init__(self, name: str, inports: Sequence[InPort], outports: Sequence[OutPort]):
+        self.name = name
         self.inports = inports
         self.outports = outports
 
 
 class Coupled(Model):
-    def __init__(self, subcomponents: Model,
+    def __init__(self, subcomponents: Sequence[Model],
                  inports: Sequence[InPort], outports: Sequence[OutPort],
                  eic: Sequence[ExtInputLink], eoc: Sequence[ExtOutputLink],
                  ic: Sequence[IntLink]):
