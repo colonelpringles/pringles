@@ -103,20 +103,20 @@ class Coupled(Model):
 
     def add_external_output_coupling(self, link: ExtOutputLink):
         self.eoc.append(link)
-    
+
     def add_coupling(self, from_port: Port, to_port: Port):
         # Internal coupling
         if isinstance(from_port, OutPort) and \
            isinstance(to_port, InPort):
-           self.add_internal_coupling(IntLink(from_port, to_port))
+            self.add_internal_coupling(IntLink(from_port, to_port))
         # External-Input
         elif isinstance(from_port, InPort) and \
-             isinstance(to_port, InPort):
-             self.add_external_input_coupling(ExtInputLink(from_port, to_port))
+                isinstance(to_port, InPort):
+            self.add_external_input_coupling(ExtInputLink(from_port, to_port))
         # External-Output
         elif isinstance(from_port, OutPort) and \
-             isinstance(to_port, OutPort):
-             self.add_external_output_coupling(ExtOutputLink(from_port, to_port))
+                isinstance(to_port, OutPort):
+            self.add_external_output_coupling(ExtOutputLink(from_port, to_port))
         else:
             raise Exception("This is not a valid coupling. Please check the provided ports.")
 

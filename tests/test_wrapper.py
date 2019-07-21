@@ -1,5 +1,4 @@
 import pytest
-from unittest import mock
 import os
 from colonel.wrapper.wrapper import Wrapper
 from colonel.wrapper.config import CDPP_BIN_PATH
