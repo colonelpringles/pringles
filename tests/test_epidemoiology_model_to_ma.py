@@ -20,6 +20,7 @@ threshold_NV : 30
 threshold_V : 80
 """
 
+
 class Poblacion(Atomic):
     pass
 
@@ -51,6 +52,10 @@ def test_empty_top_model_is_drawn_correctly():
 
 def test_top_model_with_one_atomic_is_drawn_correctly():
 
+    # De un atomico, conseguir nombre, inport y outports
+    # Parametros son opcionales
+    # 
+
     a_foco = Foco("foco", mean=2, std=1)
     foco_inport = a_foco.add_inport("in")
     foco_outport = a_foco.add_outport("out")
@@ -64,13 +69,8 @@ def test_top_model_with_one_atomic_is_drawn_correctly():
     ip_inport = interacciones_poblacion.add_inport("in_port")
     ip_outport = interacciones_poblacion.add_outport("out_port")
 
-    interacciones_poblacion.add_external_input_coupling(
-        ExtInputLink(ip_inport, foco_inport))
-
-    interacciones_poblacion.add_internal_coupling(
-        IntLink(foco_outport, contagio_inport))
-
-    interacciones_poblacion.add_external_output_coupling(
-        ExtOutputLink(contagio_outport, ip_outport))
+    interacciones_poblacion.add_coupling(ip_inport, foco_inport)
+    interacciones_poblacion.add_coupling(foco_outport, contagio_inport)
+    interacciones_poblacion.add_coupling(contagio_outport, ip_outport)
     
     assert interacciones_poblacion.to_ma().replace(" ", "") == expected_interacciones_poblacion_ma.replace(" ", "")
