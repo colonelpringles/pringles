@@ -20,21 +20,33 @@ class Wrapper:
     def run_simulation(self,
                        top_model: Model,
                        duration: Optional[str] = None,
-                       events_file: Optional[str] = None):
+                       events_file: Optional[str] = None,
+                       use_simulator_logs: bool = True,
+                       use_simulator_out: bool = True):
+
         commands_list = ["cd++", "-m" + self.dump_model_in_file(top_model)]
         if duration is not None:
             commands_list.append("-t" + duration)
 
         if events_file is not None:
             commands_list.append("-e" + events_file)
-        
-        logs_handle, logs_path = tempfile.mkstemp()
-        os.close(logs_handle)
-        commands_list.append("-l" + logs_path)
+
+        # Simulation logs
+        if use_simulator_logs:
+            logs_handle, logs_path = tempfile.mkstemp()
+            os.close(logs_handle)
+            commands_list.append("-l" + logs_path)
+
+        # Simulation output file
+        if use_simulator_out:
+            output_handle, output_path = tempfile.mkstemp()
+            os.close(output_handle)
+            commands_list.append("-o" + output_path)
 
         process_result = subprocess.run(commands_list, capture_output=True, check=True)
         logging.error("Results: %s", process_result.stdout)
         logging.error("Logs path: %s", logs_path)
+        logging.error("Logs path: %s", output_path)
 
     def dump_model_in_file(self, model: Model) -> str:
         file_descriptor, path = tempfile.mkstemp()
