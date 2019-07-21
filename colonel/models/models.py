@@ -14,10 +14,14 @@ class Model:
         raise NotImplementedError()
 
     def add_outport(self, name: str):
-        self.outports.append(OutPort(name, self))
+        outport = OutPort(name, self)
+        self.outports.append(outport)
+        return outport
 
     def add_inport(self, name: str):
-        self.inports.append(InPort(name, self))
+        inport = InPort(name, self)
+        self.inports.append(inport)
+        return inport
 
 
 class Port:
@@ -109,7 +113,7 @@ class Coupled(Model):
         )
         links = cast(List[Link], self.eic) + cast(List[Link], self.ic) + cast(List[Link], self.eoc)
         for link in links:
-            ma += f"link: {link.from_port.get_identifier_for(self)}@"
+            ma += f"link: {link.from_port.get_identifier_for(self)} "
             ma += f"{link.to_port.get_identifier_for(self)}\n"
         for model in self.subcomponents:
             ma += f"\n\n{model.to_ma()}"
