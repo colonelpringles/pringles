@@ -1,11 +1,11 @@
-from typing import Sequence
+from typing import List, cast
 
 
 class Model:
     def __init__(self, name: str):
         self.name = name
-        self.inports: Sequence[InPort] = []
-        self.outports: Sequence[OutPort] = []
+        self.inports: List[InPort] = []
+        self.outports: List[OutPort] = []
 
     def __str__(self) -> str:
         raise NotImplementedError()
@@ -17,7 +17,7 @@ class Model:
         self.outports.append(OutPort(name, self))
 
     def add_inport(self, name: str):
-        self.outports.append(InPort(name, self))
+        self.inports.append(InPort(name, self))
 
 
 class Port:
@@ -81,12 +81,12 @@ class Atomic(Model):
 
 
 class Coupled(Model):
-    def __init__(self, name: str, subcomponents: Sequence[Model]):
+    def __init__(self, name: str, subcomponents: List[Model]):
         super().__init__(name)
         self.subcomponents = subcomponents
-        self.eic: Sequence[ExtInputLink] = []
-        self.eoc: Sequence[ExtOutputLink] = []
-        self.ic: Sequence[IntLink] = []
+        self.eic: List[ExtInputLink] = []
+        self.eoc: List[ExtOutputLink] = []
+        self.ic: List[IntLink] = []
 
     def __str__(self) -> str:
         return self.name
@@ -107,7 +107,7 @@ class Coupled(Model):
             f"out: {' '.join([str(o) for o in self.outports])}\n"
             f"in: {' '.join([str(i) for i in self.inports])}\n"
         )
-        links = self.eic + self.ic + self.eoc
+        links = cast(List[Link], self.eic) + cast(List[Link], self.ic) + cast(List[Link], self.eoc)
         for link in links:
             ma += f"link: {link.from_port.get_identifier_for(self)}@"
             ma += f"{link.to_port.get_identifier_for(self)}\n"
