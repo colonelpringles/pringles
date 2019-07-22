@@ -1,5 +1,6 @@
 import pytest
-from colonel.models.models import Coupled, Atomic, InPort, OutPort, IntLink, ExtInputLink, ExtOutputLink
+from typing import Callable
+from colonel.models.models import Model, Coupled, Atomic, InPort, OutPort, IntLink, ExtInputLink, ExtOutputLink
 
 expected_interacciones_poblacion_ma = """[interacciones_poblacion]
 components : foco@Foco contagio@Contagio
@@ -45,17 +46,11 @@ class Vacunatorio(Atomic):
     pass
 
 
-def test_empty_top_model_is_drawn_correctly():
-    top_model = Coupled("top", [])
-    assert top_model.to_ma() == "[top]\ncomponents: \nout: \nin: \n"
+def empty_top_model_generator() -> Model:
+    return Coupled("top", [])
 
 
-def test_top_model_with_one_atomic_is_drawn_correctly():
-
-    # De un atomico, conseguir nombre, inport y outports
-    # Parametros son opcionales
-    # 
-
+def interacciones_poblacion_model_generator() -> Model:
     a_foco = Foco("foco", mean=2, std=1)
     foco_inport = a_foco.add_inport("in")
     foco_outport = a_foco.add_outport("out")
@@ -73,4 +68,19 @@ def test_top_model_with_one_atomic_is_drawn_correctly():
     interacciones_poblacion.add_coupling(foco_outport, contagio_inport)
     interacciones_poblacion.add_coupling(contagio_outport, ip_outport)
     
-    assert interacciones_poblacion.to_ma().replace(" ", "") == expected_interacciones_poblacion_ma.replace(" ", "")
+    return interacciones_poblacion
+
+
+@pytest.mark.parametrize("model_generator_func,expected_ma_file", [
+    (empty_top_model_generator, "tests/generated_mas/empty_model.ma"),
+    (interacciones_poblacion_model_generator, "tests/generated_mas/interacciones_poblacion.ma"),
+])
+def test_model_is_translated_into_ma_correctly(
+        model_generator_func: Callable[[], Model],
+        expected_ma_file: str):
+    generated_model = model_generator_func()
+    expected_model_text = ""
+    with open(expected_ma_file, "r") as expected_ma_file:
+        expected_model_text = expected_ma_file.read()
+    assert generated_model.to_ma() == expected_model_text
+
