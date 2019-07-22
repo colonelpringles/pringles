@@ -23,17 +23,19 @@ def test_simulator_executable_found_in_library_defined_dir():
 def test():
     wrapper = Wrapper()
 
-    sample_queue = Queue("sample_queue", preparation="0:0:5:0")
+    sample_queue = Queue("sample_queue", preparation="0:0:0:1")
     queue_in = sample_queue.add_inport("in")
+    queue_in_done = sample_queue.add_inport("done")
     queue_out = sample_queue.add_outport("out")
     top_model = Coupled("top", [sample_queue])
     incoming_event_port = top_model.add_inport("incoming_Event")
+    done_event_port = top_model.add_inport("done_Event")
     emitted_signal_port = top_model.add_outport("emitted_signal")
+    top_model.add_coupling(done_event_port, queue_in_done)
     top_model.add_coupling(queue_out, emitted_signal_port)
     top_model.add_coupling(incoming_event_port, queue_in)
 
     wrapper.run_simulation(top_model,
-                           events_file="/Users/pbalbi/Facultad/pringles/" +
-                           "pringles/test_models/simple_queue/test.ev")
+                           events_file="../pringles/test_models/simple_queue/test.ev")
 
     assert False
