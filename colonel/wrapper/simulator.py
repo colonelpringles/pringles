@@ -26,16 +26,6 @@ class Duration:
         return "%d:%d:%d:%d" % (self.hours, self.minutes, self.seconds, self.milliseconds)
 
 
-# This object should contain the following properties:
-# - Whether or not the simulation was successful (Or maybe this should raise an error)
-# - The parsed logs
-# - The parsed output
-# - Elapsed simulation time
-# - Real time that the simulation took to be completed
-class SimulationResult:
-    pass
-
-
 class Simulator:
     def __init__(self, *args, **kwargs):
         self.simulator_impl = Wrapper()

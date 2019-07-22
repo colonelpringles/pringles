@@ -5,10 +5,41 @@ import subprocess
 import tempfile
 from typing import Optional
 import logging
+import pandas as pd
 
 from colonel.wrapper.errors import SimulatorExecutableNotFound
 from colonel.wrapper.config import CDPP_BIN_PATH
 from colonel.models import Model
+
+
+# This object should contain the following properties:
+# - Whether or not the simulation was successful (Or maybe this should raise an error)
+# - The parsed logs
+# - The parsed output
+# - Elapsed simulation time
+# - Real time that the simulation took to be completed
+class SimulationResult:
+    TIME_COLUMN = 'time'
+    PORT_COLUMN = 'port'
+    VALUE_COLUMN = 'value'
+
+    def __init__(self, stdout, main_log_path=None, output_path=None):
+        self.stdout = stdout
+        self.main_log_path = main_log_path
+        self.output_path = output_path
+
+    @classmethod
+    def parse_output_file(cls, file_path):
+        return pd.read_csv(file_path, delimiter="\s+",
+                           names=[cls.TIME_COLUMN, cls.PORT_COLUMN, cls.VALUE_COLUMN])
+
+    @classmethod
+    def parse_main_log_file(cls, file_path):
+        with open(file_path, 'r') as main_log_file:
+            # Ignore first line
+            main_log_file.readline()
+            for line in main_log_file:
+                name, path = line.strip().split(' : ')
 
 
 class Wrapper:
@@ -46,7 +77,11 @@ class Wrapper:
         process_result = subprocess.run(commands_list, capture_output=True, check=True)
         logging.error("Results: %s", process_result.stdout)
         logging.error("Logs path: %s", logs_path)
-        logging.error("Logs path: %s", output_path)
+        logging.error("Output path: %s", output_path)
+
+        return SimulationResult(stdout=process_result.stdout,
+                                main_log_path=logs_path,
+                                output_path=output_path)
 
     def dump_model_in_file(self, model: Model) -> str:
         file_descriptor, path = tempfile.mkstemp()
@@ -64,4 +99,3 @@ class Wrapper:
         if is_simulator_executable_present is None:
             raise SimulatorExecutableNotFound()
         return filepath
-
