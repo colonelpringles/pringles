@@ -24,7 +24,7 @@ class Wrapper:
                        use_simulator_logs: bool = True,
                        use_simulator_out: bool = True):
 
-        commands_list = ["cd++", "-m" + self.dump_model_in_file(top_model)]
+        commands_list = [self.executable_route, "-m" + self.dump_model_in_file(top_model)]
         if duration is not None:
             commands_list.append("-t" + duration)
 
