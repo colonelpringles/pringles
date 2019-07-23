@@ -2,6 +2,10 @@ from __future__ import annotations
 from typing import List, cast, Any, Optional
 
 
+class PortNotFoundException(Exception):
+    pass
+
+
 class AtomicModelBuilder:
     def withName(self, name: str) -> AtomicModelBuilder:
         self.name = name
@@ -37,7 +41,7 @@ class Model:
         for port in self.inports + self.outports:
             if port.name == name:
                 return port
-        return None
+        raise PortNotFoundException()
 
 
 class Port:
