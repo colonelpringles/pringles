@@ -1,6 +1,6 @@
 import pytest
 from typing import Callable
-from colonel.models.models import Model, Coupled, Atomic, InPort, OutPort, IntLink, ExtInputLink, ExtOutputLink
+from colonel.models.models import Model, AtomicModelBuilder, Coupled, Atomic, InPort, OutPort, IntLink, ExtInputLink, ExtOutputLink
 
 expected_interacciones_poblacion_ma = """[interacciones_poblacion]
 components : foco@Foco contagio@Contagio
@@ -51,15 +51,18 @@ def empty_top_model_generator() -> Model:
 
 
 def interacciones_poblacion_model_generator() -> Model:
-    a_foco = Foco("foco", mean=2, std=1)
+    FocoAtomic = AtomicModelBuilder().withName("Foco").build()
+    ContagioAtomic = AtomicModelBuilder().withName("Contagio").build()
+
+    a_foco = FocoAtomic("foco", mean=2, std=1)
     foco_inport = a_foco.add_inport("in")
     foco_outport = a_foco.add_outport("out")
 
-    a_contagio = Contagio("contagio", threshold_NV=30, threshold_V=80)
+    a_contagio = ContagioAtomic("contagio", threshold_NV=30, threshold_V=80)
     contagio_inport = a_contagio.add_inport("in")
     contagio_outport = a_contagio.add_outport("out")
 
-    interacciones_poblacion = Coupled("interacciones_poblacion", 
+    interacciones_poblacion = Coupled("interacciones_poblacion",
                                       [a_foco, a_contagio])
     ip_inport = interacciones_poblacion.add_inport("in_port")
     ip_outport = interacciones_poblacion.add_outport("out_port")
@@ -67,7 +70,7 @@ def interacciones_poblacion_model_generator() -> Model:
     interacciones_poblacion.add_coupling(ip_inport, foco_inport)
     interacciones_poblacion.add_coupling(foco_outport, contagio_inport)
     interacciones_poblacion.add_coupling(contagio_outport, ip_outport)
-    
+
     return interacciones_poblacion
 
 
@@ -83,4 +86,3 @@ def test_model_is_translated_into_ma_correctly(
     with open(expected_ma_file, "r") as expected_ma_file:
         expected_model_text = expected_ma_file.read()
     assert generated_model.to_ma() == expected_model_text
-

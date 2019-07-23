@@ -1,4 +1,14 @@
-from typing import List, cast
+from __future__ import annotations
+from typing import List, cast, Any
+
+
+class AtomicModelBuilder:
+    def withName(self, name: str) -> AtomicModelBuilder:
+        self.name = name
+        return self
+    
+    def build(self) -> Any:
+        return type(self.name, (Atomic,), {})
 
 
 class Model:
