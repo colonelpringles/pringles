@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List, cast, Any
+from typing import List, cast, Any, Optional
 
 
 class AtomicModelBuilder:
@@ -32,6 +32,12 @@ class Model:
         inport = InPort(name, self)
         self.inports.append(inport)
         return inport
+
+    def get_port(self, name: str) -> Optional[Port]:
+        if name in [port.name for port in self.inports + self.outports]:
+            return [port for port in self.inports + self.outports if port.name == name][0]
+        else:
+            return None
 
 
 class Port:
@@ -128,7 +134,9 @@ class Coupled(Model):
                 isinstance(to_port, OutPort):
             self.add_external_output_coupling(ExtOutputLink(from_port, to_port))
         else:
-            raise Exception("This is not a valid coupling. Please check the provided ports.")
+            raise Exception(
+                f"This is not a valid coupling. Ports are {from_port.__class__}" +
+                f" and {to_port.__class__}. Please check the provided ports.")
 
     def to_ma(self) -> str:
         ma = (

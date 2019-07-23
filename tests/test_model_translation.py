@@ -2,49 +2,6 @@ import pytest
 from typing import Callable
 from colonel.models.models import Model, AtomicModelBuilder, Coupled, Atomic, InPort, OutPort, IntLink, ExtInputLink, ExtOutputLink
 
-expected_interacciones_poblacion_ma = """[interacciones_poblacion]
-components : foco@Foco contagio@Contagio
-out : out_port
-in : in_port
-link : in_port in@foco
-link : out@foco in@contagio
-link : out@contagio out_port
-
-
-[foco]
-mean : 2
-std : 1
-
-
-[contagio]
-threshold_NV : 30
-threshold_V : 80
-"""
-
-
-class Poblacion(Atomic):
-    pass
-
-
-class Contagio(Atomic):
-    pass
-
-
-class Foco(Atomic):
-    pass
-
-
-class SistPrevencion(Atomic):
-    pass
-
-
-class Paranoia(Atomic):
-    pass
-
-
-class Vacunatorio(Atomic):
-    pass
-
 
 def empty_top_model_generator() -> Model:
     return Coupled("top", [])
@@ -55,21 +12,30 @@ def interacciones_poblacion_model_generator() -> Model:
     ContagioAtomic = AtomicModelBuilder().withName("Contagio").build()
 
     a_foco = FocoAtomic("foco", mean=2, std=1)
-    foco_inport = a_foco.add_inport("in")
-    foco_outport = a_foco.add_outport("out")
+    a_foco.add_inport("in")
+    a_foco.add_outport("out")
 
     a_contagio = ContagioAtomic("contagio", threshold_NV=30, threshold_V=80)
-    contagio_inport = a_contagio.add_inport("in")
-    contagio_outport = a_contagio.add_outport("out")
+    a_contagio.add_inport("in")
+    a_contagio.add_outport("out")
 
     interacciones_poblacion = Coupled("interacciones_poblacion",
                                       [a_foco, a_contagio])
-    ip_inport = interacciones_poblacion.add_inport("in_port")
-    ip_outport = interacciones_poblacion.add_outport("out_port")
+    interacciones_poblacion.add_inport("in_port")
+    interacciones_poblacion.add_outport("out_port")
 
-    interacciones_poblacion.add_coupling(ip_inport, foco_inport)
-    interacciones_poblacion.add_coupling(foco_outport, contagio_inport)
-    interacciones_poblacion.add_coupling(contagio_outport, ip_outport)
+    interacciones_poblacion.add_coupling(
+        interacciones_poblacion.get_port("in_port"),
+        a_foco.get_port("in")
+        )
+    interacciones_poblacion.add_coupling(
+        a_foco.get_port("out"),
+        a_contagio.get_port("in")
+        )
+    interacciones_poblacion.add_coupling(
+        a_contagio.get_port("out"),
+        interacciones_poblacion.get_port("out_port")
+        )
 
     return interacciones_poblacion
 
