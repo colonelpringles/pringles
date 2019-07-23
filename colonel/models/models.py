@@ -14,8 +14,8 @@ class AtomicModelBuilder:
 class Model:
     def __init__(self, name: str):
         self.name = name
-        self.inports: List[InPort] = []
-        self.outports: List[OutPort] = []
+        self.inports: List[Port] = []
+        self.outports: List[Port] = []
 
     def __str__(self) -> str:
         raise NotImplementedError()
@@ -186,7 +186,7 @@ class CoupledModelBuilder():
     def withCoupling(self, from_port, to_port) -> CoupledModelBuilder:
         self.couplings_to_add.append(CouplingToAdd(from_port, to_port))
         return self
-    
+
     def withComponent(self, component: Model) -> CoupledModelBuilder:
         self.components_to_add.append(component)
         return self
