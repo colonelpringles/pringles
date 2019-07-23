@@ -19,23 +19,16 @@ def interacciones_poblacion_model_generator() -> Model:
     a_contagio.add_inport("in")
     a_contagio.add_outport("out")
 
-    interacciones_poblacion = Coupled("interacciones_poblacion",
-                                      [a_foco, a_contagio])
-    interacciones_poblacion.add_inport("in_port")
-    interacciones_poblacion.add_outport("out_port")
-
-    interacciones_poblacion.add_coupling(
-        interacciones_poblacion.get_port("in_port"),
-        a_foco.get_port("in")
-        )
-    interacciones_poblacion.add_coupling(
-        a_foco.get_port("out"),
-        a_contagio.get_port("in")
-        )
-    interacciones_poblacion.add_coupling(
-        a_contagio.get_port("out"),
-        interacciones_poblacion.get_port("out_port")
-        )
+    interacciones_poblacion = Coupled.builder() \
+        .withName("interacciones_poblacion")\
+        .withComponent(a_foco)\
+        .withComponent(a_contagio)\
+        .withInPort("in_port")\
+        .withOutPort("out_port")\
+        .withCoupling("in_port", a_foco.get_port("in"))\
+        .withCoupling(a_foco.get_port("out"), a_contagio.get_port("in"))\
+        .withCoupling(a_contagio.get_port("out"), "out_port")\
+        .build()
 
     return interacciones_poblacion
 
