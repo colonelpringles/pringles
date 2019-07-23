@@ -34,10 +34,10 @@ class Model:
         return inport
 
     def get_port(self, name: str) -> Optional[Port]:
-        if name in [port.name for port in self.inports + self.outports]:
-            return [port for port in self.inports + self.outports if port.name == name][0]
-        else:
-            return None
+        for port in self.inports + self.outports:
+            if port.name == name:
+                return port
+        return None
 
 
 class Port:
