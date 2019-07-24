@@ -35,7 +35,7 @@ def test():
     top_model.add_coupling(queue_out, emitted_signal_port)
     top_model.add_coupling(incoming_event_port, queue_in)
 
-    wrapper.run_simulation(top_model,
-                           events_file="../pringles/test_models/simple_queue/test.ev")
+    sim_result = wrapper.run_simulation(top_model,
+                                        events_file="../pringles/test_models/simple_queue/test.ev")
 
-    assert False
+    assert sim_result.successful()
