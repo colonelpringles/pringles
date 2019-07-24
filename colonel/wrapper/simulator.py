@@ -1,6 +1,6 @@
 from __future__ import annotations
 from colonel.models import Model
-from colonel.wrapper import Wrapper
+from colonel.wrapper import Wrapper, SimulationResult
 from typing import Optional
 
 
@@ -15,7 +15,8 @@ class Duration:
         if seconds > 60:
             raise BadDurationValuesError(f"Seconds should be less that 60, but is {seconds}")
         if milliseconds > 1000:
-            raise BadDurationValuesError(f"Milliseconds should be less that 1000, but is {milliseconds}")
+            raise BadDurationValuesError(f"Milliseconds should be less that 1000, " +
+                                         f"but is {milliseconds}")
         self.hours = hours
         self.minutes = minutes
         self.seconds = seconds
@@ -31,4 +32,4 @@ class Simulator:
         self.simulator_impl = Wrapper()
 
     def simulate(self, top_model: Model, duration: Optional[Duration]) -> SimulationResult:
-        self.simulator_impl.run_simulation(top_model, str(duration))
+        return self.simulator_impl.run_simulation(top_model, str(duration))

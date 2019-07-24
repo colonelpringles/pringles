@@ -23,23 +23,30 @@ class SimulationResult:
     PORT_COLUMN = 'port'
     VALUE_COLUMN = 'value'
 
-    def __init__(self, stdout, main_log_path=None, output_path=None):
-        self.stdout = stdout
+    def __init__(self, process_result, main_log_path=None, output_path=None):
+        self.process_result = process_result
         self.main_log_path = main_log_path
         self.output_path = output_path
 
+    def successful(self):
+        return self.process_result.returncode == 0
+
     @classmethod
     def parse_output_file(cls, file_path):
-        return pd.read_csv(file_path, delimiter="\s+",
+        return pd.read_csv(file_path, delimiter=r'\s+',
                            names=[cls.TIME_COLUMN, cls.PORT_COLUMN, cls.VALUE_COLUMN])
 
     @classmethod
     def parse_main_log_file(cls, file_path):
+        log_file_per_component = {}
+        parsed_logs = {}
         with open(file_path, 'r') as main_log_file:
             # Ignore first line
             main_log_file.readline()
             for line in main_log_file:
                 name, path = line.strip().split(' : ')
+                log_file_per_component[name] = path
+        return parsed_logs  # TODO: Should also parse each file
 
 
 class Wrapper:
@@ -55,7 +62,7 @@ class Wrapper:
                        use_simulator_logs: bool = True,
                        use_simulator_out: bool = True):
 
-        commands_list = [self.executable_route, "-m" + self.dump_model_in_file(top_model)]
+        commands_list = [self.executable_route, "-m" + self.dump_model_in_file(top_model), "-LX"]
         if duration is not None:
             commands_list.append("-t" + duration)
 
@@ -79,7 +86,7 @@ class Wrapper:
         logging.error("Logs path: %s", logs_path)
         logging.error("Output path: %s", output_path)
 
-        return SimulationResult(stdout=process_result.stdout,
+        return SimulationResult(process_result=process_result,
                                 main_log_path=logs_path,
                                 output_path=output_path)
 
