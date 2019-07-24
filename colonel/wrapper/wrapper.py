@@ -30,6 +30,8 @@ class SimulationResult:
         self.process_result = process_result
         self.main_log_path = main_log_path
         self.output_path = output_path
+        self.output_df = SimulationResult.parse_output_file(output_path)
+        self.logs_dfs = SimulationResult.parse_main_log_file(main_log_path)
 
     def successful(self):
         return self.process_result.returncode == 0
