@@ -3,8 +3,7 @@ dist: bionic
 python:
   - "3.7"
 install:
-  - pip install -r requirements-dev.txt
-  - bash setup.sh
+  - make install
 script:
   - make remote
 after_success:

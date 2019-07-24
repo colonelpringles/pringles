@@ -3,6 +3,11 @@ local: test typecheck flake8 pylint
 
 remote: test-cov typecheck flake8 pylint
 
+install:
+	pip install -r requirements-dev.txt
+	pip install -r requirements.txt
+	bash setup.sh
+
 test:
 	pytest
 
