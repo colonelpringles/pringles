@@ -19,9 +19,12 @@ from colonel.models import Model
 # - Elapsed simulation time
 # - Real time that the simulation took to be completed
 class SimulationResult:
-    TIME_COLUMN = 'time'
-    PORT_COLUMN = 'port'
-    VALUE_COLUMN = 'value'
+    TIME_COL = 'time'
+    PORT_COL = 'port'
+    VALUE_COL = 'value'
+    MESSAGE_TYPE_COL = 'message_type'
+    MODEL_ORIGIN_COL = 'model_origin'
+    MODEL_DEST_COL = 'model_dest'
 
     def __init__(self, process_result, main_log_path=None, output_path=None):
         self.process_result = process_result
@@ -34,7 +37,7 @@ class SimulationResult:
     @classmethod
     def parse_output_file(cls, file_path):
         return pd.read_csv(file_path, delimiter=r'\s+',
-                           names=[cls.TIME_COLUMN, cls.PORT_COLUMN, cls.VALUE_COLUMN])
+                           names=[cls.TIME_COL, cls.PORT_COL, cls.VALUE_COL])
 
     @classmethod
     def parse_main_log_file(cls, file_path):
@@ -46,7 +49,18 @@ class SimulationResult:
             for line in main_log_file:
                 name, path = line.strip().split(' : ')
                 log_file_per_component[name] = path
-        return parsed_logs  # TODO: Should also parse each file
+        for logname, filename in log_file_per_component.items():
+            parsed_logs[logname] = pd.read_csv(filename,
+                                               delimiter=r' /\s+',
+                                               engine='python',  # C engine doesnt work for regex
+                                               names=[0, 1,  # Not sure what first two cols are
+                                                      cls.MESSAGE_TYPE_COL,
+                                                      cls.TIME_COL,
+                                                      cls.MODEL_ORIGIN_COL,
+                                                      cls.PORT_COL,
+                                                      cls.VALUE_COL,
+                                                      cls.MODEL_DEST_COL])
+        return parsed_logs
 
 
 class Wrapper:
@@ -60,9 +74,12 @@ class Wrapper:
                        duration: Optional[str] = None,
                        events_file: Optional[str] = None,
                        use_simulator_logs: bool = True,
-                       use_simulator_out: bool = True):
+                       use_simulator_out: bool = True,
+                       logged_messages: str = 'XY'):
 
-        commands_list = [self.executable_route, "-m" + self.dump_model_in_file(top_model), "-LX"]
+        commands_list = [self.executable_route,
+                         "-m" + self.dump_model_in_file(top_model),
+                         "-L" + logged_messages]
         if duration is not None:
             commands_list.append("-t" + duration)
 
