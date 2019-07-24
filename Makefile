@@ -10,7 +10,7 @@ test-cov:
 	pytest --cov colonel/ --cov-report term-missing
 
 typecheck:
-	mypy -p colonel
+	mypy -p colonel --config-file=setup.cfg
 
 flake8:
 	flake8 --max-complexity 10 colonel/
