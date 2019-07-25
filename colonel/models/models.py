@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List, cast, Any, Optional
+from typing import List, cast, Any, Optional, Union
 
 
 class PortNotFoundException(Exception):
@@ -30,12 +30,12 @@ class Model:
     def add_outport(self, name: str):
         outport = OutPort(name, self)
         self.outports.append(outport)
-        return outport
+        return self
 
     def add_inport(self, name: str):
         inport = InPort(name, self)
         self.inports.append(inport)
-        return inport
+        return self
 
     def get_port(self, name: str) -> Optional[Port]:
         for port in self.inports + self.outports:
@@ -115,10 +115,6 @@ class Coupled(Model):
     def __str__(self) -> str:
         return self.name
 
-    @staticmethod
-    def builder() -> CoupledModelBuilder:
-        return CoupledModelBuilder()
-
     def add_internal_coupling(self, link: IntLink):
         self.ic.append(link)
 
@@ -128,7 +124,17 @@ class Coupled(Model):
     def add_external_output_coupling(self, link: ExtOutputLink):
         self.eoc.append(link)
 
-    def add_coupling(self, from_port: Port, to_port: Port):
+    # Implements Coupled functional interface
+    def add_coupling(self, from_port: Union[Port, str], to_port: Union[Port, str]) -> Coupled:
+        if isinstance(from_port, str):
+            from_port = self.get_port(from_port)
+        if isinstance(to_port, str):
+            to_port = self.get_port(to_port)
+
+        self.do_add_coupling(from_port, to_port)
+        return self
+
+    def do_add_coupling(self, from_port: Port, to_port: Port):
         # Internal coupling
         if isinstance(from_port, OutPort) and \
            isinstance(to_port, InPort):
@@ -160,55 +166,3 @@ class Coupled(Model):
         for model in self.subcomponents:
             ma += f"\n\n{model.to_ma()}"
         return ma
-
-
-class CouplingToAdd:
-    def __init__(self, from_port, to_port):
-        self.from_port = from_port
-        self.to_port = to_port
-
-    def add(self, model: Coupled):
-        if isinstance(self.from_port, str):
-            self.from_port = model.get_port(self.from_port)
-        if isinstance(self.to_port, str):
-            self.to_port = model.get_port(self.to_port)
-
-        model.add_coupling(self.from_port, self.to_port)
-
-
-class CoupledModelBuilder():
-    def __init__(self):
-        self.couplings_to_add: List[CouplingToAdd] = []
-        self.inports_to_add = []
-        self.outports_to_add = []
-        self.components_to_add = []
-
-    def withName(self, name: str) -> CoupledModelBuilder:
-        self.name = name
-        return self
-
-    def withCoupling(self, from_port, to_port) -> CoupledModelBuilder:
-        self.couplings_to_add.append(CouplingToAdd(from_port, to_port))
-        return self
-
-    def withComponent(self, component: Model) -> CoupledModelBuilder:
-        self.components_to_add.append(component)
-        return self
-
-    def withInPort(self, name: str) -> CoupledModelBuilder:
-        self.inports_to_add.append(name)
-        return self
-
-    def withOutPort(self, name: str) -> CoupledModelBuilder:
-        self.outports_to_add.append(name)
-        return self
-
-    def build(self) -> Coupled:
-        built_coupled = Coupled(self.name, self.components_to_add)
-        for inport_name in self.inports_to_add:
-            built_coupled.add_inport(inport_name)
-        for outport_name in self.outports_to_add:
-            built_coupled.add_outport(outport_name)
-        for coupling_to_add in self.couplings_to_add:
-            coupling_to_add.add(built_coupled)
-        return built_coupled
