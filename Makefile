@@ -6,7 +6,8 @@ remote: test-cov typecheck flake8 pylint
 install:
 	pip install -r requirements-dev.txt
 	pip install -r requirements.txt
-	bash setup.sh
+	git submodule update --init --recursive
+	make -C cdpp/src/
 
 test:
 	pytest
