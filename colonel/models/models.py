@@ -56,13 +56,25 @@ class Port:
     def get_identifier_for(self, model: Model) -> str:
         return self.name if model == self.owner else f"{self.name}@{self.owner.name}"
 
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'message_type': 'Any'
+        }
+
 
 class InPort(Port):
-    pass
+    def to_dict(self):
+        dic = super().to_dict()
+        dic['kind'] = 'in'
+        return dic
 
 
 class OutPort(Port):
-    pass
+    def to_dict(self):
+        dic = super().to_dict()
+        dic['kind'] = 'out'
+        return dic
 
 
 class Link:
@@ -99,6 +111,16 @@ class Atomic(Model):
         for param, value in self.model_params.items():
             ma += f"{param}: {value}\n"
         return ma
+
+    def to_dict(self) -> dict:
+        return {
+            'id': self.name,
+            'type': 'atomic',
+            'ports': {
+                'out': [outport.to_dict() for outport in self.outports],
+                'in': [inport.to_dict() for inport in self.inports]
+            }
+        }
 
     def get_abstract_model_name(self) -> str:
         return type(self).__name__
@@ -173,3 +195,39 @@ class Coupled(Model):
         for model in self.subcomponents:
             ma += f"\n\n{model.to_ma()}"
         return ma
+
+    def to_dict(self) -> dict:
+        return {
+            'id': self.name,
+            'type': 'coupled',
+            'models': [model.to_dict() for model in self.subcomponents],
+            'ports': {
+                'out': [outport.to_dict() for outport in self.outports],
+                'in': [inport.to_dict() for inport in self.inports]
+            },
+            'eoc': [
+                {
+                    'to_port': coup.to_port.name,
+                    'from_port': coup.from_port.name,
+                    'from_model': coup.from_port.owner.name
+                }
+                for coup in self.eoc
+            ],
+            'eic': [
+                {
+                    'to_port': coup.to_port.name,
+                    'to_model': coup.to_port.owner.name,
+                    'from_port': coup.from_port.name
+                }
+                for coup in self.eic
+            ],
+            'ic': [
+                {
+                    'to_port': coup.to_port.name,
+                    'to_model': coup.to_port.owner.name,
+                    'from_port': coup.from_port.name,
+                    'from_model': coup.from_port.owner.name
+                }
+                for coup in self.ic
+            ]
+        }
