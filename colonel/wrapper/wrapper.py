@@ -8,7 +8,6 @@ import logging
 import pandas as pd
 
 from colonel.wrapper.errors import SimulatorExecutableNotFound
-from colonel.wrapper.config import CDPP_BIN_PATH
 from colonel.models import Model
 
 
@@ -67,6 +66,8 @@ class SimulationResult:
 
 class Wrapper:
     CDPP_BIN = 'cd++'
+    CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../../cdpp/src/bin/')
+    # CDPP_BIN_PATH will be wrong if the class is moved to a different directory
 
     def __init__(self):
         self.executable_route = self.find_executable_route()
@@ -118,7 +119,7 @@ class Wrapper:
         return path
 
     def find_executable_route(self) -> str:
-        filepath = os.path.join(CDPP_BIN_PATH, self.CDPP_BIN)
+        filepath = os.path.join(self.CDPP_BIN_PATH, self.CDPP_BIN)
         is_simulator_executable_present = os.path.isfile(filepath) \
             and os.access(filepath, os.X_OK)
 

@@ -1,14 +1,13 @@
 import pytest
 import os
 from colonel.wrapper.wrapper import Wrapper
-from colonel.wrapper.config import CDPP_BIN_PATH
 from colonel.wrapper.errors import SimulatorExecutableNotFound
 from colonel.models import Coupled, Atomic
 
 
 TEST_PATH_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 TEST_EXECUTABLE = os.path.join(TEST_PATH_DIRECTORY, Wrapper.CDPP_BIN)
-CDPP_BIN_EXECUTABLE_PATH = os.path.join(CDPP_BIN_PATH, Wrapper.CDPP_BIN)
+CDPP_BIN_EXECUTABLE_PATH = os.path.join(Wrapper.CDPP_BIN_PATH, Wrapper.CDPP_BIN)
 
 
 class Queue(Atomic):
