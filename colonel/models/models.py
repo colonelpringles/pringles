@@ -27,6 +27,9 @@ class Model:
     def to_ma(self) -> str:
         raise NotImplementedError()
 
+    def to_dict(self) -> dict:
+        raise NotImplementedError()
+
     def add_outport(self, name: str):
         outport = OutPort(name, self)
         self.outports.append(outport)
