@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List, cast, Any, Optional, Union
+from typing import List, cast, Any, Union
 
 
 class PortNotFoundException(Exception):
@@ -37,7 +37,7 @@ class Model:
         self.inports.append(inport)
         return self
 
-    def get_port(self, name: str) -> Optional[Port]:
+    def get_port(self, name: str) -> Port:
         for port in self.inports + self.outports:
             if port.name == name:
                 return port
@@ -126,12 +126,19 @@ class Coupled(Model):
 
     # Implements Coupled functional interface
     def add_coupling(self, from_port: Union[Port, str], to_port: Union[Port, str]) -> Coupled:
+        actual_from_port = None
+        actual_to_port = None
         if isinstance(from_port, str):
-            from_port = self.get_port(from_port)
-        if isinstance(to_port, str):
-            to_port = self.get_port(to_port)
+            actual_from_port = self.get_port(from_port)
+        elif isinstance(from_port, Port):
+            actual_from_port = from_port
 
-        self.do_add_coupling(from_port, to_port)
+        if isinstance(to_port, str):
+            actual_to_port = self.get_port(to_port)
+        elif isinstance(to_port, Port):
+            actual_to_port = to_port
+
+        self.do_add_coupling(actual_from_port, actual_to_port)
         return self
 
     def do_add_coupling(self, from_port: Port, to_port: Port):
