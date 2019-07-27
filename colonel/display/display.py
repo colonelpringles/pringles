@@ -1,6 +1,6 @@
 import json
 
-from IPython.display import IFrame
+from IPython.display import IFrame  # pylint: disable=E0401
 import urllib.parse
 
 from colonel.models import Model
