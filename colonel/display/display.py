@@ -27,12 +27,12 @@ class ModelDisplayOptions:
 
 
 class ModelDisplay(IFrame):
-    DIAGRAMMER_URL = 'http://127.0.0.1:8080/'
+    DIAGRAMMER_URL = 'https://colonelpringles.github.io/DEVSDiagrammer/basic.html'
 
-    def __init__(self, model: Model, width='100%', height='500px', options=ModelDisplayOptions()):
+    def __init__(self, model: Model, width='100%', height='600px', options=ModelDisplayOptions()):
         serialized_model = JsonSerializer.serialize(model)
         serialized_opt = options.as_json()
         url = urllib.parse.quote(f'{self.DIAGRAMMER_URL}?' +
                                  f'options={serialized_opt}&structure={serialized_model}',
                                  safe=':/?=&')
-        super().__init__(url, width='100%', height='500')
+        super().__init__(url, width=width, height=height)
