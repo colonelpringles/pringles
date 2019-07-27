@@ -1,11 +1,25 @@
-from typing import List, cast
+from __future__ import annotations
+from typing import List, cast, Any, Union
+
+
+class PortNotFoundException(Exception):
+    pass
+
+
+class AtomicModelBuilder:
+    def withName(self, name: str) -> AtomicModelBuilder:
+        self.name = name
+        return self
+
+    def build(self) -> Any:
+        return type(self.name, (Atomic,), {})
 
 
 class Model:
     def __init__(self, name: str):
         self.name = name
-        self.inports: List[InPort] = []
-        self.outports: List[OutPort] = []
+        self.inports: List[Port] = []
+        self.outports: List[Port] = []
 
     def __str__(self) -> str:
         raise NotImplementedError()
@@ -16,12 +30,18 @@ class Model:
     def add_outport(self, name: str):
         outport = OutPort(name, self)
         self.outports.append(outport)
-        return outport
+        return self
 
     def add_inport(self, name: str):
         inport = InPort(name, self)
         self.inports.append(inport)
-        return inport
+        return self
+
+    def get_port(self, name: str) -> Port:
+        for port in self.inports + self.outports:
+            if port.name == name:
+                return port
+        raise PortNotFoundException()
 
 
 class Port:
@@ -104,7 +124,24 @@ class Coupled(Model):
     def add_external_output_coupling(self, link: ExtOutputLink):
         self.eoc.append(link)
 
-    def add_coupling(self, from_port: Port, to_port: Port):
+    # Implements Coupled functional interface
+    def add_coupling(self, from_port: Union[Port, str], to_port: Union[Port, str]) -> Coupled:
+        actual_from_port = None
+        actual_to_port = None
+        if isinstance(from_port, str):
+            actual_from_port = self.get_port(from_port)
+        elif isinstance(from_port, Port):
+            actual_from_port = from_port
+
+        if isinstance(to_port, str):
+            actual_to_port = self.get_port(to_port)
+        elif isinstance(to_port, Port):
+            actual_to_port = to_port
+
+        self.do_add_coupling(actual_from_port, actual_to_port)
+        return self
+
+    def do_add_coupling(self, from_port: Port, to_port: Port):
         # Internal coupling
         if isinstance(from_port, OutPort) and \
            isinstance(to_port, InPort):
@@ -118,7 +155,9 @@ class Coupled(Model):
                 isinstance(to_port, OutPort):
             self.add_external_output_coupling(ExtOutputLink(from_port, to_port))
         else:
-            raise Exception("This is not a valid coupling. Please check the provided ports.")
+            raise Exception(
+                f"This is not a valid coupling. Ports are {from_port.__class__}" +
+                f" and {to_port.__class__}. Please check the provided ports.")
 
     def to_ma(self) -> str:
         ma = (
