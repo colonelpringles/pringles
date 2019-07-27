@@ -9,6 +9,7 @@ import pandas as pd
 
 from colonel.wrapper.errors import SimulatorExecutableNotFound
 from colonel.models import Model
+from colonel.serializers import MaSerializer
 
 
 # This object should contain the following properties:
@@ -113,7 +114,7 @@ class Wrapper:
     def dump_model_in_file(self, model: Model) -> str:
         file_descriptor, path = tempfile.mkstemp()
         with open(path, "w") as model_file:
-            model_file.write(model.to_ma())
+            model_file.write(MaSerializer.serialize(model))
 
         os.close(file_descriptor)
         return path

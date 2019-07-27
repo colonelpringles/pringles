@@ -1,1 +1,2 @@
-from .models import Coupled, Atomic, AtomicModelBuilder, Model, Port  # noqa: F401
+from .models import (Coupled, Atomic, AtomicModelBuilder,  # noqa: F401
+                     Model, Port, InPort, OutPort, Link)

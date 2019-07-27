@@ -1,6 +1,7 @@
 import pytest
 from typing import Callable
 from colonel.models.models import Model, AtomicModelBuilder, Coupled, Atomic, InPort, OutPort, IntLink, ExtInputLink, ExtOutputLink, PortNotFoundException
+from colonel.serializers import MaSerializer
 
 
 def empty_top_model_generator() -> Model:
@@ -40,7 +41,7 @@ def test_model_is_translated_into_ma_correctly(
     expected_model_text = ""
     with open(expected_ma_file, "r") as expected_ma_file:
         expected_model_text = expected_ma_file.read()
-    assert generated_model.to_ma() == expected_model_text
+    assert MaSerializer().serialize(generated_model) == expected_model_text
 
 
 def test_non_existing_port():
