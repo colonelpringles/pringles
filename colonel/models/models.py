@@ -1,3 +1,6 @@
+"""
+This is the models module docstring
+"""
 from __future__ import annotations
 from typing import List, Any, Union
 
@@ -7,6 +10,9 @@ class PortNotFoundException(Exception):
 
 
 class AtomicModelBuilder:
+    """
+    Atomic models class builder.
+    """
     def withName(self, name: str) -> AtomicModelBuilder:
         self.name = name
         return self
@@ -16,6 +22,9 @@ class AtomicModelBuilder:
 
 
 class Model:
+    """
+    Model is the base class for all DEVS model instances, be it an Atomic or a Coupled.
+    """
     def __init__(self, name: str):
         self.name = name
         self.inports: List[Port] = []
@@ -42,6 +51,9 @@ class Model:
 
 
 class Port:
+    """
+    Port is the base class for all DEVS ports.
+    """
     def __init__(self, name: str, owner: Model):
         # a type could be added in the future as an extra checks
         self.name = name
