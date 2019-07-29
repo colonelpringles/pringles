@@ -9,6 +9,11 @@ script:
   - make remote
 after_success:
   - codecov
+
+# GH pages deployment stuff
+before-deploy:
+  - make -C docs html-deploy       
+
 deploy:
     provider: pages
     skip_cleanup: true
