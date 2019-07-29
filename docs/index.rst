@@ -10,9 +10,7 @@ Welcome to Pringles's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-.. automodule:: models.models
-    :members:
-
+   intro
 
 Indices and tables
 ==================
@@ -20,3 +18,23 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+Reference
+=========
+
+Models
+------
+
+.. automodule:: colonel.models.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Wrapper
+-------
+   
+.. automodule:: colonel.wrapper.wrapper
+   :members:
+   :undoc-members:
+   :show-inheritance:
