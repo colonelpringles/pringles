@@ -4,7 +4,16 @@ python:
   - "3.7"
 install:
   - make install
+  - make -C docs html
 script:
   - make remote
 after_success:
   - codecov
+deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    keep_history: true
+    name: PringlesDeploymentBot
+    on:
+        branch: master
