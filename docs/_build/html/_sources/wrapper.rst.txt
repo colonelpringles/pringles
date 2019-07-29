@@ -1,0 +1,46 @@
+wrapper package
+===============
+
+Submodules
+----------
+
+wrapper.config module
+---------------------
+
+.. automodule:: wrapper.config
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+wrapper.errors module
+---------------------
+
+.. automodule:: wrapper.errors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+wrapper.simulator module
+------------------------
+
+.. automodule:: wrapper.simulator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+wrapper.wrapper module
+----------------------
+
+.. automodule:: wrapper.wrapper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: wrapper
+   :members:
+   :undoc-members:
+   :show-inheritance:
