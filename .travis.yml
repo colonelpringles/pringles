@@ -11,8 +11,8 @@ after_success:
   - codecov
 
 # GH pages deployment stuff
-before-deploy:
-  - make -C docs html-deploy       
+before_deploy:
+  - make -C docs/ html-deploy       
 
 deploy:
     provider: pages
