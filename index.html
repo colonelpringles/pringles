@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Pringles’s documentation! &#8212; Pringles  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="intro.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-pringles-s-documentation">
+<h1>Welcome to Pringles’s documentation!<a class="headerlink" href="#welcome-to-pringles-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-colonel.models.models">
+<span id="models"></span><h2>Models<a class="headerlink" href="#module-colonel.models.models" title="Permalink to this headline">¶</a></h2>
+<p>This is the models module docstring</p>
+<dl class="class">
+<dt id="colonel.models.models.Atomic">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">Atomic</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">**model_params</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Atomic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colonel.models.models.Model" title="colonel.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">colonel.models.models.Model</span></code></a></p>
+<dl class="method">
+<dt id="colonel.models.models.Atomic.get_abstract_model_name">
+<code class="sig-name descname">get_abstract_model_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#colonel.models.models.Atomic.get_abstract_model_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.AtomicModelBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">AtomicModelBuilder</code><a class="headerlink" href="#colonel.models.models.AtomicModelBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Atomic models class builder.</p>
+<dl class="method">
+<dt id="colonel.models.models.AtomicModelBuilder.build">
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#colonel.models.models.AtomicModelBuilder.build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.models.models.AtomicModelBuilder.withName">
+<code class="sig-name descname">withName</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; colonel.models.models.AtomicModelBuilder<a class="headerlink" href="#colonel.models.models.AtomicModelBuilder.withName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.Coupled">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">Coupled</code><span class="sig-paren">(</span><em class="sig-param">name: str, subcomponents: List[colonel.models.models.Model]</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Coupled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colonel.models.models.Model" title="colonel.models.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">colonel.models.models.Model</span></code></a></p>
+<dl class="method">
+<dt id="colonel.models.models.Coupled.add_coupling">
+<code class="sig-name descname">add_coupling</code><span class="sig-paren">(</span><em class="sig-param">from_port: Union[colonel.models.models.Port, str], to_port: Union[colonel.models.models.Port, str]</em><span class="sig-paren">)</span> &#x2192; colonel.models.models.Coupled<a class="headerlink" href="#colonel.models.models.Coupled.add_coupling" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.models.models.Coupled.add_external_input_coupling">
+<code class="sig-name descname">add_external_input_coupling</code><span class="sig-paren">(</span><em class="sig-param">link: colonel.models.models.ExtInputLink</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Coupled.add_external_input_coupling" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.models.models.Coupled.add_external_output_coupling">
+<code class="sig-name descname">add_external_output_coupling</code><span class="sig-paren">(</span><em class="sig-param">link: colonel.models.models.ExtOutputLink</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Coupled.add_external_output_coupling" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.models.models.Coupled.add_internal_coupling">
+<code class="sig-name descname">add_internal_coupling</code><span class="sig-paren">(</span><em class="sig-param">link: colonel.models.models.IntLink</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Coupled.add_internal_coupling" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.models.models.Coupled.do_add_coupling">
+<code class="sig-name descname">do_add_coupling</code><span class="sig-paren">(</span><em class="sig-param">from_port: colonel.models.models.Port</em>, <em class="sig-param">to_port: colonel.models.models.Port</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Coupled.do_add_coupling" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.ExtInputLink">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">ExtInputLink</code><span class="sig-paren">(</span><em class="sig-param">from_port: colonel.models.models.InPort</em>, <em class="sig-param">to_port: colonel.models.models.InPort</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.ExtInputLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colonel.models.models.Link" title="colonel.models.models.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">colonel.models.models.Link</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.ExtOutputLink">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">ExtOutputLink</code><span class="sig-paren">(</span><em class="sig-param">from_port: colonel.models.models.OutPort</em>, <em class="sig-param">to_port: colonel.models.models.OutPort</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.ExtOutputLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colonel.models.models.Link" title="colonel.models.models.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">colonel.models.models.Link</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.InPort">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">InPort</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">owner: colonel.models.models.Model</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.InPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colonel.models.models.Port" title="colonel.models.models.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">colonel.models.models.Port</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.IntLink">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">IntLink</code><span class="sig-paren">(</span><em class="sig-param">from_port: colonel.models.models.OutPort</em>, <em class="sig-param">to_port: colonel.models.models.InPort</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.IntLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colonel.models.models.Link" title="colonel.models.models.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">colonel.models.models.Link</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.Link">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">Link</code><span class="sig-paren">(</span><em class="sig-param">from_port: colonel.models.models.Port</em>, <em class="sig-param">to_port: colonel.models.models.Port</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.Model">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">Model</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Model is the base class for all DEVS model instances, be it an Atomic or a Coupled.</p>
+<dl class="method">
+<dt id="colonel.models.models.Model.add_inport">
+<code class="sig-name descname">add_inport</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Model.add_inport" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.models.models.Model.add_outport">
+<code class="sig-name descname">add_outport</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Model.add_outport" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.models.models.Model.get_port">
+<code class="sig-name descname">get_port</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; colonel.models.models.Port<a class="headerlink" href="#colonel.models.models.Model.get_port" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.OutPort">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">OutPort</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">owner: colonel.models.models.Model</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.OutPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colonel.models.models.Port" title="colonel.models.models.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">colonel.models.models.Port</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.models.models.Port">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">Port</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">owner: colonel.models.models.Model</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.models.Port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Port is the base class for all DEVS ports.</p>
+<dl class="method">
+<dt id="colonel.models.models.Port.get_identifier_for">
+<code class="sig-name descname">get_identifier_for</code><span class="sig-paren">(</span><em class="sig-param">model: colonel.models.models.Model</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#colonel.models.models.Port.get_identifier_for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="colonel.models.models.PortNotFoundException">
+<em class="property">exception </em><code class="sig-prename descclassname">colonel.models.models.</code><code class="sig-name descname">PortNotFoundException</code><a class="headerlink" href="#colonel.models.models.PortNotFoundException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-colonel.wrapper.wrapper">
+<span id="wrapper"></span><h2>Wrapper<a class="headerlink" href="#module-colonel.wrapper.wrapper" title="Permalink to this headline">¶</a></h2>
+<p>Test wrapper docstring</p>
+<dl class="class">
+<dt id="colonel.wrapper.wrapper.SimulationResult">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.wrapper.wrapper.</code><code class="sig-name descname">SimulationResult</code><span class="sig-paren">(</span><em class="sig-param">process_result</em>, <em class="sig-param">main_log_path=None</em>, <em class="sig-param">output_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="colonel.wrapper.wrapper.SimulationResult.MESSAGE_TYPE_COL">
+<code class="sig-name descname">MESSAGE_TYPE_COL</code><em class="property"> = 'message_type'</em><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult.MESSAGE_TYPE_COL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="colonel.wrapper.wrapper.SimulationResult.MODEL_DEST_COL">
+<code class="sig-name descname">MODEL_DEST_COL</code><em class="property"> = 'model_dest'</em><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult.MODEL_DEST_COL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="colonel.wrapper.wrapper.SimulationResult.MODEL_ORIGIN_COL">
+<code class="sig-name descname">MODEL_ORIGIN_COL</code><em class="property"> = 'model_origin'</em><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult.MODEL_ORIGIN_COL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="colonel.wrapper.wrapper.SimulationResult.PORT_COL">
+<code class="sig-name descname">PORT_COL</code><em class="property"> = 'port'</em><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult.PORT_COL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="colonel.wrapper.wrapper.SimulationResult.TIME_COL">
+<code class="sig-name descname">TIME_COL</code><em class="property"> = 'time'</em><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult.TIME_COL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="colonel.wrapper.wrapper.SimulationResult.VALUE_COL">
+<code class="sig-name descname">VALUE_COL</code><em class="property"> = 'value'</em><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult.VALUE_COL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.wrapper.wrapper.SimulationResult.parse_main_log_file">
+<em class="property">classmethod </em><code class="sig-name descname">parse_main_log_file</code><span class="sig-paren">(</span><em class="sig-param">file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult.parse_main_log_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.wrapper.wrapper.SimulationResult.parse_output_file">
+<em class="property">classmethod </em><code class="sig-name descname">parse_output_file</code><span class="sig-paren">(</span><em class="sig-param">file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult.parse_output_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.wrapper.wrapper.SimulationResult.successful">
+<code class="sig-name descname">successful</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colonel.wrapper.wrapper.SimulationResult.successful" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="colonel.wrapper.wrapper.Wrapper">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.wrapper.wrapper.</code><code class="sig-name descname">Wrapper</code><a class="headerlink" href="#colonel.wrapper.wrapper.Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="colonel.wrapper.wrapper.Wrapper.CDPP_BIN">
+<code class="sig-name descname">CDPP_BIN</code><em class="property"> = 'cd++'</em><a class="headerlink" href="#colonel.wrapper.wrapper.Wrapper.CDPP_BIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="colonel.wrapper.wrapper.Wrapper.CDPP_BIN_PATH">
+<code class="sig-name descname">CDPP_BIN_PATH</code><em class="property"> = '/home/travis/build/colonelpringles/pringles/colonel/wrapper/../../cdpp/src/bin/'</em><a class="headerlink" href="#colonel.wrapper.wrapper.Wrapper.CDPP_BIN_PATH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.wrapper.wrapper.Wrapper.dump_model_in_file">
+<code class="sig-name descname">dump_model_in_file</code><span class="sig-paren">(</span><em class="sig-param">model: colonel.models.models.Model</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#colonel.wrapper.wrapper.Wrapper.dump_model_in_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.wrapper.wrapper.Wrapper.find_executable_route">
+<code class="sig-name descname">find_executable_route</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#colonel.wrapper.wrapper.Wrapper.find_executable_route" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.wrapper.wrapper.Wrapper.run_simulation">
+<code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">top_model: colonel.models.models.Model</em>, <em class="sig-param">duration: Optional[str] = None</em>, <em class="sig-param">events_file: Optional[str] = None</em>, <em class="sig-param">use_simulator_logs: bool = True</em>, <em class="sig-param">use_simulator_out: bool = True</em>, <em class="sig-param">logged_messages: str = 'XY'</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.wrapper.wrapper.Wrapper.run_simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Pringles</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="intro.html" title="next chapter">Introduction</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Juan Lanuza, Pablo Balbi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
