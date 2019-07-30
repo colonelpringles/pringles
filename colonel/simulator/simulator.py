@@ -6,12 +6,12 @@ from __future__ import annotations
 import os
 import subprocess
 import tempfile
-from typing import Optional
+from typing import Optional, List
 import logging
 import pandas as pd
 
 from colonel.simulator.errors import SimulatorExecutableNotFound
-from colonel.models import Model
+from colonel.models import Model, Event
 from colonel.serializers import MaSerializer
 
 
@@ -79,7 +79,7 @@ class Simulator:
     def run_simulation(self,
                        top_model: Model,
                        duration: Optional[str] = None,
-                       events_file: Optional[str] = None,
+                       events: Optional[List[Event]] = None,
                        use_simulator_logs: bool = True,
                        use_simulator_out: bool = True,
                        logged_messages: str = 'XY'):
@@ -90,8 +90,10 @@ class Simulator:
         if duration is not None:
             commands_list.append("-t" + duration)
 
-        if events_file is not None:
-            commands_list.append("-e" + events_file)
+        if events is not None:
+            events_list = events
+            events_file_path = self.dump_events_in_file(events_list)
+            commands_list.append("-e" + events_file_path)
 
         # Simulation logs
         if use_simulator_logs:
@@ -114,7 +116,18 @@ class Simulator:
                                 main_log_path=logs_path,
                                 output_path=output_path)
 
-    def dump_model_in_file(self, model: Model) -> str:
+    @staticmethod
+    def dump_events_in_file(events: List[Event]) -> str:
+        file_descriptor, path = tempfile.mkstemp()
+        with open(path, "w") as events_file:
+            for event in events:
+                events_file.write(event.serialize() + "\n")
+
+        os.close(file_descriptor)
+        return path
+
+    @staticmethod
+    def dump_model_in_file(model: Model) -> str:
         file_descriptor, path = tempfile.mkstemp()
         with open(path, "w") as model_file:
             model_file.write(MaSerializer.serialize(model))

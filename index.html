@@ -189,6 +189,28 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-colonel.models.events">
+<span id="events"></span><h2>Events<a class="headerlink" href="#module-colonel.models.events" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="colonel.models.events.Event">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.models.events.</code><code class="sig-name descname">Event</code><span class="sig-paren">(</span><em class="sig-param">time: colonel.utils.utils.VirtualTime, port: colonel.models.models.Port, value: Union[float, List[float]]</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.models.events.Event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Event is the representation of external influence into the model.
+An event is composed of:</p>
+<ul class="simple">
+<li><p>event time</p></li>
+<li><p>target port, belonging to the top model</p></li>
+<li><p>value</p></li>
+</ul>
+<dl class="method">
+<dt id="colonel.models.events.Event.serialize">
+<code class="sig-name descname">serialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#colonel.models.events.Event.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize the <a class="reference internal" href="#colonel.models.events.Event" title="colonel.models.events.Event"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a> into a CD++ consumable string.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-colonel.simulator.simulator">
 <span id="simulator"></span><h2>Simulator<a class="headerlink" href="#module-colonel.simulator.simulator" title="Permalink to this headline">¶</a></h2>
 <p>Test simulator docstring</p>
@@ -258,8 +280,13 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="colonel.simulator.simulator.Simulator.dump_events_in_file">
+<em class="property">static </em><code class="sig-name descname">dump_events_in_file</code><span class="sig-paren">(</span><em class="sig-param">events: List[colonel.models.events.Event]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#colonel.simulator.simulator.Simulator.dump_events_in_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="colonel.simulator.simulator.Simulator.dump_model_in_file">
-<code class="sig-name descname">dump_model_in_file</code><span class="sig-paren">(</span><em class="sig-param">model: colonel.models.models.Model</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#colonel.simulator.simulator.Simulator.dump_model_in_file" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">dump_model_in_file</code><span class="sig-paren">(</span><em class="sig-param">model: colonel.models.models.Model</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#colonel.simulator.simulator.Simulator.dump_model_in_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -269,7 +296,7 @@
 
 <dl class="method">
 <dt id="colonel.simulator.simulator.Simulator.run_simulation">
-<code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">top_model: colonel.models.models.Model</em>, <em class="sig-param">duration: Optional[str] = None</em>, <em class="sig-param">events_file: Optional[str] = None</em>, <em class="sig-param">use_simulator_logs: bool = True</em>, <em class="sig-param">use_simulator_out: bool = True</em>, <em class="sig-param">logged_messages: str = 'XY'</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.simulator.simulator.Simulator.run_simulation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">top_model: colonel.models.models.Model</em>, <em class="sig-param">duration: Optional[str] = None</em>, <em class="sig-param">events: Optional[List[colonel.models.events.Event]] = None</em>, <em class="sig-param">use_simulator_logs: bool = True</em>, <em class="sig-param">use_simulator_out: bool = True</em>, <em class="sig-param">logged_messages: str = 'XY'</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.simulator.simulator.Simulator.run_simulation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

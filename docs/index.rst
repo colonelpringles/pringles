@@ -31,6 +31,14 @@ Models
    :undoc-members:
    :show-inheritance:
 
+Events
+------
+
+.. automodule:: colonel.models.events
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Simulator
 ---------
    
