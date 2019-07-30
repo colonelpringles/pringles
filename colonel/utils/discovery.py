@@ -1,7 +1,18 @@
 from typing import Union, List
-from pyparsing import Word, Literal, alphanums, ParserElement, ParseException
+from pyparsing import Word, Literal, alphanums, ParseException, delimitedList, ParserElement
 from colonel.models import InPort, OutPort, Port
 from io import StringIO  # File typing
+
+
+class MetadataParsingException(Exception):
+    pass
+
+
+class AtomicMetadata:
+    def __init__(self, name: str, input_ports: List[str], output_ports: List[str]):
+        self.name = name
+        self.input_ports = input_ports
+        self.output_ports = output_ports
 
 
 class AtomicMetadataExtractor:
@@ -22,26 +33,22 @@ class AtomicMetadataExtractor:
         else:
             self.source = source.read()
 
-        self.input_port_expression_parser: ParserElement = Literal(
-            "@InputPort(").setResultsName("type") + Word(alphanums).setResultsName("name") +\
-            Literal(")")
-        self.output_port_expression_parser: ParserElement = Literal(
-            "@OutputPort(").setResultsName("type") + Word(alphanums).setResultsName("name") +\
-            Literal(")")
+        port_names_list = delimitedList(Word(alphanums))
+        metadata_start_keyword = Literal("@ModelMetadata")
+        self.parser: ParserElement = metadata_start_keyword +\
+            Literal("name:") +\
+            Word(alphanums).setResultsName("model_name") +\
+            Literal("input_ports:") +\
+            port_names_list.setResultsName("input_ports") +\
+            Literal("output_ports:") +\
+            port_names_list.setResultsName("output_ports")
 
-    def extract_ports(self) -> List[Port]:
-        exctracted_ports: List[Port] = []
-        for line in self.source.splitlines():
-            try:
-                input_port_result = self.input_port_expression_parser.parseString(line)
-                port_name = input_port_result["name"]
-                exctracted_ports.append(InPort(port_name, None))
-            except ParseException:
-                pass
-            try:
-                output_port_result = self.output_port_expression_parser.parseString(line)
-                port_name = output_port_result["name"]
-                exctracted_ports.append(OutPort(port_name, None))
-            except ParseException:
-                pass
-        return exctracted_ports
+    def extract(self) -> AtomicMetadata:
+        try:
+            parse_results = self.parser.parseString(self.source)
+            return AtomicMetadata(
+                parse_results["model_name"],
+                parse_results["input_ports"].asList(),
+                parse_results["output_ports"].asList())
+        except ParseException as pe:
+            raise MetadataParsingException(pe)
