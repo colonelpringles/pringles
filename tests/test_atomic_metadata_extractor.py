@@ -23,3 +23,9 @@ def test_multiple_ports_are_extracted_correctly():
     assert AtomicMetadataExtractor(source).extract_ports() == [OutPort("out", None),
                                                                InPort("perro1", None),
                                                                InPort("gato", None)]
+
+
+def test_model_cpp_file_with_metadata_is_parsed_correctly():
+    with open("tests/resources/queue.h", "r") as queue_source_file:
+        assert AtomicMetadataExtractor(queue_source_file).extract_ports() == \
+            [InPort("in", None), OutPort("out", None)]
