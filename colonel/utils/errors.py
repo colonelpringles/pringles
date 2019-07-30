@@ -1,3 +1,3 @@
 
-class BadDurationValuesError(Exception):
+class BadVirtualTimeValuesError(Exception):
     pass

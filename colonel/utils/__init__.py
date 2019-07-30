@@ -1,1 +1,1 @@
-from .utils import Duration  # noqa: F401
+from .utils import VirtualTime  # noqa: F401
