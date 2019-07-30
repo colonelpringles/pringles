@@ -31,10 +31,10 @@ Models
    :undoc-members:
    :show-inheritance:
 
-Wrapper
--------
+Simulator
+---------
    
-.. automodule:: colonel.wrapper.wrapper
+.. automodule:: colonel.simulator.simulator
    :members:
    :undoc-members:
    :show-inheritance:
