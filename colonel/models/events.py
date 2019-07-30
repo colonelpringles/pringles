@@ -21,4 +21,6 @@ class Event:
         self.value = value
 
     def serialize(self) -> str:
-        return f"{str(self.time)} {self.target_port.name} {str(self.value)};"
+        # Remove all whitesapce in value str representation
+        value_as_str = str(self.value).replace(" ", "")
+        return f"{str(self.time)} {self.target_port.name} {value_as_str};"
