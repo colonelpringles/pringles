@@ -13,4 +13,3 @@ class AtomicMetadataExtractor:
 
     def extract_ports(self) -> List[Port]:
         return []
-    
