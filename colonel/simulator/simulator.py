@@ -1,5 +1,5 @@
 """
-Test wrapper docstring
+Test simulator docstring
 """
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from typing import Optional
 import logging
 import pandas as pd
 
-from colonel.wrapper.errors import SimulatorExecutableNotFound
+from colonel.simulator.errors import SimulatorExecutableNotFound
 from colonel.models import Model
 from colonel.serializers import MaSerializer
 
@@ -68,7 +68,7 @@ class SimulationResult:
         return parsed_logs
 
 
-class Wrapper:
+class Simulator:
     CDPP_BIN = 'cd++'
     CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../../cdpp/src/bin/')
     # CDPP_BIN_PATH will be wrong if the class is moved to a different directory
