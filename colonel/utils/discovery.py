@@ -5,7 +5,16 @@ from io import StringIO  # File typing
 
 
 class AtomicMetadataExtractor:
-    """Extractor from ports metadata from Atomcis cpp file."""
+    """Extractor from ports metadata from Atomcis cpp file.
+    
+    This should be improved to a more richer metadata, such as:
+    ```
+    @ModelMetadata
+    name: some_name
+    input_ports: port1, port2, port3
+    output_ports: oport1, oport2
+    ```
+    """
 
     def __init__(self, source: Union[str, StringIO]):
         if isinstance(source, str):
