@@ -116,7 +116,8 @@ class Simulator:
                                 main_log_path=logs_path,
                                 output_path=output_path)
 
-    def dump_events_in_file(self, events: List[Event]) -> str:
+    @staticmethod
+    def dump_events_in_file(events: List[Event]) -> str:
         file_descriptor, path = tempfile.mkstemp()
         with open(path, "w") as events_file:
             for event in events:
@@ -125,7 +126,8 @@ class Simulator:
         os.close(file_descriptor)
         return path
 
-    def dump_model_in_file(self, model: Model) -> str:
+    @staticmethod
+    def dump_model_in_file(model: Model) -> str:
         file_descriptor, path = tempfile.mkstemp()
         with open(path, "w") as model_file:
             model_file.write(MaSerializer.serialize(model))
