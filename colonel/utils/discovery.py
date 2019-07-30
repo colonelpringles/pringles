@@ -1,5 +1,5 @@
 from typing import Union, List
-from pyparsing import Word, Literal, alphanums, ParseException, delimitedList, ParserElement
+from pyparsing import Word, Literal, alphanums, ParseException, delimitedList, ParserElement, Optional
 from colonel.models import InPort, OutPort, Port
 from io import StringIO  # File typing
 
@@ -13,6 +13,13 @@ class AtomicMetadata:
         self.name = name
         self.input_ports = input_ports
         self.output_ports = output_ports
+
+    def __eq__(self, other):
+        if not isinstance(other, AtomicMetadata):
+            return False
+        return self.name == other.name and\
+            self.input_ports == other.input_ports and\
+            self.output_ports == other.output_ports
 
 
 class AtomicMetadataExtractor:
@@ -38,17 +45,29 @@ class AtomicMetadataExtractor:
         self.parser: ParserElement = metadata_start_keyword +\
             Literal("name:") +\
             Word(alphanums).setResultsName("model_name") +\
-            Literal("input_ports:") +\
-            port_names_list.setResultsName("input_ports") +\
-            Literal("output_ports:") +\
-            port_names_list.setResultsName("output_ports")
+            Optional(
+                Literal("input_ports:") +
+                port_names_list.setResultsName("input_ports")
+            ) +\
+            Optional(
+                Literal("output_ports:") +
+                port_names_list.setResultsName("output_ports")
+            )
 
     def extract(self) -> AtomicMetadata:
         try:
             parse_results = self.parser.parseString(self.source)
+            try:
+                parsed_input_ports = parse_results["input_ports"].asList()
+            except KeyError:
+                parsed_input_ports = []
+            try:
+                parsed_output_ports = parse_results["output_ports"].asList()
+            except KeyError:
+                parsed_output_ports = []
             return AtomicMetadata(
                 parse_results["model_name"],
-                parse_results["input_ports"].asList(),
-                parse_results["output_ports"].asList())
+                parsed_input_ports,
+                parsed_output_ports)
         except ParseException as pe:
             raise MetadataParsingException(pe)
