@@ -9,7 +9,7 @@ class VirtualTime:
             raise BadVirtualTimeValuesError(f"Seconds should be less that 60, but is {seconds}")
         if milliseconds > 1000:
             raise BadVirtualTimeValuesError("Milliseconds should be less that 1000, " +
-                                         f" but is {milliseconds}")
+                                            f" but is {milliseconds}")
         self.hours = hours
         self.minutes = minutes
         self.seconds = seconds
