@@ -1,15 +1,15 @@
-from colonel.utils.errors import BadDurationValuesError
+from colonel.utils.errors import BadVirtualTimeValuesError
 
 
-class Duration:
+class VirtualTime:
     def __init__(self, hours: int, minutes: int, seconds: int, milliseconds: int, remainder: int):
         if minutes > 60:
-            raise BadDurationValuesError(f"Minutes should be less that 60, but is {minutes}")
+            raise BadVirtualTimeValuesError(f"Minutes should be less that 60, but is {minutes}")
         if seconds > 60:
-            raise BadDurationValuesError(f"Seconds should be less that 60, but is {seconds}")
+            raise BadVirtualTimeValuesError(f"Seconds should be less that 60, but is {seconds}")
         if milliseconds > 1000:
-            raise BadDurationValuesError("Milliseconds should be less that 1000, " +
-                                         f" but is {milliseconds}")
+            raise BadVirtualTimeValuesError("Milliseconds should be less that 1000, " +
+                                            f" but is {milliseconds}")
         self.hours = hours
         self.minutes = minutes
         self.seconds = seconds
