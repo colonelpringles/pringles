@@ -1,7 +1,8 @@
 import pytest  # noqa
 import os
 from colonel.simulator.simulator import Simulator
-from colonel.models import Coupled, AtomicModelBuilder
+from colonel.utils import VirtualTime
+from colonel.models import Coupled, AtomicModelBuilder, Event
 
 
 TEST_PATH_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -26,6 +27,12 @@ def test_no_exception_raised_in_simulation():
         .add_coupling(sample_queue.get_port("out"), "emitted_signal")\
         .add_coupling("incoming_event", sample_queue.get_port("in"))
 
-    simulator.run_simulation(top_model,
-                             events_file="/Users/pbalbi/Facultad/pringles/" +
-                             "pringles/test_models/simple_queue/test.ev")
+    incoming_event_port = top_model.get_port("incoming_event")
+
+    events = [
+        Event(VirtualTime.of_seconds(10), incoming_event_port, 1.5),
+        Event(VirtualTime.of_seconds(20), incoming_event_port, 20.),
+        Event(VirtualTime.of_seconds(30), incoming_event_port, 20.),
+    ]
+
+    simulator.run_simulation(top_model, events=events)

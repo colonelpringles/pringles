@@ -1,3 +1,4 @@
+from __future__ import annotations
 from colonel.utils.errors import BadVirtualTimeValuesError
 
 
@@ -15,6 +16,18 @@ class VirtualTime:
         self.seconds = seconds
         self.milliseconds = milliseconds
         self.remainder = remainder
+
+    @staticmethod
+    def of_seconds(seconds: int) -> VirtualTime:
+        return VirtualTime(0, 0, seconds, 0, 0)
+
+    @staticmethod
+    def of_minutes(minutes: int) -> VirtualTime:
+        return VirtualTime(0, minutes, 0, 0, 0)
+
+    @staticmethod
+    def of_hours(hours: int) -> VirtualTime:
+        return VirtualTime(hours, 0, 0, 0, 0)
 
     def __str__(self):
         return "%d:%d:%d:%d" % (self.hours, self.minutes, self.seconds, self.milliseconds)
