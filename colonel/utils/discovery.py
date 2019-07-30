@@ -6,7 +6,7 @@ from io import StringIO  # File typing
 
 class AtomicMetadataExtractor:
     """Extractor from ports metadata from Atomcis cpp file.
-    
+
     This should be improved to a more richer metadata, such as:
     ```
     @ModelMetadata
@@ -30,7 +30,7 @@ class AtomicMetadataExtractor:
             Literal(")")
 
     def extract_ports(self) -> List[Port]:
-        exctracted_ports = []
+        exctracted_ports: List[Port] = []
         for line in self.source.splitlines():
             try:
                 input_port_result = self.input_port_expression_parser.parseString(line)

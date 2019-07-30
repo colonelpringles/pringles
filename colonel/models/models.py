@@ -76,14 +76,14 @@ class InPort(Port):
     """Input port.
     """
     def __init__(self, name, owner):
-        return super().__init__(name, owner)
+        super().__init__(name, owner)
 
 
 class OutPort(Port):
     """Output port.
     """
     def __init__(self, name, owner):
-        return super().__init__(name, owner)
+        super().__init__(name, owner)
 
 
 class Link:
