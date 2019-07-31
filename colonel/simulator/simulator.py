@@ -34,8 +34,9 @@ class SimulationResult:
         self.process_result = process_result
         self.main_log_path = main_log_path
         self.output_path = output_path
-        self.output_df = SimulationResult.parse_output_file(output_path)
-        self.logs_dfs = SimulationResult.parse_main_log_file(main_log_path)
+        if self.successful():
+            self.output_df = SimulationResult.parse_output_file(output_path)
+            self.logs_dfs = SimulationResult.parse_main_log_file(main_log_path)
 
     def successful(self):
         return self.process_result.returncode == 0
@@ -97,9 +98,8 @@ class Simulator:
                        duration: Optional[str] = None,
                        events: Optional[List[Event]] = None,
                        use_simulator_logs: bool = True,
-                       use_simulator_out: bool = True,
-                       logged_messages: str = 'XY'):
-
+                       use_simulator_out: bool = True):
+        logged_messages = 'XY'
         commands_list = [self.executable_route,
                          "-m" + self.dump_model_in_file(top_model),
                          "-L" + logged_messages]
