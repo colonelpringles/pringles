@@ -44,20 +44,33 @@ class SimulationResult:
         return pd.read_csv(file_path, delimiter=r'\s+',
                            names=[cls.TIME_COL, cls.PORT_COL, cls.VALUE_COL])
 
+    @staticmethod
+    def _is_list_value(value: str) -> bool:
+        return '[' in value and ']' in value
+
+    @staticmethod
+    def _list_str_to_list(value: str) -> tuple[float]:
+        return tuple(float(num) for num in value.replace('[', '').replace(']', '').split(', '))
+
     @classmethod
     def parse_main_log_file(cls, file_path):
         log_file_per_component = {}
         parsed_logs = {}
         with open(file_path, 'r') as main_log_file:
-            # Ignore first line
-            main_log_file.readline()
+            main_log_file.readline()  # Ignore first line
+            log_dir = os.path.dirname(file_path)
             for line in main_log_file:
                 name, path = line.strip().split(' : ')
-                log_file_per_component[name] = path
+                log_file_per_component[name] = path if os.path.isabs(path) else log_dir + '/' + path
+
+        df_converters = {
+            cls.VALUE_COL: lambda x: cls._list_str_to_list(x) if cls._is_list_value(x) else x
+        }
         for logname, filename in log_file_per_component.items():
             parsed_logs[logname] = pd.read_csv(filename,
                                                delimiter=r' /\s+',
                                                engine='python',  # C engine doesnt work for regex
+                                               converters=df_converters,
                                                names=[0, 1,  # Not sure what first two cols are
                                                       cls.MESSAGE_TYPE_COL,
                                                       cls.TIME_COL,
