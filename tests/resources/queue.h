@@ -44,8 +44,10 @@ public:
 };
 
 /*
-@InputPort(in)
-@OutputPort(out)
+@ModelMetadata
+name:   Queue
+input_ports: in, done
+output_ports: out
 */
 class Queue : public Atomic
 {
