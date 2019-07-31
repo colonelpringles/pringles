@@ -17,17 +17,26 @@ class VirtualTime:
         self.milliseconds = milliseconds
         self.remainder = remainder
 
-    @staticmethod
-    def of_seconds(seconds: int) -> VirtualTime:
-        return VirtualTime(0, 0, seconds, 0, 0)
+    @classmethod
+    def of_seconds(cls, seconds: int) -> VirtualTime:
+        return cls(0, 0, seconds, 0, 0)
 
-    @staticmethod
-    def of_minutes(minutes: int) -> VirtualTime:
-        return VirtualTime(0, minutes, 0, 0, 0)
+    @classmethod
+    def of_minutes(cls, minutes: int) -> VirtualTime:
+        return cls(0, minutes, 0, 0, 0)
 
-    @staticmethod
-    def of_hours(hours: int) -> VirtualTime:
-        return VirtualTime(hours, 0, 0, 0, 0)
+    @classmethod
+    def of_hours(cls, hours: int) -> VirtualTime:
+        return cls(hours, 0, 0, 0, 0)
+
+    @classmethod
+    def parse(cls, timestr: str) -> VirtualTime:
+        return cls(*[int(unit) for unit in timestr.split(':')])
 
     def __str__(self):
-        return "%d:%d:%d:%d" % (self.hours, self.minutes, self.seconds, self.milliseconds)
+        return (f"{self.hours:02d}:{self.minutes:02d}:" +
+                f"{self.seconds:02d}:{self.milliseconds:03d}")
+
+    def __repr__(self):
+        return (f"VirtualTime({self.hours:02d}:{self.minutes:02d}:" +
+                f"{self.seconds:02d}:{self.milliseconds:03d}:{self.remainder})")

@@ -6,13 +6,14 @@ from __future__ import annotations
 import os
 import subprocess
 import tempfile
-from typing import Optional, List
+from typing import Optional, List, Tuple
 import logging
 import pandas as pd
 
 from colonel.simulator.errors import SimulatorExecutableNotFound
 from colonel.models import Model, Event
 from colonel.serializers import MaSerializer
+from colonel.utils import VirtualTime
 
 
 # This object should contain the following properties:
@@ -49,7 +50,8 @@ class SimulationResult:
         return '[' in value and ']' in value
 
     @staticmethod
-    def _list_str_to_list(value: str) -> tuple[float]:
+    def _list_str_to_list(value: str) -> Tuple[float, ...]:
+        # We use tuple because it hay to be hashable to be used in a Dataframe
         return tuple(float(num) for num in value.replace('[', '').replace(']', '').split(', '))
 
     @classmethod
@@ -64,7 +66,8 @@ class SimulationResult:
                 log_file_per_component[name] = path if os.path.isabs(path) else log_dir + '/' + path
 
         df_converters = {
-            cls.VALUE_COL: lambda x: cls._list_str_to_list(x) if cls._is_list_value(x) else x
+            cls.VALUE_COL: lambda x: cls._list_str_to_list(x) if cls._is_list_value(x) else x,
+            cls.TIME_COL: lambda x: VirtualTime.parse(x)
         }
         for logname, filename in log_file_per_component.items():
             parsed_logs[logname] = pd.read_csv(filename,
