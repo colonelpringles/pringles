@@ -6,12 +6,15 @@ from __future__ import annotations
 import os
 import subprocess
 import tempfile
-from typing import Optional, List, Tuple
 import logging
+
 import pandas as pd
+import matplotlib.pyplot as plt
+from typing import Optional, List, Tuple
+
 
 from colonel.simulator.errors import SimulatorExecutableNotFound
-from colonel.models import Model, Event
+from colonel.models import Model, Event, Port
 from colonel.serializers import MaSerializer
 from colonel.utils import VirtualTime
 
@@ -83,6 +86,21 @@ class SimulationResult:
                                                       cls.VALUE_COL,
                                                       cls.MODEL_DEST_COL])
         return parsed_logs
+
+    def plot_port(self, port: Port, index=0):
+        log: pd.DataFrame = self.logs_dfs[port.owner.name]
+        data_to_plot = log[log[self.PORT_COL] == port.name]
+        if data_to_plot.empty:
+            return None
+        if isinstance(data_to_plot[self.VALUE_COL][0], tuple):
+            y_values = data_to_plot[self.VALUE_COL].map(lambda x: x[index])
+        else:
+            y_values = data_to_plot[self.VALUE_COL]
+        x_values = data_to_plot[self.TIME_COL] #.map(lambda x: x.to_number())
+
+        plt.plot(x_values, y_values)
+        ticks, labels = plt.xticks()            # Get locations and labels
+        plt.xticks(ticks, [VirtualTime.from_number(tick) for tick in ticks])
 
 
 class Simulator:
