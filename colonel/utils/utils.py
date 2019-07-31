@@ -38,7 +38,7 @@ class VirtualTime:
         units = []
         for max_val in [10, 1000, 60, 60, 99]:
             units.append(num % max_val)
-            num /= max_val
+            num = int(num/max_val)
         return cls(*units)
 
     def to_number(self) -> float:
