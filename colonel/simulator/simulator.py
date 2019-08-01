@@ -88,7 +88,7 @@ class SimulationResult:
                                                       cls.MODEL_DEST_COL])
         return parsed_logs
 
-    def plot_port(self, port: Port, axes: Optional[Axes] = None, index=0) -> Axes:
+    def plot_port(self, port: Port, axes: Optional[Axes] = None, index=0) -> Optional[Axes]:
         log: pd.DataFrame = self.logs_dfs[port.owner.name]
         data_to_plot = log[log[self.PORT_COL] == port.name]
         if data_to_plot.empty:

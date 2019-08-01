@@ -45,7 +45,10 @@ class VirtualTime:
             num = int(num/max_val)
         return cls(*units)  # pylint: disable=E1120
 
-    def to_number(self) -> float:
+    def _to_number(self) -> float:
+        """
+        Used to represent VirtualTime in a matplotlib plot
+        """
         return (self.remainder +
                 10 * self. milliseconds +
                 10 * 1000 * self.seconds +
@@ -53,7 +56,7 @@ class VirtualTime:
                 10 * 1000 * 60 * 60 * self.hours)
 
     def __float__(self) -> float:
-        return float(self.to_number())
+        return float(self._to_number())
 
     def __str__(self):
         return (f"{self.hours:02d}:{self.minutes:02d}:" +
