@@ -6,13 +6,18 @@ from __future__ import annotations
 import os
 import subprocess
 import tempfile
-from typing import Optional, List
 import logging
+
 import pandas as pd
+import matplotlib.pyplot as plt  # pylint: disable=E0401
+from matplotlib.axes import Axes
+from typing import Optional, List, Tuple
+
 
 from colonel.simulator.errors import SimulatorExecutableNotFound
-from colonel.models import Model, Event
+from colonel.models import Model, Event, Port
 from colonel.serializers import MaSerializer
+from colonel.utils import VirtualTime
 
 
 # This object should contain the following properties:
@@ -33,8 +38,9 @@ class SimulationResult:
         self.process_result = process_result
         self.main_log_path = main_log_path
         self.output_path = output_path
-        self.output_df = SimulationResult.parse_output_file(output_path)
-        self.logs_dfs = SimulationResult.parse_main_log_file(main_log_path)
+        if self.successful():
+            self.output_df = SimulationResult.parse_output_file(output_path)
+            self.logs_dfs = SimulationResult.parse_main_log_file(main_log_path)
 
     def successful(self):
         return self.process_result.returncode == 0
@@ -44,20 +50,35 @@ class SimulationResult:
         return pd.read_csv(file_path, delimiter=r'\s+',
                            names=[cls.TIME_COL, cls.PORT_COL, cls.VALUE_COL])
 
+    @staticmethod
+    def _is_list_value(value: str) -> bool:
+        return value.strip().startswith("[") and value.strip().endswith("]")
+
+    @staticmethod
+    def _list_str_to_list(value: str) -> Tuple[float, ...]:
+        # We use tuple because it hay to be hashable to be used in a Dataframe
+        return tuple(float(num) for num in value.replace('[', '').replace(']', '').split(', '))
+
     @classmethod
     def parse_main_log_file(cls, file_path):
         log_file_per_component = {}
         parsed_logs = {}
         with open(file_path, 'r') as main_log_file:
-            # Ignore first line
-            main_log_file.readline()
+            main_log_file.readline()  # Ignore first line
+            log_dir = os.path.dirname(file_path)
             for line in main_log_file:
                 name, path = line.strip().split(' : ')
-                log_file_per_component[name] = path
+                log_file_per_component[name] = path if os.path.isabs(path) else log_dir + '/' + path
+
+        df_converters = {
+            cls.VALUE_COL: lambda x: cls._list_str_to_list(x) if cls._is_list_value(x) else x,
+            cls.TIME_COL: lambda x: VirtualTime.parse(x)
+        }
         for logname, filename in log_file_per_component.items():
             parsed_logs[logname] = pd.read_csv(filename,
                                                delimiter=r' /\s+',
                                                engine='python',  # C engine doesnt work for regex
+                                               converters=df_converters,
                                                names=[0, 1,  # Not sure what first two cols are
                                                       cls.MESSAGE_TYPE_COL,
                                                       cls.TIME_COL,
@@ -66,6 +87,27 @@ class SimulationResult:
                                                       cls.VALUE_COL,
                                                       cls.MODEL_DEST_COL])
         return parsed_logs
+
+    def plot_port(self, port: Port, axes: Optional[Axes] = None, index=0) -> Optional[Axes]:
+        log: pd.DataFrame = self.logs_dfs[port.owner.name]
+        data_to_plot = log[log[self.PORT_COL] == port.name]
+        if data_to_plot.empty:
+            return None
+        if isinstance(data_to_plot[self.VALUE_COL][0], tuple):
+            y_values = data_to_plot[self.VALUE_COL].map(lambda x: x[index])
+        else:
+            y_values = data_to_plot[self.VALUE_COL]
+
+        if axes is None:
+            axes = plt.axes()  # Create a new axes in current figure
+        x_values = data_to_plot[self.TIME_COL]
+        axes.plot(x_values, y_values)
+
+        ticks = axes.get_xticks()
+        axes.set_xticklabels([VirtualTime.from_number(tick) for tick in ticks], rotation=90)
+
+        axes.set_xlim(left=0)
+        return axes
 
 
 class Simulator:
@@ -81,9 +123,8 @@ class Simulator:
                        duration: Optional[str] = None,
                        events: Optional[List[Event]] = None,
                        use_simulator_logs: bool = True,
-                       use_simulator_out: bool = True,
-                       logged_messages: str = 'XY'):
-
+                       use_simulator_out: bool = True):
+        logged_messages = 'XY'
         commands_list = [self.executable_route,
                          "-m" + self.dump_model_in_file(top_model),
                          "-L" + logged_messages]
