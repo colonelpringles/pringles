@@ -1,4 +1,4 @@
-from typing import Union, List
+from typing import List
 from pyparsing import Word, Literal, alphanums, ParseException, delimitedList,\
     ParserElement, Optional
 from io import StringIO  # File typing
@@ -9,6 +9,9 @@ class MetadataParsingException(Exception):
 
 
 class AtomicMetadata:
+    """Metadata about a atomic model.
+    """
+
     def __init__(self, name: str, input_ports: List[str], output_ports: List[str]):
         self.name = name
         self.input_ports = input_ports
@@ -34,7 +37,12 @@ class AtomicMetadataExtractor:
     ```
     """
 
-    def __init__(self, source: Union[str, StringIO]):
+    def __init__(self, source: StringIO):
+        """Main constructor
+
+        :param source: a C++ containing the model metadata in a multi-line comment
+        :type source: File
+        """
         self.source = source
         self._initialize_parser()
 
@@ -83,10 +91,8 @@ class AtomicMetadataExtractor:
             raise MetadataParsingException(pe)
 
     def extract(self) -> AtomicMetadata:
-        if isinstance(self.source, str):
-            return self._do_extract_from_string(self.source)
-        else:
-            return self._do_extract_from_file(self.source)
+        """Extract the model metadata from the C++ source file."""
+        return self._do_extract_from_file(self.source)
 
 
 class CppCommentsLexer:

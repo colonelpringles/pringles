@@ -1,12 +1,17 @@
 import pytest  # noqa
-from colonel.utils.discovery import AtomicMetadataExtractor, MetadataParsingException, AtomicMetadata
-from colonel.models import InPort, OutPort
+from colonel.utils.discovery import AtomicMetadataExtractor, MetadataParsingException,\
+    AtomicMetadata
+
+
+# Helper to hide the private method call
+def extract_metadata_from_string(source: str):
+    return AtomicMetadataExtractor(source)._do_extract_from_string(source)
 
 
 def test_no_metadata_fails():
     with pytest.raises(MetadataParsingException):
         source = "void main(char** argv) {\n\tprintf(\"\");\n}"
-        AtomicMetadataExtractor(source).extract()
+        extract_metadata_from_string(source)
 
 
 def test_just_model_name_in_metadata():
@@ -14,7 +19,7 @@ def test_just_model_name_in_metadata():
     @ModelMetadata
     name:perro
     """
-    assert AtomicMetadataExtractor(source).extract() == AtomicMetadata("perro", [], [])
+    assert extract_metadata_from_string(source) == AtomicMetadata("perro", [], [])
 
 
 def test_single_output_port_extracted_correctly():
@@ -23,8 +28,8 @@ def test_single_output_port_extracted_correctly():
     name:perro
     output_ports: perro, gato
     """
-    assert AtomicMetadataExtractor(source).extract(
-    ) == AtomicMetadata("perro", [], ["perro", "gato"])
+    assert extract_metadata_from_string(source) ==\
+        AtomicMetadata("perro", [], ["perro", "gato"])
 
 
 def test_multiple_ports_are_extracted_correctly():
@@ -34,12 +39,11 @@ def test_multiple_ports_are_extracted_correctly():
     input_ports: ornito, rinco
     output_ports: perro   , gato
     """
-    assert AtomicMetadataExtractor(source).extract() == AtomicMetadata("perro",
-                                                                       ["ornito", "rinco"],
-                                                                       ["perro", "gato"])
+    assert extract_metadata_from_string(source) ==\
+        AtomicMetadata("perro", ["ornito", "rinco"], ["perro", "gato"])
 
 
 def test_model_cpp_file_with_metadata_is_parsed_correctly():
     with open("tests/resources/queue.h", "r") as queue_source_file:
         assert AtomicMetadataExtractor(queue_source_file).extract() == \
-                AtomicMetadata("Queue", ["in", "done"], ["out"])
+            AtomicMetadata("Queue", ["in", "done"], ["out"])
