@@ -65,25 +65,17 @@ class Port:
     def get_identifier_for(self, model: Model) -> str:
         return self.name if model == self.owner else f"{self.name}@{self.owner.name}"
 
-    def __eq__(self, other):
-        if not isinstance(other, Port):
-            return False
-        other_port: Port = other
-        return self.name == other_port.name and self.owner == other_port.owner
-
 
 class InPort(Port):
     """Input port.
     """
-    def __init__(self, name, owner):
-        super().__init__(name, owner)
+    pass
 
 
 class OutPort(Port):
     """Output port.
     """
-    def __init__(self, name, owner):
-        super().__init__(name, owner)
+    pass
 
 
 class Link:
