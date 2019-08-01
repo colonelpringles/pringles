@@ -10,6 +10,7 @@ import logging
 
 import pandas as pd
 import matplotlib.pyplot as plt  # pylint: disable=E0401
+from matplotlib.axes import Axes
 from typing import Optional, List, Tuple
 
 
@@ -87,7 +88,7 @@ class SimulationResult:
                                                       cls.MODEL_DEST_COL])
         return parsed_logs
 
-    def plot_port(self, port: Port, index=0):
+    def plot_port(self, port: Port, axes: Optional[Axes] = None, index=0) -> Axes:
         log: pd.DataFrame = self.logs_dfs[port.owner.name]
         data_to_plot = log[log[self.PORT_COL] == port.name]
         if data_to_plot.empty:
@@ -96,12 +97,17 @@ class SimulationResult:
             y_values = data_to_plot[self.VALUE_COL].map(lambda x: x[index])
         else:
             y_values = data_to_plot[self.VALUE_COL]
+
+        if axes is None:
+            axes = plt.axes()  # Create a new axes in current figure
         x_values = data_to_plot[self.TIME_COL]
-        plt.plot(x_values, y_values)
-        ticks, labels = plt.xticks()  # Get locations and labels
-        plt.xticks(ticks, [VirtualTime.from_number(tick) for tick in ticks], rotation=90)
-        min_lim, max_lim = plt.xlim()
-        plt.xlim(0, max_lim)
+        axes.plot(x_values, y_values)
+
+        ticks = axes.get_xticks()
+        axes.set_xticklabels([VirtualTime.from_number(tick) for tick in ticks], rotation=90)
+
+        axes.set_xlim(left=0)
+        return axes
 
 
 class Simulator:
