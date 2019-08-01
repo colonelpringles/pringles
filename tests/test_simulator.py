@@ -18,7 +18,7 @@ def test_simulator_executable_found_in_library_defined_dir():
 def test_no_exception_raised_in_simulation():
     simulator = Simulator()
 
-    Queue = AtomicModelBuilder().withName("Queue").build()
+    Queue = AtomicModelBuilder().with_name("Queue").build()
     sample_queue = Queue("sample_queue", preparation="0:0:5:0")
     sample_queue.add_inport("in").add_outport("out")
     top_model = Coupled("top", [sample_queue])\

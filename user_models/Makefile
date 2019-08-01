@@ -1,6 +1,6 @@
 CDPP_PATH 		 = ../cdpp/src
 KERNEL_SRC       = $(CDPP_PATH)/cd++
-OUT_DIR          = $(shell pwd)/bin
+OUT_DIR          = $(shell pwd)/../bin
 OBJ_DIR          = $(OUT_DIR)
 
 MODEL_FLAGS      = -DREGISTER_ATOMICS

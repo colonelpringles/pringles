@@ -11,13 +11,14 @@ import logging
 import pandas as pd
 import matplotlib.pyplot as plt  # pylint: disable=E0401
 from matplotlib.axes import Axes
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Type
 
 
-from colonel.simulator.errors import SimulatorExecutableNotFound
-from colonel.models import Model, Event, Port
+from colonel.simulator.errors import SimulatorExecutableNotFound, DuplicatedAtomicException
+from colonel.models import Model, Event, Port, AtomicModelBuilder, Atomic
 from colonel.serializers import MaSerializer
-from colonel.utils import VirtualTime
+from colonel.utils import VirtualTime, AtomicMetadataExtractor
+from colonel.utils.errors import MetadataParsingException
 
 
 # This object should contain the following properties:
@@ -110,14 +111,59 @@ class SimulationResult:
         return axes
 
 
+class AtomicRegistry:
+
+    SUPPORTED_FILE_EXTENSIONS = [".cpp", ".hpp", ".h"]
+
+    def __init__(self, user_models_dir: Optional[str] = None):
+        if user_models_dir is not None:
+            self.user_models_dir = user_models_dir
+            self.discover_atomics()
+
+    def _add_atomic_class_as_attribute(self, name: str, atomic_class: Type[Atomic]):
+        if hasattr(self, name):
+            raise DuplicatedAtomicException(name)
+        setattr(self, name, atomic_class)
+
+    def discover_atomics(self) -> None:
+        files_to_extract_from = []
+        for filename in os.listdir(self.user_models_dir):
+            filename_with_path = os.path.join(self.user_models_dir, filename)
+            if os.path.isfile(filename_with_path):
+                _, file_extension = os.path.splitext(filename)
+                if file_extension in AtomicRegistry.SUPPORTED_FILE_EXTENSIONS:
+                    files_to_extract_from.append(filename_with_path)
+
+        # extract metadata from discovered source files
+        for discovered_path in files_to_extract_from:
+            with open(discovered_path, "r") as discovered_file:
+                try:
+                    discovered_metadata = AtomicMetadataExtractor(discovered_file).extract()
+                except MetadataParsingException:
+                    pass
+                else:
+                    atomic_class_builder = AtomicModelBuilder().with_name(discovered_metadata.name)
+                    for name in discovered_metadata.input_ports:
+                        atomic_class_builder.with_input_port(name)
+                    for name in discovered_metadata.output_ports:
+                        atomic_class_builder.with_output_port(name)
+                    self._add_atomic_class_as_attribute(discovered_metadata.name,
+                                                        atomic_class_builder.build())
+
+
 class Simulator:
     CDPP_BIN = 'cd++'
-    CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../../cdpp/src/bin/')
+    CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../../user_models/bin/')
     # CDPP_BIN_PATH will be wrong if the class is moved to a different directory
 
-    def __init__(self):
+    def __init__(self, user_models_dir: Optional[str] = None):
         self.executable_route = self.find_executable_route()
+        self.atomic_registry = AtomicRegistry(user_models_dir)
 
+    def get_registry(self):
+        return self.atomic_registry
+
+    # This is thread-safe mate.
     def run_simulation(self,
                        top_model: Model,
                        duration: Optional[str] = None,

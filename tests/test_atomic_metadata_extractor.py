@@ -1,6 +1,7 @@
 import pytest  # noqa
-from colonel.utils.discovery import AtomicMetadataExtractor, MetadataParsingException,\
-    AtomicMetadata
+from colonel.utils.errors import MetadataParsingException
+from colonel.utils.discovery import (AtomicMetadataExtractor,
+                                     AtomicMetadata)
 
 
 # Helper to hide the private method call
