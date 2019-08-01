@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Optional
 from colonel.utils.errors import BadVirtualTimeValuesError
 
 
@@ -11,11 +12,11 @@ class VirtualTime:
         if milliseconds > 1000:
             raise BadVirtualTimeValuesError("Milliseconds should be less that 1000, " +
                                             f" but is {milliseconds}")
-        self.hours = int(hours)
-        self.minutes = int(minutes)
-        self.seconds = int(seconds)
-        self.milliseconds = int(milliseconds)
-        self.remainder = int(remainder)
+        self.hours = hours
+        self.minutes = minutes
+        self.seconds = seconds
+        self.milliseconds = milliseconds
+        self.remainder = remainder
 
     @classmethod
     def of_seconds(cls, seconds: int) -> VirtualTime:
@@ -34,12 +35,15 @@ class VirtualTime:
         return cls(*[int(unit) for unit in timestr.split(':')])
 
     @classmethod
-    def from_number(cls, num: int) -> VirtualTime:
+    def from_number(cls, num: int) -> Optional[VirtualTime]:
+        num = int(num)
+        if num < 0:
+            return None
         units = []
-        for max_val in [10, 1000, 60, 60, 99]:
+        for max_val in [10, 1000, 60, 60, 100]:
             units.append(num % max_val)
             num = int(num/max_val)
-        return cls(*units)
+        return cls(*units)  # pylint: disable=E1120
 
     def to_number(self) -> float:
         return (self.remainder +

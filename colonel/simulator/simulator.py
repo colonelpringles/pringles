@@ -9,7 +9,7 @@ import tempfile
 import logging
 
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # pylint: disable=E0401
 from typing import Optional, List, Tuple
 
 
@@ -51,7 +51,7 @@ class SimulationResult:
 
     @staticmethod
     def _is_list_value(value: str) -> bool:
-        return '[' in value and ']' in value
+        return value.strip().startswith("[") and value.strip().endswith("]")
 
     @staticmethod
     def _list_str_to_list(value: str) -> Tuple[float, ...]:
@@ -96,11 +96,12 @@ class SimulationResult:
             y_values = data_to_plot[self.VALUE_COL].map(lambda x: x[index])
         else:
             y_values = data_to_plot[self.VALUE_COL]
-        x_values = data_to_plot[self.TIME_COL] #.map(lambda x: x.to_number())
-
+        x_values = data_to_plot[self.TIME_COL]
         plt.plot(x_values, y_values)
-        ticks, labels = plt.xticks()            # Get locations and labels
-        plt.xticks(ticks, [VirtualTime.from_number(tick) for tick in ticks])
+        ticks, labels = plt.xticks()  # Get locations and labels
+        plt.xticks(ticks, [VirtualTime.from_number(tick) for tick in ticks], rotation=90)
+        min_lim, max_lim = plt.xlim()
+        plt.xlim(0, max_lim)
 
 
 class Simulator:
