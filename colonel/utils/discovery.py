@@ -93,10 +93,15 @@ class AtomicMetadataExtractor:
 
 
 class CppCommentsLexer:
+    _COMMENTS_START_TOKEN = "/*"
+    _COMMENTS_END_TOKEN = "*/"
+
     def __init__(self, source: str):
         self.source = source
         self._index = 0
         self._size = len(source)
+        self._pushed_symbols = ""
+        self._lexed_comments = []
 
     def _peek(self, n=1):
         return self.source[self._index: self._index + n]
@@ -105,20 +110,27 @@ class CppCommentsLexer:
         self._index += n
 
     def lex(self) -> List[str]:
-        lexed_comments = []
         while self._index + 3 < self._size:
-            # Looking for comment start
-            while (self._index + 1 < self._size) and self._peek(2) != "/*":
-                self._advance(1)
-            self._advance(2)
-            pushed_symbols = ""
-            # Inside comment
-            while (self._index + 1 < self._size) and self._peek(2) != "*/":
-                pushed_symbols += self._peek()
-                self._advance(1)
-            self._advance(2)
-            # Outside of comment
+            self._lex_till_inside_comment()
+            self._lex_comment_pushing_symbols()
+            self._push_lexed_comment()
 
-            lexed_comments.append(pushed_symbols)
+        return self._lexed_comments
 
-        return lexed_comments
+    def _lex_comment_pushing_symbols(self):
+        self._pushed_symbols = ""  # clear pushed symbols
+        while (self._index + 1 < self._size) and self._peek(2) !=\
+                CppCommentsLexer._COMMENTS_END_TOKEN:
+            self._pushed_symbols += self._peek()
+            self._advance(1)  # go to next symbol
+        self._advance(2)  # skip end comment symbol
+        # now outside comment, with contents in self._pushed_symbols
+
+    def _push_lexed_comment(self):
+        self._lexed_comments.append(self._pushed_symbols)
+
+    def _lex_till_inside_comment(self):
+        while (self._index + 1 < self._size) and self._peek(2) !=\
+                CppCommentsLexer._COMMENTS_START_TOKEN:
+            self._advance(1)  # go to next symbol
+        self._advance(2)  # skip start comment token
