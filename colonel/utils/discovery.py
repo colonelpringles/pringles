@@ -57,15 +57,15 @@ class AtomicMetadataExtractor:
             )
 
     def _do_extract_from_file(self, file_source: StringIO) -> AtomicMetadata:
-        matched_multiline_comments = re.findall(
-            AtomicMetadataExtractor.CPP_MULTILINE_COMMENT_RE, file_source.read(), re.DOTALL)
-        for index, matched_comment in enumerate(matched_multiline_comments):
+        lexed_comments = CppCommentsLexer(file_source.read()).lex()
+        for index, matched_comment in enumerate(lexed_comments):
             try:
                 return self._do_extract_from_string(matched_comment)
-            except ParseException as pe:
-                if index == len(matched_multiline_comments) - 1:
+            except MetadataParsingException as pe:
+                if index == len(lexed_comments) - 1:
                     # Should fail if metadata not found here
                     raise MetadataParsingException(pe)
+        raise MetadataParsingException("No metadata found")
 
     def _do_extract_from_string(self, string_source: str) -> AtomicMetadata:
         try:
@@ -95,6 +95,30 @@ class AtomicMetadataExtractor:
 class CppCommentsLexer:
     def __init__(self, source: str):
         self.source = source
+        self._index = 0
+        self._size = len(source)
+
+    def _peek(self, n=1):
+        return self.source[self._index: self._index + n]
+
+    def _advance(self, n=1):
+        self._index += n
 
     def lex(self) -> List[str]:
-        return []
+        lexed_comments = []
+        while self._index + 3 < self._size:
+            # Looking for comment start
+            while (self._index + 1 < self._size) and self._peek(2) != "/*":
+                self._advance(1)
+            self._advance(2)
+            pushed_symbols = ""
+            # Inside comment
+            while (self._index + 1 < self._size) and self._peek(2) != "*/":
+                pushed_symbols += self._peek()
+                self._advance(1)
+            self._advance(2)
+            # Outside of comment
+
+            lexed_comments.append(pushed_symbols)
+
+        return lexed_comments
