@@ -6,7 +6,7 @@ from __future__ import annotations
 import os
 import subprocess
 import tempfile
-import logging
+# import logging
 
 import pandas as pd
 import matplotlib.pyplot as plt  # pylint: disable=E0401
@@ -15,7 +15,7 @@ from typing import Optional, List, Tuple, Type
 
 
 from colonel.simulator.errors import SimulatorExecutableNotFound, DuplicatedAtomicException
-from colonel.models import Model, Event, Port, AtomicModelBuilder, Atomic
+from colonel.models import Model, Event, AtomicModelBuilder, Atomic
 from colonel.serializers import MaSerializer
 from colonel.utils import VirtualTime, AtomicMetadataExtractor
 from colonel.utils.errors import MetadataParsingException
@@ -89,7 +89,8 @@ class SimulationResult:
                                                       cls.MODEL_DEST_COL])
         return parsed_logs
 
-    def plot_port(self, logname: str, portname: str, axes: Optional[Axes] = None, index=0) -> Optional[Axes]:
+    def plot_port(self, logname: str, portname: str,
+                  axes: Optional[Axes] = None, index=0) -> Optional[Axes]:
         log: pd.DataFrame = self.logs_dfs[logname]
         data_to_plot = log[log[self.PORT_COL] == portname]
         if data_to_plot.empty:
@@ -127,6 +128,8 @@ class AtomicRegistry:
         setattr(self, name, atomic_class)
 
     def discover_atomics(self) -> None:
+        assert self.user_models_dir is not None
+
         files_to_extract_from = []
         for filename in os.listdir(self.user_models_dir):
             filename_with_path = os.path.join(self.user_models_dir, filename)
@@ -198,9 +201,9 @@ class Simulator:
             commands_list.append("-o" + output_path)
 
         process_result = subprocess.run(commands_list, capture_output=True, check=True)
-        #logging.error("Results: %s", process_result.stdout)
-        #logging.error("Logs path: %s", logs_path)
-        #logging.error("Output path: %s", output_path)
+        # logging.error("Results: %s", process_result.stdout)
+        # logging.error("Logs path: %s", logs_path)
+        # logging.error("Output path: %s", output_path)
 
         return SimulationResult(process_result=process_result,
                                 main_log_path=logs_path,
