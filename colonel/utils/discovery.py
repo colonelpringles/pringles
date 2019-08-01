@@ -1,8 +1,7 @@
 from typing import Union, List
-from pyparsing import Word, Literal, alphanums, ParseException, delimitedList, ParserElement, Optional
-from colonel.models import InPort, OutPort, Port
+from pyparsing import Word, Literal, alphanums, ParseException, delimitedList,\
+    ParserElement, Optional
 from io import StringIO  # File typing
-import re
 
 
 class MetadataParsingException(Exception):
@@ -34,8 +33,6 @@ class AtomicMetadataExtractor:
     output_ports: oport1, oport2
     ```
     """
-
-    CPP_MULTILINE_COMMENT_RE = "/\*(.*)\*/"
 
     def __init__(self, source: Union[str, StringIO]):
         self.source = source
@@ -101,7 +98,7 @@ class CppCommentsLexer:
         self._index = 0
         self._size = len(source)
         self._pushed_symbols = ""
-        self._lexed_comments = []
+        self._lexed_comments: List[str] = []
 
     def _peek(self, n=1):
         return self.source[self._index: self._index + n]
