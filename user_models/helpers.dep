@@ -1,7 +1,0 @@
-${OBJ_DIR}/helpers.o helpers.dep : helpers.cpp ../cdpp/src/cd++/misc/math/distri.h \
- ../cdpp/src/cd++/misc/except.h ../cdpp/src/cd++/utils/stringp.h \
- helpers.h ../cdpp/src/cd++/val/tuple_value.h \
- ../cdpp/src/cd++/utils/impresion.h ../cdpp/src/cd++/val/tbool.h \
- ../cdpp/src/cd++/val/real.h ../cdpp/src/cd++/val/undefd.h \
- ../cdpp/src/cd++/val/value.h ../cdpp/src/cd++/utils/evaldeb.h \
- constants.h
