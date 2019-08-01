@@ -1,4 +1,6 @@
 docs/_build/
+user_models/*.dep
+bin/
 .pytest_cache/
 .mypy_cache/
 __pycache__/

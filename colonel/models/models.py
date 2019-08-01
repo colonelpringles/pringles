@@ -4,6 +4,9 @@ This is the models module docstring
 from __future__ import annotations
 from typing import List, Any, Union
 
+DISCOVERED_INPUT_PORTS_FIELD = "discovered_input_ports"
+DISCOVERED_OUTPUT_PORTS_FIELD = "discovered_output_ports"
+
 
 class PortNotFoundException(Exception):
     pass
@@ -13,12 +16,27 @@ class AtomicModelBuilder:
     """
     Atomic models class builder.
     """
-    def withName(self, name: str) -> AtomicModelBuilder:
+    def __init__(self):
+        self.discovered_input_ports_fields = []
+        self.discovered_output_ports_fields = []
+
+    def with_name(self, name: str) -> AtomicModelBuilder:
         self.name = name
         return self
 
+    def with_input_port(self, name: str) -> AtomicModelBuilder:
+        self.discovered_input_ports_fields.append(name)
+        return self
+
+    def with_output_port(self, name: str) -> AtomicModelBuilder:
+        self.discovered_output_ports_fields.append(name)
+        return self
+
     def build(self) -> Any:
-        return type(self.name, (Atomic,), {})
+        return type(self.name, (Atomic,), {
+            DISCOVERED_INPUT_PORTS_FIELD: self.discovered_input_ports_fields,
+            DISCOVERED_OUTPUT_PORTS_FIELD: self.discovered_output_ports_fields
+        })
 
 
 class Model:
@@ -47,7 +65,7 @@ class Model:
         for port in self.inports + self.outports:
             if port.name == name:
                 return port
-        raise PortNotFoundException()
+        raise PortNotFoundException(name)
 
 
 class Port:
@@ -100,9 +118,17 @@ class IntLink(Link):
 
 
 class Atomic(Model):
+
     def __init__(self, name: str, **model_params: str):
         super().__init__(name)
         self.model_params = model_params
+
+        if hasattr(self, DISCOVERED_INPUT_PORTS_FIELD):
+            for input_port_name in getattr(self, DISCOVERED_INPUT_PORTS_FIELD):
+                self.add_inport(input_port_name)
+        if hasattr(self, DISCOVERED_OUTPUT_PORTS_FIELD):
+            for output_port_name in getattr(self, DISCOVERED_OUTPUT_PORTS_FIELD):
+                self.add_outport(output_port_name)
 
     def __str__(self) -> str:
         return f"{self.name}@{self.get_abstract_model_name()}"

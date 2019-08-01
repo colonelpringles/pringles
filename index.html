@@ -75,8 +75,18 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="colonel.models.models.AtomicModelBuilder.withName">
-<code class="sig-name descname">withName</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; colonel.models.models.AtomicModelBuilder<a class="headerlink" href="#colonel.models.models.AtomicModelBuilder.withName" title="Permalink to this definition">¶</a></dt>
+<dt id="colonel.models.models.AtomicModelBuilder.with_input_port">
+<code class="sig-name descname">with_input_port</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; colonel.models.models.AtomicModelBuilder<a class="headerlink" href="#colonel.models.models.AtomicModelBuilder.with_input_port" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.models.models.AtomicModelBuilder.with_name">
+<code class="sig-name descname">with_name</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; colonel.models.models.AtomicModelBuilder<a class="headerlink" href="#colonel.models.models.AtomicModelBuilder.with_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.models.models.AtomicModelBuilder.with_output_port">
+<code class="sig-name descname">with_output_port</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; colonel.models.models.AtomicModelBuilder<a class="headerlink" href="#colonel.models.models.AtomicModelBuilder.with_output_port" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -217,6 +227,22 @@ An event is composed of:</p>
 <span id="simulator"></span><h2>Simulator<a class="headerlink" href="#module-colonel.simulator.simulator" title="Permalink to this headline">¶</a></h2>
 <p>Test simulator docstring</p>
 <dl class="class">
+<dt id="colonel.simulator.simulator.AtomicRegistry">
+<em class="property">class </em><code class="sig-prename descclassname">colonel.simulator.simulator.</code><code class="sig-name descname">AtomicRegistry</code><span class="sig-paren">(</span><em class="sig-param">user_models_dir: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.simulator.simulator.AtomicRegistry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="colonel.simulator.simulator.AtomicRegistry.SUPPORTED_FILE_EXTENSIONS">
+<code class="sig-name descname">SUPPORTED_FILE_EXTENSIONS</code><em class="property"> = ['.cpp', '.hpp', '.h']</em><a class="headerlink" href="#colonel.simulator.simulator.AtomicRegistry.SUPPORTED_FILE_EXTENSIONS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.simulator.simulator.AtomicRegistry.discover_atomics">
+<code class="sig-name descname">discover_atomics</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#colonel.simulator.simulator.AtomicRegistry.discover_atomics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="colonel.simulator.simulator.SimulationResult">
 <em class="property">class </em><code class="sig-prename descclassname">colonel.simulator.simulator.</code><code class="sig-name descname">SimulationResult</code><span class="sig-paren">(</span><em class="sig-param">process_result</em>, <em class="sig-param">main_log_path=None</em>, <em class="sig-param">output_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.simulator.simulator.SimulationResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -274,7 +300,7 @@ An event is composed of:</p>
 
 <dl class="class">
 <dt id="colonel.simulator.simulator.Simulator">
-<em class="property">class </em><code class="sig-prename descclassname">colonel.simulator.simulator.</code><code class="sig-name descname">Simulator</code><a class="headerlink" href="#colonel.simulator.simulator.Simulator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">colonel.simulator.simulator.</code><code class="sig-name descname">Simulator</code><span class="sig-paren">(</span><em class="sig-param">user_models_dir: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#colonel.simulator.simulator.Simulator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="attribute">
 <dt id="colonel.simulator.simulator.Simulator.CDPP_BIN">
@@ -283,7 +309,7 @@ An event is composed of:</p>
 
 <dl class="attribute">
 <dt id="colonel.simulator.simulator.Simulator.CDPP_BIN_PATH">
-<code class="sig-name descname">CDPP_BIN_PATH</code><em class="property"> = '/home/travis/build/colonelpringles/pringles/colonel/simulator/../../cdpp/src/bin/'</em><a class="headerlink" href="#colonel.simulator.simulator.Simulator.CDPP_BIN_PATH" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">CDPP_BIN_PATH</code><em class="property"> = '/home/travis/build/colonelpringles/pringles/colonel/simulator/../../bin/'</em><a class="headerlink" href="#colonel.simulator.simulator.Simulator.CDPP_BIN_PATH" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -299,6 +325,11 @@ An event is composed of:</p>
 <dl class="method">
 <dt id="colonel.simulator.simulator.Simulator.find_executable_route">
 <code class="sig-name descname">find_executable_route</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#colonel.simulator.simulator.Simulator.find_executable_route" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="colonel.simulator.simulator.Simulator.get_registry">
+<code class="sig-name descname">get_registry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colonel.simulator.simulator.Simulator.get_registry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
