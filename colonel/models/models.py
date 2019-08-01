@@ -67,10 +67,14 @@ class Port:
 
 
 class InPort(Port):
+    """Input port.
+    """
     pass
 
 
 class OutPort(Port):
+    """Output port.
+    """
     pass
 
 
