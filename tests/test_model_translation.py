@@ -9,8 +9,8 @@ def empty_top_model_generator() -> Model:
 
 
 def interacciones_poblacion_model_generator() -> Model:
-    FocoAtomic = AtomicModelBuilder().withName("Foco").build()
-    ContagioAtomic = AtomicModelBuilder().withName("Contagio").build()
+    FocoAtomic = AtomicModelBuilder().with_name("Foco").build()
+    ContagioAtomic = AtomicModelBuilder().with_name("Contagio").build()
 
     a_foco = FocoAtomic("foco", mean=2, std=1)
     a_foco.add_inport("in")

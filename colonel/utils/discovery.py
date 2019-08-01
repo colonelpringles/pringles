@@ -1,11 +1,8 @@
-from typing import List
-from pyparsing import Word, Literal, alphanums, ParseException, delimitedList,\
-    ParserElement, Optional
-from io import StringIO  # File typing
+from typing import List, TextIO
+from pyparsing import (Word, Literal, alphanums, ParseException,
+                       delimitedList, ParserElement, Optional)
 
-
-class MetadataParsingException(Exception):
-    pass
+from colonel.utils.errors import MetadataParsingException
 
 
 class AtomicMetadata:
@@ -37,7 +34,7 @@ class AtomicMetadataExtractor:
     ```
     """
 
-    def __init__(self, source: StringIO):
+    def __init__(self, source: TextIO):
         """Main constructor
 
         :param source: a C++ containing the model metadata in a multi-line comment
@@ -61,7 +58,7 @@ class AtomicMetadataExtractor:
                 port_names_list.setResultsName("output_ports")
             )
 
-    def _do_extract_from_file(self, file_source: StringIO) -> AtomicMetadata:
+    def _do_extract_from_file(self, file_source: TextIO) -> AtomicMetadata:
         lexed_comments = CppCommentsLexer(file_source.read()).lex()
         for index, matched_comment in enumerate(lexed_comments):
             try:
