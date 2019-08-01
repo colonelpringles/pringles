@@ -153,7 +153,7 @@ class AtomicRegistry:
 
 class Simulator:
     CDPP_BIN = 'cd++'
-    CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../../user_models/bin/')
+    CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../../bin/')
     # CDPP_BIN_PATH will be wrong if the class is moved to a different directory
 
     def __init__(self, user_models_dir: Optional[str] = None):
