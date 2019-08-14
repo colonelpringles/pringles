@@ -2,7 +2,7 @@ from typing import List, TextIO
 from pyparsing import (Word, Literal, alphanums, ParseException,
                        delimitedList, ParserElement, Optional)
 
-from colonel.utils.errors import MetadataParsingException
+from pringles.utils.errors import MetadataParsingException
 
 
 class AtomicMetadata:

@@ -1,5 +1,5 @@
 import pytest
-from colonel.utils import VirtualTime
+from pringles.utils import VirtualTime
 """
 @pytest.mark.parametrize("event,expected_serialization", [
     (Event(one_hour_time, sample_port, 1.5), "01:00:00:000 sample_port 1.5;"),

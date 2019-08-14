@@ -1,6 +1,6 @@
 import pytest  # noqa
-from colonel.utils.errors import MetadataParsingException
-from colonel.utils.discovery import (AtomicMetadataExtractor,
+from pringles.utils.errors import MetadataParsingException
+from pringles.utils.discovery import (AtomicMetadataExtractor,
                                      AtomicMetadata)
 
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Optional
-from colonel.utils.errors import BadVirtualTimeValuesError
+from pringles.utils.errors import BadVirtualTimeValuesError
 
 
 class VirtualTime:
