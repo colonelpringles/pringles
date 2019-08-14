@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pringles",
+    name="pringles-devs",
     version="0.0.1",
     author="Colonel Pringles",
     # author_email="example@email.com",
