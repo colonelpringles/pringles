@@ -6,4 +6,4 @@ bin/
 __pycache__/
 .vscode/
 .coverage
-colonel/wrapper/config.py
+pringles/wrapper/config.py

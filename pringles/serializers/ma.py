@@ -1,6 +1,6 @@
 from typing import List, cast
 
-from colonel.models import Atomic, Coupled, Model, Link
+from pringles.models import Atomic, Coupled, Model, Link
 
 
 class MaSerializer:

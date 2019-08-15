@@ -1,8 +1,8 @@
 import pytest  # noqa
 import os
-from colonel.simulator.simulator import Simulator
-from colonel.utils import VirtualTime
-from colonel.models import Coupled, AtomicModelBuilder, Event
+from pringles.simulator.simulator import Simulator
+from pringles.utils import VirtualTime
+from pringles.models import Coupled, AtomicModelBuilder, Event
 
 
 TEST_PATH_DIRECTORY = os.path.dirname(os.path.abspath(__file__))

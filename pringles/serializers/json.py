@@ -2,7 +2,7 @@ import json
 
 from typing import cast
 
-from colonel.models import Atomic, Coupled, Model, Port
+from pringles.models import Atomic, Coupled, Model, Port
 
 
 class JsonSerializer:

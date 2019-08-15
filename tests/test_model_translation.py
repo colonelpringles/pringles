@@ -1,7 +1,7 @@
 import pytest
 from typing import Callable
-from colonel.models.models import Model, AtomicModelBuilder, Coupled, Atomic, InPort, OutPort, IntLink, ExtInputLink, ExtOutputLink, PortNotFoundException
-from colonel.serializers import MaSerializer
+from pringles.models.models import Model, AtomicModelBuilder, Coupled, Atomic, InPort, OutPort, IntLink, ExtInputLink, ExtOutputLink, PortNotFoundException
+from pringles.serializers import MaSerializer
 
 
 def empty_top_model_generator() -> Model:

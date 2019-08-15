@@ -3,8 +3,8 @@ import json
 from IPython.display import IFrame  # pylint: disable=E0401
 import urllib.parse
 
-from colonel.models import Model
-from colonel.serializers import JsonSerializer
+from pringles.models import Model
+from pringles.serializers import JsonSerializer
 
 
 class ModelDisplayOptions:
