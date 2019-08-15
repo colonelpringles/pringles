@@ -15,7 +15,7 @@ from typing import Optional, List, Tuple, Type
 
 
 from pringles.simulator.errors import SimulatorExecutableNotFound, DuplicatedAtomicException
-from pringles.models import Model, Event, Port, AtomicModelBuilder, Atomic
+from pringles.models import Model, Event, AtomicModelBuilder, Atomic
 from pringles.serializers import MaSerializer
 from pringles.utils import VirtualTime, AtomicMetadataExtractor
 from pringles.utils.errors import MetadataParsingException
@@ -89,9 +89,10 @@ class SimulationResult:
                                                       cls.MODEL_DEST_COL])
         return parsed_logs
 
-    def plot_port(self, port: Port, axes: Optional[Axes] = None, index=0) -> Optional[Axes]:
-        log: pd.DataFrame = self.logs_dfs[port.owner.name]
-        data_to_plot = log[log[self.PORT_COL] == port.name]
+    def plot_port(self, logname: str, portname: str,
+                  axes: Optional[Axes] = None, index=0) -> Optional[Axes]:
+        log: pd.DataFrame = self.logs_dfs[logname]
+        data_to_plot = log[log[self.PORT_COL] == portname]
         if data_to_plot.empty:
             return None
         if isinstance(data_to_plot[self.VALUE_COL][0], tuple):
@@ -115,9 +116,10 @@ class AtomicRegistry:
 
     SUPPORTED_FILE_EXTENSIONS = [".cpp", ".hpp", ".h"]
 
-    def __init__(self, user_models_dir: Optional[str] = None):
-        if user_models_dir is not None:
-            self.user_models_dir = user_models_dir
+    def __init__(self, user_models_dir: Optional[str] = None, autodiscover: bool = True):
+        self.user_models_dir = user_models_dir
+        self.discovered_atomics: List[Type[Atomic]] = []
+        if autodiscover and user_models_dir is not None:
             self.discover_atomics()
 
     def _add_atomic_class_as_attribute(self, name: str, atomic_class: Type[Atomic]):
@@ -126,6 +128,8 @@ class AtomicRegistry:
         setattr(self, name, atomic_class)
 
     def discover_atomics(self) -> None:
+        assert self.user_models_dir is not None
+
         files_to_extract_from = []
         for filename in os.listdir(self.user_models_dir):
             filename_with_path = os.path.join(self.user_models_dir, filename)
@@ -147,8 +151,10 @@ class AtomicRegistry:
                         atomic_class_builder.with_input_port(name)
                     for name in discovered_metadata.output_ports:
                         atomic_class_builder.with_output_port(name)
+                    built_class = atomic_class_builder.build()
                     self._add_atomic_class_as_attribute(discovered_metadata.name,
-                                                        atomic_class_builder.build())
+                                                        built_class)
+                    self.discovered_atomics.append(built_class)
 
 
 class Simulator:
@@ -156,9 +162,9 @@ class Simulator:
     CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../../bin/')
     # CDPP_BIN_PATH will be wrong if the class is moved to a different directory
 
-    def __init__(self, user_models_dir: Optional[str] = None):
+    def __init__(self, user_models_dir: Optional[str] = None, autodiscover=True):
         self.executable_route = self.find_executable_route()
-        self.atomic_registry = AtomicRegistry(user_models_dir)
+        self.atomic_registry = AtomicRegistry(user_models_dir, autodiscover)
 
     def get_registry(self):
         return self.atomic_registry
@@ -166,7 +172,7 @@ class Simulator:
     # This is thread-safe mate.
     def run_simulation(self,
                        top_model: Model,
-                       duration: Optional[str] = None,
+                       duration: Optional[VirtualTime] = None,
                        events: Optional[List[Event]] = None,
                        use_simulator_logs: bool = True,
                        use_simulator_out: bool = True):
@@ -175,7 +181,7 @@ class Simulator:
                          "-m" + self.dump_model_in_file(top_model),
                          "-L" + logged_messages]
         if duration is not None:
-            commands_list.append("-t" + duration)
+            commands_list.append("-t" + str(duration))
 
         if events is not None:
             events_list = events
@@ -195,9 +201,9 @@ class Simulator:
             commands_list.append("-o" + output_path)
 
         process_result = subprocess.run(commands_list, capture_output=True, check=True)
-        logging.error("Results: %s", process_result.stdout)
-        logging.error("Logs path: %s", logs_path)
-        logging.error("Output path: %s", output_path)
+        logging.debug("Results: %s", process_result.stdout)
+        logging.debug("Logs path: %s", logs_path)
+        logging.debug("Output path: %s", output_path)
 
         return SimulationResult(process_result=process_result,
                                 main_log_path=logs_path,
