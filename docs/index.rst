@@ -26,7 +26,7 @@ Reference
 Models
 ------
 
-.. automodule:: colonel.models.models
+.. automodule:: pringles.models.models
    :members:
    :undoc-members:
    :show-inheritance:
@@ -34,7 +34,7 @@ Models
 Events
 ------
 
-.. automodule:: colonel.models.events
+.. automodule:: pringles.models.events
    :members:
    :undoc-members:
    :show-inheritance:
@@ -42,7 +42,7 @@ Events
 Simulator
 ---------
    
-.. automodule:: colonel.simulator.simulator
+.. automodule:: pringles.simulator.simulator
    :members:
    :undoc-members:
    :show-inheritance:

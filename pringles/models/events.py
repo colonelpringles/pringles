@@ -1,5 +1,5 @@
 from .models import Port
-from colonel.utils import VirtualTime
+from pringles.utils import VirtualTime
 from typing import Union, List
 
 

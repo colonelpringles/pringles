@@ -1,6 +1,6 @@
 import pytest
-from colonel.models import Event, Port
-from colonel.utils import VirtualTime
+from pringles.models import Event, Port
+from pringles.utils import VirtualTime
 
 sample_port = Port("sample_port", None)
 one_hour_time = VirtualTime.of_hours(1)

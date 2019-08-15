@@ -1,6 +1,6 @@
 import pytest  # noqa
-from colonel.models import InPort, OutPort
-from colonel.simulator import Simulator
+from pringles.models import InPort, OutPort
+from pringles.simulator import Simulator
 
 
 def test_extract_metadata_and_instantiate_is_coherent():
