@@ -44,7 +44,7 @@ class AtomicMetadataExtractor:
         self._initialize_parser()
 
     def _initialize_parser(self):
-        port_names_list = delimitedList(Word(alphanums))
+        port_names_list = delimitedList(Word(alphanums + '-_'))
         metadata_start_keyword = Literal("@ModelMetadata")
         self.parser: ParserElement = metadata_start_keyword +\
             Literal("name:") +\
