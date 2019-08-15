@@ -14,11 +14,11 @@ from matplotlib.axes import Axes
 from typing import Optional, List, Tuple, Type
 
 
-from colonel.simulator.errors import SimulatorExecutableNotFound, DuplicatedAtomicException
-from colonel.models import Model, Event, AtomicModelBuilder, Atomic
-from colonel.serializers import MaSerializer
-from colonel.utils import VirtualTime, AtomicMetadataExtractor
-from colonel.utils.errors import MetadataParsingException
+from pringles.simulator.errors import SimulatorExecutableNotFound, DuplicatedAtomicException
+from pringles.models import Model, Event, AtomicModelBuilder, Atomic
+from pringles.serializers import MaSerializer
+from pringles.utils import VirtualTime, AtomicMetadataExtractor
+from pringles.utils.errors import MetadataParsingException
 
 
 # This object should contain the following properties:

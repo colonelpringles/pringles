@@ -14,13 +14,13 @@ test:
 	pytest
 
 test-cov:
-	pytest --cov colonel/ --cov-report term-missing
+	pytest --cov pringles/ --cov-report term-missing
 
 typecheck:
-	mypy -p colonel --config-file=setup.cfg
+	mypy -p pringles --config-file=setup.cfg
 
 flake8:
-	flake8 --max-complexity 10 colonel/
+	flake8 --max-complexity 10 pringles/
 
 pylint:
-	pylint --errors-only --rcfile .pylintrc colonel/ # The errors only should be deleted in the future
+	pylint --errors-only --rcfile .pylintrc pringles/ # The errors only should be deleted in the future
