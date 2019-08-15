@@ -6,7 +6,7 @@ from __future__ import annotations
 import os
 import subprocess
 import tempfile
-# import logging
+import logging
 
 import pandas as pd
 import matplotlib.pyplot as plt  # pylint: disable=E0401
@@ -151,10 +151,10 @@ class AtomicRegistry:
                         atomic_class_builder.with_input_port(name)
                     for name in discovered_metadata.output_ports:
                         atomic_class_builder.with_output_port(name)
-                    builded_class = atomic_class_builder.build()
+                    built_class = atomic_class_builder.build()
                     self._add_atomic_class_as_attribute(discovered_metadata.name,
-                                                        builded_class)
-                    self.discovered_atomics.append(builded_class)
+                                                        built_class)
+                    self.discovered_atomics.append(built_class)
 
 
 class Simulator:
@@ -201,9 +201,9 @@ class Simulator:
             commands_list.append("-o" + output_path)
 
         process_result = subprocess.run(commands_list, capture_output=True, check=True)
-        # logging.error("Results: %s", process_result.stdout)
-        # logging.error("Logs path: %s", logs_path)
-        # logging.error("Output path: %s", output_path)
+        logging.debug("Results: %s", process_result.stdout)
+        logging.debug("Logs path: %s", logs_path)
+        logging.debug("Output path: %s", output_path)
 
         return SimulationResult(process_result=process_result,
                                 main_log_path=logs_path,
