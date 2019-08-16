@@ -4,7 +4,7 @@ from pringles.models import InPort, OutPort
 from pringles.simulator import Simulator
 
 
-CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../bin/')
+CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../cdpp/src/bin/')
 
 
 def test_extract_metadata_and_instantiate_is_coherent():

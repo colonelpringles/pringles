@@ -8,7 +8,7 @@ from pringles.models import Coupled, AtomicModelBuilder, Event
 
 TEST_PATH_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 TEST_EXECUTABLE = os.path.join(TEST_PATH_DIRECTORY, Simulator.CDPP_BIN)
-CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../bin/')
+CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../cdpp/src/bin/')
 
 
 def test_simulator_executable_found_in_library_defined_dir():

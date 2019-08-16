@@ -8,6 +8,7 @@ install:
 	pip install -r requirements.txt
 	git submodule update --init --recursive
 	make -C cdpp/src/
+	printf 'Installation completed \u2705\n'
 
 test:
 	pytest
