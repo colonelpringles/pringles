@@ -159,11 +159,10 @@ class AtomicRegistry:
 
 class Simulator:
     CDPP_BIN = 'cd++'
-    CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../../bin/')
-    # CDPP_BIN_PATH will be wrong if the class is moved to a different directory
 
-    def __init__(self, user_models_dir: Optional[str] = None, autodiscover=True):
-        self.executable_route = self.find_executable_route()
+    def __init__(self, cdpp_bin_path: str, user_models_dir: Optional[str] = None,
+                 autodiscover=True):
+        self.executable_route = self.find_executable_route(cdpp_bin_path)
         self.atomic_registry = AtomicRegistry(user_models_dir, autodiscover)
 
     def get_registry(self):
@@ -228,11 +227,11 @@ class Simulator:
         os.close(file_descriptor)
         return path
 
-    def find_executable_route(self) -> str:
-        filepath = os.path.join(self.CDPP_BIN_PATH, self.CDPP_BIN)
+    def find_executable_route(self, cdpp_bin_path: str) -> str:
+        filepath = os.path.join(cdpp_bin_path, self.CDPP_BIN)
         is_simulator_executable_present = os.path.isfile(filepath) \
             and os.access(filepath, os.X_OK)
 
-        if is_simulator_executable_present is None:
+        if not is_simulator_executable_present:
             raise SimulatorExecutableNotFound()
         return filepath
