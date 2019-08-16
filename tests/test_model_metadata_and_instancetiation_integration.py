@@ -4,7 +4,7 @@ from pringles.simulator import Simulator
 
 
 def test_extract_metadata_and_instantiate_is_coherent():
-    simulator = Simulator("tests/resources/")
+    simulator = Simulator("aBinPath", "tests/resources/")
     assert simulator.get_registry().Queue is not None
 
     awesome_queue = simulator.get_registry().Queue("awesome")
