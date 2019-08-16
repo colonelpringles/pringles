@@ -1,6 +1,7 @@
 import pytest  # noqa
 import os
-from pringles.simulator.simulator import Simulator
+from pringles.simulator import Simulator
+from pringles.simulator.errors import SimulatorExecutableNotFound
 from pringles.utils import VirtualTime
 from pringles.models import Coupled, AtomicModelBuilder, Event
 
@@ -14,6 +15,11 @@ def test_simulator_executable_found_in_library_defined_dir():
     simulator = Simulator(CDPP_BIN_PATH)
     CDPP_BIN_EXECUTABLE_PATH = os.path.join(CDPP_BIN_PATH, Simulator.CDPP_BIN)
     assert simulator.executable_route == CDPP_BIN_EXECUTABLE_PATH
+
+
+def test_simulator_executable_not_found_raises():
+    with pytest.raises(SimulatorExecutableNotFound):
+        Simulator("a/fake/path")
 
 
 def test_no_exception_raised_in_simulation():

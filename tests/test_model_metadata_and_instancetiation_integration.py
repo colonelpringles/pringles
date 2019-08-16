@@ -1,10 +1,14 @@
 import pytest  # noqa
+import os
 from pringles.models import InPort, OutPort
 from pringles.simulator import Simulator
 
 
+CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../bin/')
+
+
 def test_extract_metadata_and_instantiate_is_coherent():
-    simulator = Simulator("aBinPath", "tests/resources/")
+    simulator = Simulator(CDPP_BIN_PATH, "tests/resources/")
     assert simulator.get_registry().Queue is not None
 
     awesome_queue = simulator.get_registry().Queue("awesome")

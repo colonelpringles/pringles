@@ -225,6 +225,6 @@ class Simulator:
         is_simulator_executable_present = os.path.isfile(filepath) \
             and os.access(filepath, os.X_OK)
 
-        if is_simulator_executable_present is None:
+        if not is_simulator_executable_present:
             raise SimulatorExecutableNotFound()
         return filepath
