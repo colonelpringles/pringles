@@ -2,6 +2,9 @@
 Pringles is a DEVS model composition library, which makes easy to assemble and link multiple atomic/coupled models. It works as a Python library, and in its road ahead, will easily integrate with the Jupyter environment.
 
 
+![pringlesfinal](https://user-images.githubusercontent.com/18684322/63174712-e5489c80-c018-11e9-9ac3-4d6a8e8598b3.png)
+
+
 #### Requirements
 - Python 3.7
 

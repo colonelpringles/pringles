@@ -1,1 +1,1 @@
-import pringles.simulator # noqa
+name = "pringles"
