@@ -8,7 +8,6 @@ install:
 	pip install -r requirements.txt
 	git submodule update --init --recursive
 	make -C cdpp/src/
-	make -C user_models/
 
 test:
 	pytest
