@@ -309,12 +309,12 @@ An event is composed of:</p>
 
 <dl class="method">
 <dt id="pringles.simulator.simulator.Simulator.dump_events_in_file">
-<em class="property">static </em><code class="sig-name descname">dump_events_in_file</code><span class="sig-paren">(</span><em class="sig-param">events: List[pringles.models.events.Event], custom_wd: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pringles.simulator.simulator.Simulator.dump_events_in_file" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">dump_events_in_file</code><span class="sig-paren">(</span><em class="sig-param">events: List[pringles.models.events.Event]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pringles.simulator.simulator.Simulator.dump_events_in_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pringles.simulator.simulator.Simulator.dump_model_in_file">
-<em class="property">static </em><code class="sig-name descname">dump_model_in_file</code><span class="sig-paren">(</span><em class="sig-param">model: pringles.models.models.Model, custom_wd: Optional[str]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pringles.simulator.simulator.Simulator.dump_model_in_file" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">dump_model_in_file</code><span class="sig-paren">(</span><em class="sig-param">model: pringles.models.models.Model</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pringles.simulator.simulator.Simulator.dump_model_in_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -329,31 +329,8 @@ An event is composed of:</p>
 
 <dl class="method">
 <dt id="pringles.simulator.simulator.Simulator.run_simulation">
-<code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">top_model: pringles.models.models.Model</em>, <em class="sig-param">duration: Optional[pringles.utils.utils.VirtualTime] = None</em>, <em class="sig-param">events: Optional[List[pringles.models.events.Event]] = None</em>, <em class="sig-param">use_simulator_logs: bool = True</em>, <em class="sig-param">use_simulator_out: bool = True</em>, <em class="sig-param">custom_simulation_wd: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pringles.simulator.simulator.SimulationResult<a class="headerlink" href="#pringles.simulator.simulator.Simulator.run_simulation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run the simulation in the targeted CD++ simulator instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>top_model</strong> (<a class="reference internal" href="#pringles.models.models.Model" title="pringles.models.models.Model"><em>Model</em></a>) – The top model of the simulation to be ran</p></li>
-<li><p><strong>duration</strong> (<em>Optional</em><em>[</em><em>VirtualTime</em><em>]</em><em>, </em><em>optional</em>) – Simulation duration, defaults to None</p></li>
-<li><p><strong>events</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="#pringles.models.events.Event" title="pringles.models.events.Event"><em>Event</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – List of external events, defaults to None</p></li>
-<li><p><strong>use_simulator_logs</strong> (<em>bool</em><em>, </em><em>optional</em>) – True if simulator logs should be generated, defaults to True</p></li>
-<li><p><strong>use_simulator_out</strong> (<em>bool</em><em>, </em><em>optional</em>) – True if simulator outputs should be captured, defaults to True</p></li>
-<li><p><strong>custom_simulation_wd</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Custom working directory in which to dump all “compiled”
-models, logs, outputs and events file, defaults to None</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>SimulatorExecutableNotFound</strong> – CD++ executable was not found in the provided directory</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A SimulationResult, containing all data concerning the simulation results.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pringles.simulator.simulator.SimulationResult" title="pringles.simulator.simulator.SimulationResult">SimulationResult</a></p>
-</dd>
-</dl>
-</dd></dl>
+<code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">top_model: pringles.models.models.Model</em>, <em class="sig-param">duration: Optional[pringles.utils.utils.VirtualTime] = None</em>, <em class="sig-param">events: Optional[List[pringles.models.events.Event]] = None</em>, <em class="sig-param">use_simulator_logs: bool = True</em>, <em class="sig-param">use_simulator_out: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pringles.simulator.simulator.Simulator.run_simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
