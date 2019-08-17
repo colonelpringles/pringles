@@ -255,7 +255,7 @@ class Simulator:
         # Insert prefix into temporal path
         file_segments = temporal_path.split("/")
         if file_prefix is not None:
-            file_segments[-1] = file_prefix + file_segments[-1]
+            file_segments[-1] = file_prefix + "_" + file_segments[-1]
         # Reassemble path
         return "/".join(file_segments)
 
