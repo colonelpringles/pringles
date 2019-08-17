@@ -1,9 +1,11 @@
 import pytest  # noqa
 import os
+import tempfile
+from typing import List, Tuple
 from pringles.simulator import Simulator
 from pringles.simulator.errors import SimulatorExecutableNotFound
 from pringles.utils import VirtualTime
-from pringles.models import Coupled, AtomicModelBuilder, Event
+from pringles.models import Coupled, Model, AtomicModelBuilder, Event
 
 
 TEST_PATH_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -24,7 +26,30 @@ def test_simulator_executable_not_found_raises():
 
 def test_no_exception_raised_in_simulation():
     simulator = Simulator(CDPP_BIN_PATH)
+    top_model, events = _make_queue_top_model_with_events()
+    simulator.run_simulation(top_model, events=events)
 
+
+def test_run_simulation_in_custom_wd():
+    simulator = Simulator(CDPP_BIN_PATH)
+    top_model, events = _make_queue_top_model_with_events()
+    temp_path = tempfile.mkdtemp()
+    simulator.run_simulation(top_model, events=events, simulation_wd=temp_path)
+    files_found = False
+    for _, _, files in os.walk(temp_path):
+        # Assert there are files
+        files_found = len(files) > 0 if not files_found else files_found
+        if not files_found:
+            continue
+        # Assert there's an event, logs, top_model and output file
+        assert any([filename.startswith("top_model") for filename in files])
+        assert any([filename.startswith("events") for filename in files])
+        assert any([filename.startswith("logs") for filename in files])
+        assert any([filename.startswith("output") for filename in files])
+    assert files_found
+
+
+def _make_queue_top_model_with_events() -> Tuple[Model, List[Event]]:
     Queue = AtomicModelBuilder().with_name("Queue").build()
     sample_queue = Queue("sample_queue", preparation="0:0:5:0")
     sample_queue.add_inport("in").add_outport("out")
@@ -42,4 +67,4 @@ def test_no_exception_raised_in_simulation():
         Event(VirtualTime.of_seconds(30), incoming_event_port, 20.),
     ]
 
-    simulator.run_simulation(top_model, events=events)
+    return top_model, events
