@@ -8,6 +8,7 @@ import subprocess
 import tempfile
 import uuid
 import logging
+from datetime import datetime
 
 import pandas as pd
 import matplotlib.pyplot as plt  # pylint: disable=E0401
@@ -176,7 +177,7 @@ class Simulator:
                        events: Optional[List[Event]] = None,
                        use_simulator_logs: bool = True,
                        use_simulator_out: bool = True,
-                       custom_simulation_wd: Optional[str] = None) -> SimulationResult:
+                       simulation_wd: Optional[str] = None) -> SimulationResult:
         """Run the simulation in the targeted CD++ simulator instance.
 
         :param top_model: The top model of the simulation to be ran
@@ -189,16 +190,28 @@ class Simulator:
         :type use_simulator_logs: bool, optional
         :param use_simulator_out: True if simulator outputs should be captured, defaults to True
         :type use_simulator_out: bool, optional
-        :param custom_simulation_wd: Custom working directory in which to dump all "compiled"
-            models, logs, outputs and events file, defaults to None
-        :type custom_simulation_wd: Optional[str], optional
+        :param simulation_wd: Working directory in which to dump all "compiled"
+            models, logs, outputs and events file, defaults to None, in which case
+            a temporal directory is created, in an OS-specific location.
+        :type simulation_wd: Optional[str], optional
         :raises SimulatorExecutableNotFound: CD++ executable was not found in the provided directory
         :return: A SimulationResult, containing all data concerning the simulation results.
         :rtype: SimulationResult
         """
         logged_messages = 'XY'
+
+        if simulation_wd is not None:
+            wd_simulation_subdirectory_name =\
+                datetime.now().strftime("%Y-%m-%d-%H%M%S") + \
+                "-" + str(uuid.uuid4().hex)
+            simulation_wd = os.path.join(simulation_wd,
+                                         wd_simulation_subdirectory_name)
+            os.mkdir(simulation_wd)
+        else:
+            simulation_wd = tempfile.mkdtemp()
+
         dumped_top_model_path = self.dump_model_in_file(top_model,
-                                                        custom_simulation_wd)
+                                                        simulation_wd)
         commands_list = [self.executable_route,
                          "-m" + dumped_top_model_path,
                          "-L" + logged_messages]
@@ -207,17 +220,17 @@ class Simulator:
 
         if events is not None:
             events_list = events
-            events_file_path = self.dump_events_in_file(events_list, custom_simulation_wd)
+            events_file_path = self.dump_events_in_file(events_list, simulation_wd)
             commands_list.append("-e" + events_file_path)
 
         # Simulation logs
         if use_simulator_logs:
-            logs_path = Simulator._new_temporal_file(custom_simulation_wd, "logs")
+            logs_path = Simulator._new_working_file_named(simulation_wd, "logs")
             commands_list.append("-l" + logs_path)
 
         # Simulation output file
         if use_simulator_out:
-            output_path = Simulator._new_temporal_file(custom_simulation_wd, "output")
+            output_path = Simulator._new_working_file_named(simulation_wd, "output")
             commands_list.append("-o" + output_path)
 
         process_result = subprocess.run(commands_list, capture_output=True, check=True)
@@ -230,8 +243,8 @@ class Simulator:
                                 output_path=output_path)
 
     @staticmethod
-    def dump_events_in_file(events: List[Event], custom_wd: Optional[str] = None) -> str:
-        path = Simulator._new_temporal_file(custom_wd, "events")
+    def dump_events_in_file(events: List[Event], simulation_wd: str) -> str:
+        path = Simulator._new_working_file_named(simulation_wd, "events")
         with open(path, "w") as events_file:
             for event in events:
                 events_file.write(event.serialize() + "\n")
@@ -239,29 +252,13 @@ class Simulator:
         return path
 
     @staticmethod
-    def _new_temporal_file(working_dir: Optional[str] = None,
-                           file_prefix: Optional[str] = None) -> str:
-        temporal_path = None
-        if working_dir is None:
-            unused_file_handle, temporal_path = tempfile.mkstemp()
-            os.close(unused_file_handle)
-        else:
-            # Using uuid as unique filename generator
-            # TODO: It would be nice to make this uuid represent the whole simulation,
-            # so in some way this should be shared cross-simulation, and be used by the
-            # SimulationResult as an unique identifier.
-            random_filename = str(uuid.uuid4().hex)
-            temporal_path = os.path.join(working_dir, random_filename)
-        # Insert prefix into temporal path
-        file_segments = temporal_path.split("/")
-        if file_prefix is not None:
-            file_segments[-1] = file_prefix + "_" + file_segments[-1]
-        # Reassemble path
-        return "/".join(file_segments)
+    def _new_working_file_named(working_dir: str,
+                                file_name: str) -> str:
+        return os.path.join(working_dir, file_name)
 
     @staticmethod
-    def dump_model_in_file(model: Model, custom_wd: Optional[str]) -> str:
-        path = Simulator._new_temporal_file(custom_wd, "top_model")
+    def dump_model_in_file(model: Model, custom_wd: str) -> str:
+        path = Simulator._new_working_file_named(custom_wd, "top_model")
         with open(path, "w") as model_file:
             model_file.write(MaSerializer.serialize(model))
 
