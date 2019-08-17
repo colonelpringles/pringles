@@ -250,7 +250,8 @@ class Simulator:
             # TODO: It would be nice to make this uuid represent the whole simulation,
             # so in some way this should be shared cross-simulation, and be used by the
             # SimulationResult as an unique identifier.
-            temporal_path = os.path.join(working_dir, str(uuid.uuid4()))
+            random_filename = str(uuid.uuid4().hex)
+            temporal_path = os.path.join(working_dir, random_filename)
         # Insert prefix into temporal path
         file_segments = temporal_path.split("/")
         if file_prefix is not None:
