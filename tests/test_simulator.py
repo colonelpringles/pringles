@@ -35,14 +35,16 @@ def test_run_simulation_in_custom_wd():
     top_model, events = _make_queue_top_model_with_events()
     temp_path = tempfile.mkdtemp()
     simulator.run_simulation(top_model, events=events, custom_simulation_wd=temp_path)
+    files_found = False
     for _, _, files in os.walk(temp_path):
         # Assert there are files
-        assert len(files) > 0
+        files_found = len(files) > 0
         # Assert there's an event, logs, top_model and output file
         assert any([filename.startswith("top_model") for filename in files])
         assert any([filename.startswith("events") for filename in files])
         assert any([filename.startswith("logs") for filename in files])
         assert any([filename.startswith("output") for filename in files])
+    assert files_found
 
 
 def _make_queue_top_model_with_events() -> Tuple[Model, List[Event]]:
