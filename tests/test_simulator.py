@@ -51,7 +51,7 @@ def test_run_simulation_in_custom_wd():
 
 def test_parse_output_file_float_values():
     with open('tests/resources/model_output_float_value', 'r') as out_file:
-        output_dataframe = SimulationResult.parse_output_file(out_file)
+        output_dataframe = SimulationResult._parse_output_file(out_file)
         assert len(output_dataframe) == 3
         for time in output_dataframe[SimulationResult.TIME_COL]:
             assert isinstance(time, VirtualTime)
@@ -61,7 +61,7 @@ def test_parse_output_file_float_values():
 
 def test_parse_output_file_tuple_values():
     with open('tests/resources/model_output_tuple_value', 'r') as out_file:
-        output_dataframe = SimulationResult.parse_output_file(out_file)
+        output_dataframe = SimulationResult._parse_output_file(out_file)
         assert len(output_dataframe) > 0
         for time in output_dataframe[SimulationResult.TIME_COL]:
             assert isinstance(time, VirtualTime)
