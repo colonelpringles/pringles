@@ -42,9 +42,9 @@ class SimulationResult:
         self.output_path = output_path
 
         if output_path:
-            self.output_df = SimulationResult.parse_output_file(output_path)
+            self.output_df = SimulationResult._parse_output_file(output_path)
         if main_log_path:
-            self.logs_dfs = SimulationResult.parse_main_log_file(main_log_path)
+            self.logs_dfs = SimulationResult._parse_main_log_file(main_log_path)
 
     def successful(self):
         return self.process_result.returncode == 0
@@ -57,7 +57,7 @@ class SimulationResult:
         return float(value)
 
     @classmethod
-    def parse_output_file(cls, file_path) -> pd.DataFrame:
+    def _parse_output_file(cls, file_path) -> pd.DataFrame:
         df_converters = {
             cls.VALUE_COL: cls._parse_value,
             cls.TIME_COL: VirtualTime.parse
@@ -69,7 +69,7 @@ class SimulationResult:
                            names=[cls.TIME_COL, cls.PORT_COL, cls.VALUE_COL])
 
     @classmethod
-    def parse_main_log_file(cls, file_path):
+    def _parse_main_log_file(cls, file_path):
         log_file_per_component = {}
         parsed_logs = {}
         with open(file_path, 'r') as main_log_file:
