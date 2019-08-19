@@ -1,5 +1,7 @@
+GREEN=\033[0;32m
+NO_COLOR=\033[0m # No Color
 
-local: test typecheck flake8 pylint
+local: test typecheck flake8 pylint success-msg
 
 remote: test-cov typecheck flake8 pylint
 
@@ -24,3 +26,6 @@ flake8:
 
 pylint:
 	pylint --errors-only --rcfile .pylintrc pringles/ # The errors only should be deleted in the future
+
+success-msg:
+	printf '\n\n${GREEN}=======================   Successful!!!   =======================${NO_COLOR}\n\n\n'

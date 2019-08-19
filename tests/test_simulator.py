@@ -2,7 +2,7 @@ import pytest  # noqa
 import os
 import tempfile
 from typing import List, Tuple
-from pringles.simulator import Simulator
+from pringles.simulator import Simulator, SimulationResult
 from pringles.simulator.errors import SimulatorExecutableNotFound
 from pringles.utils import VirtualTime
 from pringles.models import Coupled, Model, AtomicModelBuilder, Event
@@ -15,8 +15,8 @@ CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../cdpp/src/bin/')
 
 def test_simulator_executable_found_in_library_defined_dir():
     simulator = Simulator(CDPP_BIN_PATH)
-    CDPP_BIN_EXECUTABLE_PATH = os.path.join(CDPP_BIN_PATH, Simulator.CDPP_BIN)
-    assert simulator.executable_route == CDPP_BIN_EXECUTABLE_PATH
+    cdpp_bin_executable_path = os.path.join(CDPP_BIN_PATH, Simulator.CDPP_BIN)
+    assert simulator.executable_route == cdpp_bin_executable_path
 
 
 def test_simulator_executable_not_found_raises():
@@ -47,6 +47,28 @@ def test_run_simulation_in_custom_wd():
         assert any([filename.startswith("logs") for filename in files])
         assert any([filename.startswith("output") for filename in files])
     assert files_found
+
+
+def test_parse_output_file_float_values():
+    with open('tests/resources/model_output_float_value', 'r') as out_file:
+        output_dataframe = SimulationResult._parse_output_file(out_file)
+        assert len(output_dataframe) == 3
+        for time in output_dataframe[SimulationResult.TIME_COL]:
+            assert isinstance(time, VirtualTime)
+        for value in output_dataframe[SimulationResult.VALUE_COL]:
+            assert isinstance(value, float)
+
+
+def test_parse_output_file_tuple_values():
+    with open('tests/resources/model_output_tuple_value', 'r') as out_file:
+        output_dataframe = SimulationResult._parse_output_file(out_file)
+        assert len(output_dataframe) > 0
+        for time in output_dataframe[SimulationResult.TIME_COL]:
+            assert isinstance(time, VirtualTime)
+        for value in output_dataframe[SimulationResult.VALUE_COL]:
+            assert isinstance(value, tuple)
+            for coord in value:
+                assert isinstance(coord, float)
 
 
 def _make_queue_top_model_with_events() -> Tuple[Model, List[Event]]:
