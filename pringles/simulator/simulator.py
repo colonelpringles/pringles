@@ -48,19 +48,24 @@ class SimulationResult:
     def successful(self):
         return self.process_result.returncode == 0
 
+    @staticmethod
+    def _parse_value(value: str):
+        is_list = value.strip().startswith("[") and value.strip().endswith("]")
+        if is_list:
+            return tuple(float(num) for num in value.replace('[', '').replace(']', '').split(', '))
+        return value
+
     @classmethod
-    def parse_output_file(cls, file_path):
-        return pd.read_csv(file_path, delimiter=r'\s+',
+    def parse_output_file(cls, file_path) -> pd.DataFrame:
+        df_converters = {
+            cls.VALUE_COL: cls._parse_value,
+            cls.TIME_COL: VirtualTime.parse
+        }
+        return pd.read_csv(file_path,
+                           delimiter=r'(?<!,)\s',
+                           engine='python',  # C engine doesnt work for regex
+                           converters=df_converters,
                            names=[cls.TIME_COL, cls.PORT_COL, cls.VALUE_COL])
-
-    @staticmethod
-    def _is_list_value(value: str) -> bool:
-        return value.strip().startswith("[") and value.strip().endswith("]")
-
-    @staticmethod
-    def _list_str_to_list(value: str) -> Tuple[float, ...]:
-        # We use tuple because it hay to be hashable to be used in a Dataframe
-        return tuple(float(num) for num in value.replace('[', '').replace(']', '').split(', '))
 
     @classmethod
     def parse_main_log_file(cls, file_path):
@@ -74,8 +79,8 @@ class SimulationResult:
                 log_file_per_component[name] = path if os.path.isabs(path) else log_dir + '/' + path
 
         df_converters = {
-            cls.VALUE_COL: lambda x: cls._list_str_to_list(x) if cls._is_list_value(x) else x,
-            cls.TIME_COL: lambda x: VirtualTime.parse(x)
+            cls.VALUE_COL: cls._parse_value,
+            cls.TIME_COL: VirtualTime.parse
         }
         for logname, filename in log_file_per_component.items():
             parsed_logs[logname] = pd.read_csv(filename,
