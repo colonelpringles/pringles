@@ -31,8 +31,8 @@ def interacciones_poblacion_model_generator() -> Model:
 
 
 @pytest.mark.parametrize("model_generator_func,expected_ma_file", [
-    (empty_top_model_generator, "tests/generated_mas/empty_model.ma"),
-    (interacciones_poblacion_model_generator, "tests/generated_mas/interacciones_poblacion.ma"),
+    (empty_top_model_generator, "tests/resources/generated_mas/empty_model.ma"),
+    (interacciones_poblacion_model_generator, "tests/resources/generated_mas/interacciones_poblacion.ma"),
 ])
 def test_model_is_translated_into_ma_correctly(
         model_generator_func: Callable[[], Model],
