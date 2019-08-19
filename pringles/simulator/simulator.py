@@ -9,12 +9,11 @@ import tempfile
 import uuid
 import logging
 from datetime import datetime
+from typing import Optional, List, Type
 
 import pandas as pd
 import matplotlib.pyplot as plt  # pylint: disable=E0401
-from matplotlib.axes import Axes
-from typing import Optional, List, Tuple, Type
-
+from matplotlib.axes import Axes  # pylint: disable=E0401
 
 from pringles.simulator.errors import SimulatorExecutableNotFound, DuplicatedAtomicException
 from pringles.models import Model, Event, AtomicModelBuilder, Atomic
@@ -41,8 +40,10 @@ class SimulationResult:
         self.process_result = process_result
         self.main_log_path = main_log_path
         self.output_path = output_path
-        if self.successful():
+
+        if output_path:
             self.output_df = SimulationResult.parse_output_file(output_path)
+        if main_log_path:
             self.logs_dfs = SimulationResult.parse_main_log_file(main_log_path)
 
     def successful(self):
@@ -62,7 +63,7 @@ class SimulationResult:
             cls.TIME_COL: VirtualTime.parse
         }
         return pd.read_csv(file_path,
-                           delimiter=r'(?<!,)\s',
+                           delimiter=r'(?<!,)\s+',
                            engine='python',  # C engine doesnt work for regex
                            converters=df_converters,
                            names=[cls.TIME_COL, cls.PORT_COL, cls.VALUE_COL])

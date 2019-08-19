@@ -15,8 +15,8 @@ CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../cdpp/src/bin/')
 
 def test_simulator_executable_found_in_library_defined_dir():
     simulator = Simulator(CDPP_BIN_PATH)
-    CDPP_BIN_EXECUTABLE_PATH = os.path.join(CDPP_BIN_PATH, Simulator.CDPP_BIN)
-    assert simulator.executable_route == CDPP_BIN_EXECUTABLE_PATH
+    cdpp_bin_executable_path = os.path.join(CDPP_BIN_PATH, Simulator.CDPP_BIN)
+    assert simulator.executable_route == cdpp_bin_executable_path
 
 
 def test_simulator_executable_not_found_raises():
