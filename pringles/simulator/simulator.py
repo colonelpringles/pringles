@@ -54,7 +54,7 @@ class SimulationResult:
         is_list = value.strip().startswith("[") and value.strip().endswith("]")
         if is_list:
             return tuple(float(num) for num in value.replace('[', '').replace(']', '').split(', '))
-        return value
+        return float(value)
 
     @classmethod
     def parse_output_file(cls, file_path) -> pd.DataFrame:
