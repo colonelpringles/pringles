@@ -114,6 +114,11 @@ class SimulationResult:
         return axes
 
     def get_process_output(self) -> str:
+        """Returns the process STDOUT converted to string
+
+        :return: the process STDOUT
+        :rtype: str
+        """
         return self.process_result.stdout.decode("utf-8")
 
 
