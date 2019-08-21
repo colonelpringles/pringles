@@ -31,6 +31,12 @@ def test_time_string_parsed_correctly_with_float_remainder():
     assert vtime.remainder == 0.484671
 
 
+def test_virtual_time_comparison():
+    big_time = VirtualTime.of_hours(1)
+    little_time = VirtualTime.of_seconds(1)
+    assert big_time > little_time
+
+
 def test_sting_representation_has_fixed_length():
     vtime = VirtualTime(0, 0, 0, 0, 0)
     assert str(vtime) == '00:00:00:000'
