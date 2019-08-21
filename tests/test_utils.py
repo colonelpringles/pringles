@@ -21,6 +21,16 @@ def test_time_string_parsed_correctly():
     assert vtime.remainder == 1
 
 
+def test_time_string_parsed_correctly_with_float_remainder():
+    time_string = "03:04:04:001:0.484671"
+    vtime = VirtualTime.parse(time_string)
+    assert vtime.hours == 3
+    assert vtime.minutes == 4
+    assert vtime.seconds == 4
+    assert vtime.milliseconds == 1
+    assert vtime.remainder == 0.484671
+
+
 def test_sting_representation_has_fixed_length():
     vtime = VirtualTime(0, 0, 0, 0, 0)
     assert str(vtime) == '00:00:00:000'

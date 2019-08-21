@@ -4,7 +4,7 @@ from pringles.utils.errors import BadVirtualTimeValuesError
 
 
 class VirtualTime:
-    def __init__(self, hours: int, minutes: int, seconds: int, milliseconds: int, remainder: int):
+    def __init__(self, hours: int, minutes: int, seconds: int, milliseconds: int, remainder: float):
         if minutes > 60:
             raise BadVirtualTimeValuesError(f"Minutes should be less that 60, but is {minutes}")
         if seconds > 60:
@@ -32,7 +32,10 @@ class VirtualTime:
 
     @classmethod
     def parse(cls, timestr: str) -> VirtualTime:
-        return cls(*[int(unit) for unit in timestr.split(':')])
+        splitted_timestr = timestr.split(':')
+        return cls(*([int(unit) for unit in
+                     splitted_timestr[:-1]] +
+                     [float(splitted_timestr[-1])]))  # type: ignore
 
     @classmethod
     def from_number(cls, num: int) -> Optional[VirtualTime]:
