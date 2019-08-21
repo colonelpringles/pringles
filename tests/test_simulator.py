@@ -30,6 +30,15 @@ def test_no_exception_raised_in_simulation():
     simulator.run_simulation(top_model, events=events)
 
 
+def test_process_stdout_is_returned_correctly():
+    simulator = Simulator(CDPP_BIN_PATH)
+    top_model, events = _make_queue_top_model_with_events()
+    simulation_result = simulator.run_simulation(top_model, events=events)
+    assert simulation_result\
+        .get_process_output()\
+        .startswith("PCD++: A Tool to Implement n-Dimensional Cell-DEVS models")
+
+
 def test_run_simulation_in_custom_wd():
     simulator = Simulator(CDPP_BIN_PATH)
     top_model, events = _make_queue_top_model_with_events()

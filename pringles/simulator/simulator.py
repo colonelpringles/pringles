@@ -113,6 +113,9 @@ class SimulationResult:
         axes.set_xlim(left=0)
         return axes
 
+    def get_process_output(self) -> str:
+        return self.process_result.stdout.decode("utf-8")
+
 
 class AtomicRegistry:
 
