@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional
+from typing import Optional, Any
 from pringles.utils.errors import BadVirtualTimeValuesError
 
 
@@ -71,3 +71,16 @@ class VirtualTime:
     def __repr__(self):
         return (f"VirtualTime({self.hours:02d}:{self.minutes:02d}:" +
                 f"{self.seconds:02d}:{self.milliseconds:03d}:{self.remainder})")
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, VirtualTime):
+            return False
+        other_as_vtime: VirtualTime = other
+        return self._to_number() == other_as_vtime._to_number()
+
+    def __hash__(self) -> int:
+        # NOTE: This could lead to some problem
+        # The _to_number() method returns a float, nad by doing the int
+        # conversion, the remainder part is being dropped in the rounding.
+        # This means that two remainder-differing VTimes hash to the same value.
+        return int(self._to_number())

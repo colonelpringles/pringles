@@ -41,3 +41,10 @@ def test_sting_representation_has_fixed_length():
     vtime = VirtualTime(0, 0, 0, 0, 0)
     assert str(vtime) == '00:00:00:000'
     assert repr(vtime) == 'VirtualTime(00:00:00:000:0)'
+
+
+def test_virtual_times_representing_samee_value_should_be_equal():
+    one_hour_time = VirtualTime.of_hours(1)
+    another_one_hour_time = VirtualTime.of_hours(1)
+
+    assert one_hour_time == another_one_hour_time
