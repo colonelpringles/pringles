@@ -48,3 +48,10 @@ def test_virtual_times_representing_samee_value_should_be_equal():
     another_one_hour_time = VirtualTime.of_hours(1)
 
     assert one_hour_time == another_one_hour_time
+
+
+def test_virtual_time_circular_conversion_to_from_number():
+    some_time = VirtualTime(1, 2, 0, 10, .123)
+    time_as_number = float(some_time)
+    retrieved_some_time = VirtualTime.from_number(time_as_number)
+    assert some_time == retrieved_some_time
