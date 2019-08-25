@@ -112,9 +112,8 @@ class SimulationResult:
             axes = plt.axes()  # Create a new axes in current figure
         x_values = data_to_plot[self.TIME_COL]
         axes.plot(x_values, y_values)
-
-        ticks = axes.get_xticks()
-        axes.set_xticklabels([VirtualTime.from_number(tick) for tick in ticks], rotation=90)
+        x_values_labels = [str(vtime) for vtime in sorted(x_values, key=float)]
+        axes.set_xticklabels(x_values_labels, rotation=90)
 
         axes.set_xlim(left=0)
         return axes
