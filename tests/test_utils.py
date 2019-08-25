@@ -48,3 +48,27 @@ def test_virtual_times_representing_samee_value_should_be_equal():
     another_one_hour_time = VirtualTime.of_hours(1)
 
     assert one_hour_time == another_one_hour_time
+
+
+def test():
+    seconds_value = 51
+    float_value = float(VirtualTime.of_seconds(seconds_value))
+    from_number = VirtualTime.from_number(float_value)
+    assert from_number ==\
+        VirtualTime.of_seconds(seconds_value)
+
+
+@pytest.mark.parametrize("seconds_value", [1, 10, 100, 1000])
+def test_virtual_time_from_to_number_roundtrip(seconds_value):
+    assert VirtualTime.from_number(float(VirtualTime.of_seconds(seconds_value))) ==\
+        VirtualTime.of_seconds(seconds_value)
+
+
+@pytest.mark.parametrize("float_vtime_value", [0, 1000, 5000, 10000])
+def test_virtual_time_from_float_should_work_for_values_over_zero(float_vtime_value):
+    VirtualTime.from_number(float_vtime_value)
+
+
+def test_complex_time_from_to_number_roudntrip():
+    time = VirtualTime(1, 24, 56, 567, 0)
+    assert VirtualTime.from_number(float(time)) == time
