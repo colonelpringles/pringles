@@ -1,4 +1,5 @@
 from __future__ import annotations
+import warnings
 from typing import Optional, Any
 from pringles.utils.errors import BadVirtualTimeValuesError
 
@@ -39,6 +40,7 @@ class VirtualTime:
 
     @classmethod
     def from_number(cls, num: int) -> Optional[VirtualTime]:
+        warnings.warn("Precission loss happens when using this method", DeprecationWarning)
         num = int(num)
         if num < 0:
             return None
