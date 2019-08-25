@@ -50,14 +50,6 @@ def test_virtual_times_representing_samee_value_should_be_equal():
     assert one_hour_time == another_one_hour_time
 
 
-def test():
-    seconds_value = 51
-    float_value = float(VirtualTime.of_seconds(seconds_value))
-    from_number = VirtualTime.from_number(float_value)
-    assert from_number ==\
-        VirtualTime.of_seconds(seconds_value)
-
-
 @pytest.mark.parametrize("seconds_value", [1, 10, 100, 1000])
 def test_virtual_time_from_to_number_roundtrip(seconds_value):
     assert VirtualTime.from_number(float(VirtualTime.of_seconds(seconds_value))) ==\
