@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pringles-devs",
-    version="0.0.2",
+    version="0.0.3",
     author="Colonel Pringles",
     # author_email="example@email.com",
     description="A DEVS model composition library",

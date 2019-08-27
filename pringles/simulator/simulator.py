@@ -112,9 +112,8 @@ class SimulationResult:
             axes = plt.axes()  # Create a new axes in current figure
         x_values = data_to_plot[self.TIME_COL]
         axes.plot(x_values, y_values)
-
-        ticks = axes.get_xticks()
-        axes.set_xticklabels([VirtualTime.from_number(tick) for tick in ticks], rotation=90)
+        x_values_labels = [str(vtime) for vtime in sorted(x_values, key=float)]
+        axes.set_xticklabels(x_values_labels, rotation=90)
 
         axes.set_xlim(left=0)
         return axes
@@ -191,7 +190,8 @@ class Simulator:
                        events: Optional[List[Event]] = None,
                        use_simulator_logs: bool = True,
                        use_simulator_out: bool = True,
-                       simulation_wd: Optional[str] = None) -> SimulationResult:
+                       simulation_wd: Optional[str] = None,
+                       override_logged_messages: Optional[str] = None) -> SimulationResult:
         """Run the simulation in the targeted CD++ simulator instance.
 
         :param top_model: The top model of the simulation to be ran
@@ -208,11 +208,15 @@ class Simulator:
             models, logs, outputs and events file, defaults to None, in which case
             a temporal directory is created, in an OS-specific location.
         :type simulation_wd: Optional[str], optional
+        :param override_logged_messages: ADVANCED USE. Override logged messages filter.
+        :type override_logged_messages: Optional[str], optional
         :raises SimulatorExecutableNotFound: CD++ executable was not found in the provided directory
         :return: A SimulationResult, containing all data concerning the simulation results.
         :rtype: SimulationResult
         """
         logged_messages = 'XY'
+        if override_logged_messages is not None:
+            logged_messages = override_logged_messages
 
         if simulation_wd is not None:
             wd_simulation_subdirectory_name =\
