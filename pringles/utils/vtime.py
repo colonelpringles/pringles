@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional
+from typing import Optional, Any, cast
 from pringles.utils.errors import BadVirtualTimeValuesError
 
 
@@ -20,11 +20,16 @@ class VirtualTime:
 
     @classmethod
     def of_seconds(cls, seconds: int) -> VirtualTime:
-        return cls(0, 0, seconds, 0, 0)
+        minutes = seconds // 60
+        hours = seconds // 3600
+        seconds = seconds % 60
+        return cls(hours, minutes, seconds, 0, 0)
 
     @classmethod
     def of_minutes(cls, minutes: int) -> VirtualTime:
-        return cls(0, minutes, 0, 0, 0)
+        hours = minutes // 60
+        minutes = minutes % 60
+        return cls(hours, minutes, 0, 0, 0)
 
     @classmethod
     def of_hours(cls, hours: int) -> VirtualTime:
@@ -34,11 +39,12 @@ class VirtualTime:
     def parse(cls, timestr: str) -> VirtualTime:
         splitted_timestr = timestr.split(':')
         return cls(*([int(unit) for unit in
-                     splitted_timestr[:-1]] +
+                      splitted_timestr[:-1]] +
                      [float(splitted_timestr[-1])]))  # type: ignore
 
     @classmethod
     def from_number(cls, num: int) -> Optional[VirtualTime]:
+        # NOTE: This conversion completely ignores the remainder VirtualTime field
         num = int(num)
         if num < 0:
             return None
@@ -46,6 +52,7 @@ class VirtualTime:
         for max_val in [10, 1000, 60, 60, 100]:
             units.append(num % max_val)
             num = int(num/max_val)
+        units.reverse()
         return cls(*units)  # pylint: disable=E1120
 
     def _to_number(self) -> float:
@@ -65,6 +72,30 @@ class VirtualTime:
         return (f"{self.hours:02d}:{self.minutes:02d}:" +
                 f"{self.seconds:02d}:{self.milliseconds:03d}")
 
+    def __gt__(self, other):
+        return self._to_number() > other._to_number()
+
+    def __lt__(self, value):
+        return self._to_number() < cast(VirtualTime, value)._to_number()
+
+    def __le__(self, value):
+        return not self.__gt__(value)
+
+    def __ge__(self, value):
+        return not self.__lt__(value)
+
     def __repr__(self):
         return (f"VirtualTime({self.hours:02d}:{self.minutes:02d}:" +
                 f"{self.seconds:02d}:{self.milliseconds:03d}:{self.remainder})")
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, VirtualTime):
+            return False
+        return self._to_number() == cast(VirtualTime, other)._to_number()
+
+    def __hash__(self) -> int:
+        # NOTE: This could lead to some problem
+        # The _to_number() method returns a float, nad by doing the int
+        # conversion, the remainder part is being dropped in the rounding.
+        # This means that two remainder-differing VTimes hash to the same value.
+        return int(self._to_number())

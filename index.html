@@ -205,7 +205,7 @@
 <span id="events"></span><h2>Events<a class="headerlink" href="#module-pringles.models.events" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pringles.models.events.Event">
-<em class="property">class </em><code class="sig-prename descclassname">pringles.models.events.</code><code class="sig-name descname">Event</code><span class="sig-paren">(</span><em class="sig-param">time: pringles.utils.utils.VirtualTime, port: pringles.models.models.Port, value: Union[float, List[float]]</em><span class="sig-paren">)</span><a class="headerlink" href="#pringles.models.events.Event" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pringles.models.events.</code><code class="sig-name descname">Event</code><span class="sig-paren">(</span><em class="sig-param">time: pringles.utils.vtime.VirtualTime, port: pringles.models.models.Port, value: Union[float, List[float]]</em><span class="sig-paren">)</span><a class="headerlink" href="#pringles.models.events.Event" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Event is the representation of external influence into the model.
 An event is composed of:</p>
@@ -333,7 +333,7 @@ An event is composed of:</p>
 
 <dl class="method">
 <dt id="pringles.simulator.simulator.Simulator.run_simulation">
-<code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">top_model: pringles.models.models.Model</em>, <em class="sig-param">duration: Optional[pringles.utils.utils.VirtualTime] = None</em>, <em class="sig-param">events: Optional[List[pringles.models.events.Event]] = None</em>, <em class="sig-param">use_simulator_logs: bool = True</em>, <em class="sig-param">use_simulator_out: bool = True</em>, <em class="sig-param">simulation_wd: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pringles.simulator.simulator.SimulationResult<a class="headerlink" href="#pringles.simulator.simulator.Simulator.run_simulation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">top_model: pringles.models.models.Model</em>, <em class="sig-param">duration: Optional[pringles.utils.vtime.VirtualTime] = None</em>, <em class="sig-param">events: Optional[List[pringles.models.events.Event]] = None</em>, <em class="sig-param">use_simulator_logs: bool = True</em>, <em class="sig-param">use_simulator_out: bool = True</em>, <em class="sig-param">simulation_wd: Optional[str] = None</em>, <em class="sig-param">override_logged_messages: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pringles.simulator.simulator.SimulationResult<a class="headerlink" href="#pringles.simulator.simulator.Simulator.run_simulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the simulation in the targeted CD++ simulator instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -346,6 +346,7 @@ An event is composed of:</p>
 <li><p><strong>simulation_wd</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Working directory in which to dump all “compiled”
 models, logs, outputs and events file, defaults to None, in which case
 a temporal directory is created, in an OS-specific location.</p></li>
+<li><p><strong>override_logged_messages</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – ADVANCED USE. Override logged messages filter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
