@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.ticker import FuncFormatter
 from typing import Any
-from .utils import VirtualTime
+from .vtime import VirtualTime
 
 
 def __vtime_formatter(x: Any, pos: Any):
