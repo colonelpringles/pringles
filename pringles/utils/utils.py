@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, Any
+from typing import Optional, Any, cast
 from pringles.utils.errors import BadVirtualTimeValuesError
 
 
@@ -82,8 +82,7 @@ class VirtualTime:
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, VirtualTime):
             return False
-        other_as_vtime: VirtualTime = other
-        return self._to_number() == other_as_vtime._to_number()
+        return self._to_number() == cast(VirtualTime, other)._to_number()
 
     def __hash__(self) -> int:
         # NOTE: This could lead to some problem
