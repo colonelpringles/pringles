@@ -75,6 +75,15 @@ class VirtualTime:
     def __gt__(self, other):
         return self._to_number() > other._to_number()
 
+    def __lt__(self, value):
+        return self._to_number() < cast(VirtualTime, value)._to_number()
+
+    def __le__(self, value):
+        return not self.__gt__(value)
+
+    def __ge__(self, value):
+        return not self.__lt__(value)
+
     def __repr__(self):
         return (f"VirtualTime({self.hours:02d}:{self.minutes:02d}:" +
                 f"{self.seconds:02d}:{self.milliseconds:03d}:{self.remainder})")
