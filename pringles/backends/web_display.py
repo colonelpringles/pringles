@@ -73,7 +73,7 @@ class WebApplication(tornado.web.Application):
         cls.url_prefix = url_prefix
 
         if port is None:
-            # NOTE: This is a random part for testing purposes
+            # TODO: Add random free-port lookup
             port = 10982
 
         # Add logic to grab a random *available* port
@@ -83,6 +83,7 @@ class WebApplication(tornado.web.Application):
 
 
 def _get_static_files_path() -> str:
+    # TODO: Overwrite this function on test-suite to move test statics
     return os.path.join(
         os.path.dirname(__file__), 'statics')
 
