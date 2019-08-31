@@ -1,12 +1,9 @@
 import tornado.web
 import tornado.ioloop
 from tornado.ioloop import PeriodicCallback
-import sys
 import os
 from pathlib import Path
-import signal
 import threading
-from contextlib import contextmanager
 import asyncio
 
 from pringles.models import Model
