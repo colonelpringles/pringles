@@ -16,6 +16,7 @@ class AtomicModelBuilder:
     """
     Atomic models class builder.
     """
+
     def __init__(self):
         self.discovered_input_ports_fields = []
         self.discovered_output_ports_fields = []
@@ -43,6 +44,7 @@ class Model:
     """
     Model is the base class for all DEVS model instances, be it an Atomic or a Coupled.
     """
+
     def __init__(self, name: str):
         self.name = name
         self.inports: List[Port] = []
@@ -72,6 +74,7 @@ class Port:
     """
     Port is the base class for all DEVS ports.
     """
+
     def __init__(self, name: str, owner: Model):
         # a type could be added in the future as an extra checks
         self.name = name
@@ -191,3 +194,8 @@ class Coupled(Model):
             raise Exception(
                 f"This is not a valid coupling. Ports are {from_port.__class__}" +
                 f" and {to_port.__class__}. Please check the provided ports.")
+
+    # Method used by ipython to html-display a model
+    def _repr_html_(self) -> bytes:
+        from pringles.backends import ipython_inline_display
+        return ipython_inline_display(self)
