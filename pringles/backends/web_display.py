@@ -60,6 +60,8 @@ class WebApplication(tornado.web.Application):
     def __init__(self, url_prefix: str = ''):
         super().__init__([
             (url_prefix + r'/test', self.TestGetWithBodyHandler),
+            (url_prefix + r'/_static/(.*)',
+                tornado.web.StaticFileHandler, {'path': _get_static_files_path()})
         ])
 
     @classmethod
@@ -80,6 +82,11 @@ class WebApplication(tornado.web.Application):
         cls.started_latch.release()
 
 
+def _get_static_files_path() -> str:
+    return os.path.join(
+        os.path.dirname(__file__), 'statics')
+
+
 def ipython_inline_display(model: Model) -> bytes:
     import tornado.template
     from pringles.serializers import JsonSerializer
@@ -88,8 +95,7 @@ def ipython_inline_display(model: Model) -> bytes:
         web_model_display_thread.start()
         WebApplication.started_latch.acquire()
 
-    single_model_template = Path(os.path.join(
-        os.path.dirname(__file__), 'statics'), 'test.html').read_bytes()
+    single_model_template = Path(_get_static_files_path(), 'test.html').read_bytes()
     single_template = tornado.template.Template(single_model_template)
     return single_template.generate(
         model_source=JsonSerializer.serialize(model)
