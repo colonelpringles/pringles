@@ -33,8 +33,8 @@ web_model_display_thread = ServerThread()
 class WebApplication(tornado.web.Application):
 
     initialized = False
-    started = False
     url_prefix = ''
+    # Hacky way to force the ipython render method to wait for the tornado server to start
     started_latch = threading.Semaphore(0)
 
     # Display model as html request handler
@@ -69,33 +69,6 @@ class WebApplication(tornado.web.Application):
         app.listen(port)
         cls.initialized = True
         cls.started_latch.release()
-
-    @classmethod
-    def start(cls):
-        if cls.started:
-            return
-
-        def shutdown():
-            ioloop.stop()
-            print("Server is stopped")
-            sys.stdout.flush()
-            cls.started = False
-
-        @contextmanager
-        def chatch_sigint():
-            old_handler = signal.signal(
-                signal.SIGINT,
-                lambda sig, frame: ioloop.add_callback_from_signal(shutdown))
-            try:
-                yield
-            finally:
-                signal.signal(signal.SIGINT, old_handler)
-
-        cls.started = True
-        print("Press CTRL-C to stop the display server")
-        sys.stdout.flush()
-        with chatch_sigint():
-            ioloop.start()
 
 
 def ipython_inline_display(model: Model) -> bytes:
