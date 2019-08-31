@@ -11,6 +11,16 @@ import asyncio
 from pringles.models import Model
 
 
+class ServerThread(threading.Thread):
+    def run(self):
+        new_io_loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(new_io_loop)
+        tornado.ioloop.IOLoop.current().start()
+
+
+web_model_display_thread = ServerThread()
+
+
 class WebApplication(tornado.web.Application):
 
     initialized = False
@@ -77,16 +87,6 @@ class WebApplication(tornado.web.Application):
         sys.stdout.flush()
         with chatch_sigint():
             ioloop.start()
-
-
-class ServerThread(threading.Thread):
-    def run(self):
-        new_io_loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(new_io_loop)
-        tornado.ioloop.IOLoop.current().start()
-
-
-web_model_display_thread = ServerThread()
 
 
 def ipython_inline_display(model: Model) -> bytes:
