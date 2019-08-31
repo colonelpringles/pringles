@@ -1,5 +1,6 @@
 import tornado.web
 import tornado.ioloop
+from tornado.ioloop import PeriodicCallback
 import sys
 import os
 from pathlib import Path
@@ -12,19 +13,30 @@ from pringles.models import Model
 
 
 class ServerThread(threading.Thread):
+
+    _join_called = False
+
     def run(self):
         new_io_loop = asyncio.new_event_loop()
         asyncio.set_event_loop(new_io_loop)
         WebApplication.initialize()
 
         ioloop = tornado.ioloop.IOLoop.current()
-        # TODO: Add some safe way for the ioloop to stop when the thread is awaited to be joined
-        # This makes the event loop stop in the IO event
-        # ioloop.add_callback(ioloop.stop)
+
+        def healthcheck():
+            if ServerThread._join_called:
+                ioloop.stop()
+
+        # Add a healthcheck every 1 second
+        PeriodicCallback(healthcheck, 1000).start()
 
         ioloop.start()
-
         ioloop.close()
+
+    # Overriding join method to mark the ioloop to be disposed
+    def join(self):
+        ServerThread._join_called = True
+        super().join()
 
 
 web_model_display_thread = ServerThread()
