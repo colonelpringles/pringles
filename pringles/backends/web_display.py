@@ -15,7 +15,16 @@ class ServerThread(threading.Thread):
     def run(self):
         new_io_loop = asyncio.new_event_loop()
         asyncio.set_event_loop(new_io_loop)
-        tornado.ioloop.IOLoop.current().start()
+        WebApplication.initialize()
+
+        ioloop = tornado.ioloop.IOLoop.current()
+        # TODO: Add some safe way for the ioloop to stop when the thread is awaited to be joined
+        # This makes the event loop stop in the IO event
+        # ioloop.add_callback(ioloop.stop)
+
+        ioloop.start()
+
+        ioloop.close()
 
 
 web_model_display_thread = ServerThread()
@@ -26,6 +35,7 @@ class WebApplication(tornado.web.Application):
     initialized = False
     started = False
     url_prefix = ''
+    started_latch = threading.Semaphore(0)
 
     # Display model as html request handler
     class DisplayModel(tornado.web.RequestHandler):
@@ -58,13 +68,12 @@ class WebApplication(tornado.web.Application):
         # Add logic to grab a random *available* port
         app.listen(port)
         cls.initialized = True
+        cls.started_latch.release()
 
     @classmethod
     def start(cls):
         if cls.started:
             return
-
-        ioloop = tornado.ioloop.IOLoop.current()
 
         def shutdown():
             ioloop.stop()
@@ -93,9 +102,9 @@ def ipython_inline_display(model: Model) -> bytes:
     import tornado.template
     from pringles.serializers import JsonSerializer
 
-    WebApplication.initialize()
     if not web_model_display_thread.is_alive():
         web_model_display_thread.start()
+        WebApplication.started_latch.acquire()
 
     single_model_template = Path(os.path.join(
         os.path.dirname(__file__), 'statics'), 'test.html').read_bytes()

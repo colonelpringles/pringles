@@ -11,7 +11,6 @@ def test_simple_model_display():
     assert top.name in top_html_representation
 
 
-@pytest.mark.timeout(10)
 def test_web_backed_is_alive():
     _start_server()
     response = requests.get("http://localhost:10982/test", timeout=10)
