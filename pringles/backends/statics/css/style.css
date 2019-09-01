@@ -158,16 +158,15 @@ TODO: This is affecting the whole notebook. Find a way to just apply this change
    ======================== */
 
 #devs_diagrammer #body-wrapper {
-  width: 100vw;
+  width: 60vw;
   height: calc(100vh - 85px);
 }
 
 #devs_diagrammer #models-wrapper {
   display:block;
-  width: 65%;
-  height: 100%;
+  width: 65vw
+  height: 95%;
   float: left;
-  box-shadow: inset -2px 0px 1px 1px #1d1c1c;
   overflow-y: auto;
 }
 
@@ -175,9 +174,7 @@ TODO: This is affecting the whole notebook. Find a way to just apply this change
   width: calc(35% - 5px);
   height: 100%;
   float: right;
-  border-left: solid 5px #404040;;
   text-align: center;
-  box-shadow: inset 2px 0px 1px 1px #1d1c1c;
   overflow-y: auto;
 }
 
