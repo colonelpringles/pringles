@@ -96,8 +96,9 @@ def ipython_inline_display(model: Model) -> bytes:
         web_model_display_thread.start()
         WebApplication.started_latch.acquire()
 
-    single_model_template = Path(_get_static_files_path(), 'test.html').read_bytes()
+    single_model_template = Path(_get_static_files_path(), 'basic.html').read_bytes()
     single_template = tornado.template.Template(single_model_template)
     return single_template.generate(
-        model_source=JsonSerializer.serialize(model)
+        model_source=JsonSerializer.serialize(model),
+        url_prefix="http://localhost:10982"
     )

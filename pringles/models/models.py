@@ -196,6 +196,6 @@ class Coupled(Model):
                 f" and {to_port.__class__}. Please check the provided ports.")
 
     # Method used by ipython to html-display a model
-    def _repr_html_(self) -> bytes:
+    def _repr_html_(self) -> str:
         from pringles.backends import ipython_inline_display
-        return ipython_inline_display(self)
+        return ipython_inline_display(self).decode("utf-8")
