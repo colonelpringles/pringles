@@ -2,6 +2,10 @@
           FONTS
    ======================== */
 
+/*
+TODO: This is affecting the whole notebook. Find a way to just apply this changes to the Diagrammer canvas
+*/
+
 @font-face {
     font-family: 'OpenSansLight';
     src: url('../font/OpenSansLight.ttf')  format('truetype');
