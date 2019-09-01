@@ -1,56 +1,66 @@
 <!DOCTYPE html>
 <html class="basic-page">
-  <head>
-    <meta charset="UTF-8">
-    <title>DEVS Diagrammer</title>
-    <meta name="viewport" content="width=device-width, user-scalable=no">
 
-    <link rel="stylesheet" href="{{ url_prefix }}/_static/css/style.css" />
+<head>
+  <meta charset="UTF-8">
+  <title>DEVS Diagrammer</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
 
-    <script src="{{ url_prefix }}/_static/vendors/js/createjs/createjs-2013.12.12.min.js"></script>
-    <script src="{{ url_prefix }}/_static/vendors/js/jquery-3.2.1/jquery-3.2.1.min.js"></script>
-    <script src="{{ url_prefix }}/_static/js/ColorCodes.js"></script>
-    <script src="{{ url_prefix }}/_static/js/main.js"></script>
-    <script src="{{ url_prefix }}/_static/js/manifest.js"></script>
-    <script src="{{ url_prefix }}/_static/js/toposort.js"></script>
-    <script src="{{ url_prefix }}/_static/js/Square.js"></script>
-    <script src="{{ url_prefix }}/_static/js/Port.js"></script>
-    <script src="{{ url_prefix }}/_static/js/Link.js"></script>
-    <script src="{{ url_prefix }}/_static/js/JSONModelGraphics.js"></script>
-    <script src="{{ url_prefix }}/_static/js/Model.js"></script>
-    <script src="{{ url_prefix }}/_static/js/Canvas.js"></script>
-  
-    <script type="text/javascript">
-      modelAsJson = '{% raw model_source %}'
-      $(document).ready(function() {
-        console.error("About to start drawing model");
-        menu_init();
-        parse_query_params(modelAsJson);
-      });
-    </script>
+  <link rel="stylesheet" href="{{ url_prefix }}/_static/css/style.css" />
 
-  </head>
-  <body>
+  <script src="{{ url_prefix }}/_static/vendors/js/createjs/createjs-2013.12.12.min.js"></script>
+  <script src="{{ url_prefix }}/_static/vendors/js/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+  <script src="{{ url_prefix }}/_static/js/ColorCodes.js"></script>
+  <script src="{{ url_prefix }}/_static/js/main.js"></script>
+  <script src="{{ url_prefix }}/_static/js/manifest.js"></script>
+  <script src="{{ url_prefix }}/_static/js/toposort.js"></script>
+  <script src="{{ url_prefix }}/_static/js/Square.js"></script>
+  <script src="{{ url_prefix }}/_static/js/Port.js"></script>
+  <script src="{{ url_prefix }}/_static/js/Link.js"></script>
+  <script src="{{ url_prefix }}/_static/js/JSONModelGraphics.js"></script>
+  <script src="{{ url_prefix }}/_static/js/Model.js"></script>
+  <script src="{{ url_prefix }}/_static/js/Canvas.js"></script>
+
+  <script type="text/javascript">
+    modelAsJson = '{% raw model_source %}'
+    $(document).ready(function () {
+      console.error("About to start drawing model");
+      menu_init();
+      parse_query_params(modelAsJson);
+    });
+  </script>
+
+</head>
+
+<body>
 
   <!-- hiden button for export JSON -->
   <a id="download" style="display:none"></a>
   <!-- hiden button for export JSON -->
 
-  <div id='body-wrapper'>
-    <div id="models-wrapper"></div>
-    
-    <div id="menu-wrapper">
-      <div class="list-wrapper">
-        <ul class="three-column-list">
-          <li><button class="action" type="button" onclick="expand_in_new_canvas_selected();">Expand in new canvas</button></li>
-          <li><button class="action" type="button" onclick="remove_selected_top_models();">Remove model</button></li>
-          <li><button class="action" type="button" onclick="toggle_models_selected();">Expand / Contract</button></li>
-          <li><button class="action" type="button" onclick="toggle_links_selected();">Show / Hide all links</button></li>
-          <li><button class="action" type="button" onclick="show_submodel_links_selected();">Show / Hide model links</button></li>
-          <li><button class="action" type="button" onclick="toggle_port_name_selected();">Show / Hide port names</button></li>
-        </ul>
-      </div>   
+  <div id="devs_diagrammer">
+    <div id='body-wrapper'>
+      <div id="models-wrapper"></div>
+
+      <div id="menu-wrapper">
+        <div class="list-wrapper">
+          <ul class="three-column-list">
+            <li><button class="action" type="button" onclick="expand_in_new_canvas_selected();">Expand in new
+                canvas</button></li>
+            <li><button class="action" type="button" onclick="remove_selected_top_models();">Remove model</button></li>
+            <li><button class="action" type="button" onclick="toggle_models_selected();">Expand / Contract</button></li>
+            <li><button class="action" type="button" onclick="toggle_links_selected();">Show / Hide all links</button>
+            </li>
+            <li><button class="action" type="button" onclick="show_submodel_links_selected();">Show / Hide model
+                links</button></li>
+            <li><button class="action" type="button" onclick="toggle_port_name_selected();">Show / Hide port
+                names</button></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-  </body>
+
+</body>
+
 </html>

@@ -21,7 +21,7 @@ TODO: This is affecting the whole notebook. Find a way to just apply this change
     src: url('../font/orangejuice2.0.ttf')  format('truetype');
 }
 
-body {
+#devs_diagrammer {
   width: 100%;
   height: 100%;
 	color: #FFFFFF;
@@ -32,7 +32,7 @@ body {
   margin: 0px;
 }
 
-h1, h2 {
+#devs_diagrammer h1, h2 {
   color: rgba(208, 192, 4, 0.93);
   font-weight: normal;
   text-align: left;
@@ -42,15 +42,15 @@ h1, h2 {
   margin-top: 10px;
 }
 
-h2 {
+#devs_diagrammer h2 {
   font-size: 20px;
 }
 
-h1 {
+#devs_diagrammer h1 {
   font-size: 25px;
 }
 
-header {
+#devs_diagrammer header {
   font-family: 'orangeJuice';
   height: 60px;
   width: 100%;
@@ -64,7 +64,7 @@ header {
   line-height: 50px;
 }
 
-canvas {
+#devs_diagrammer canvas {
   width: 90%;
   height: calc(90vh - 85px);
   margin-top: 30px;
@@ -74,7 +74,7 @@ canvas {
   box-shadow: 0px 0px 8px 5px #0a0a0a;
 }
 
-button {
+#devs_diagrammer button {
   cursor: pointer;
   border: solid 2px #374c41;
   background-color: #104240;
@@ -84,20 +84,20 @@ button {
   box-shadow: 2px 3px 5px #171717;
 }
 
-button:hover, label[for="model_file"]:hover, label:hover {
+#devs_diagrammer button:hover, label[for="model_file"]:hover, label:hover {
   background-color: #0e373a;
   color: #a1a1a1;
 }
 
-button.action {
+#devs_diagrammer button.action {
   width: 171px;
 }
 
-button.export {
+#devs_diagrammer button.export {
   width: 120px;
 }
 
-li {
+#devs_diagrammer li {
   list-style-type: none;
   margin-bottom: 10px;
 }
@@ -106,7 +106,7 @@ li {
       wrappers and lists
    ======================== */
 
-.two-column-list, .three-column-list {
+#devs_diagrammer .two-column-list, .three-column-list {
   -moz-column-gap: 20px;
   -moz-column-fill: auto;
   -webkit-column-gap: 20px;
@@ -115,13 +115,13 @@ li {
   column-fill: auto;
 }
 
-.two-column-list {
+#devs_diagrammer .two-column-list {
   column-count: 2;
   -moz-column-count: 2;
   -webkit-column-count: 2;
 }
 
-.three-column-list {
+#devs_diagrammer .three-column-list {
   column-count: 3;
   -moz-column-count: 3;
   -webkit-column-count: 3;
@@ -131,7 +131,7 @@ li {
   margin-bottom: 0px;
 }
 
-.list-wrapper {
+#devs_diagrammer .list-wrapper {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
@@ -142,7 +142,7 @@ li {
   text-align: left;
 }
 
-.options-wrapper {
+#devs_diagrammer .options-wrapper {
   background-color: rgb(25, 25, 25);
   border-radius: 2px;
   border: 1px solid #121212;
@@ -157,12 +157,12 @@ li {
           divs
    ======================== */
 
-#body-wrapper {
+#devs_diagrammer #body-wrapper {
   width: 100vw;
   height: calc(100vh - 85px);
 }
 
-#models-wrapper {
+#devs_diagrammer #models-wrapper {
   display:block;
   width: 65%;
   height: 100%;
@@ -171,7 +171,7 @@ li {
   overflow-y: auto;
 }
 
-#menu-wrapper {
+#devs_diagrammer #menu-wrapper {
   width: calc(35% - 5px);
   height: 100%;
   float: right;
@@ -185,18 +185,18 @@ li {
           Scrollbar
    ======================== */
 
-::-webkit-scrollbar-track
+#devs_diagrammer ::-webkit-scrollbar-track
 {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   background-color: #191919;
 }
 
-::-webkit-scrollbar {
+#devs_diagrammer ::-webkit-scrollbar {
   width: 10px;
   background-color: #191919;
 }
 
-::-webkit-scrollbar-thumb {
+#devs_diagrammer ::-webkit-scrollbar-thumb {
   background-color: rgba(208, 192, 4, 0.93);
 }
 
@@ -204,7 +204,7 @@ li {
       model input file
    ========================== */
 
-label[for="model_file"] {
+#devs_diagrammer label[for="model_file"] {
 
   width: 400px;
   height: 30px;
@@ -230,7 +230,7 @@ label[for="model_file"] {
         Color menu
    ========================= */
 
-input[type="color"], input[type="file"], button.color_button {
+#devs_diagrammer input[type="color"], input[type="file"], button.color_button {
   width: 0.1px;
   height: 0.1px;
   opacity: 0;
@@ -242,15 +242,15 @@ input[type="color"], input[type="file"], button.color_button {
   z-index: -1;
 }
 
-input[type="color"]::-webkit-color-swatch-wrapper {
+#devs_diagrammer input[type="color"]::-webkit-color-swatch-wrapper {
   padding: 0;
 }
 
-input[type="color"]::-webkit-color-swatch {
+#devs_diagrammer input[type="color"]::-webkit-color-swatch {
   border: solid;
 }
 
-.color {
+#devs_diagrammer .color {
   cursor: pointer;
   display: inline-block;
   width: 115px;
@@ -265,27 +265,27 @@ input[type="color"]::-webkit-color-swatch {
 /* ==================================================
                 Basic page
    ================================================== */
-.basic-page div#body-wrapper{
+#devs_diagrammer .basic-page div#body-wrapper{
   width: 100%;
   height: 100vh;
 }
 
-.basic-page #models-wrapper{
+#devs_diagrammer .basic-page #models-wrapper{
   width: 100%;
   height: unset;
 }
 
-.basic-page #models-wrapper > canvas {
+#devs_diagrammer .basic-page #models-wrapper > canvas {
   margin: 10px;
 }
 
-.basic-page #menu-wrapper{
+#devs_diagrammer .basic-page #menu-wrapper{
   width: 100%;
   height: initial;
   border: 0;
 }
 
-.list-wrapper {
+#devs_diagrammer .list-wrapper {
   width: fit-content;
 }
 
