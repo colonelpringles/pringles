@@ -44,11 +44,6 @@ class WebApplication(tornado.web.Application):
     # Hacky way to force the ipython render method to wait for the tornado server to start
     started_latch = threading.Semaphore(0)
 
-    # Display model as html request handler
-    class DisplayModel(tornado.web.RequestHandler):
-        def get(self):
-            self.write("Not implemented yet")
-
     class HealthcheckHandler(tornado.web.RequestHandler):
         def get(self):
             written_response = "tutuc"
