@@ -1,6 +1,5 @@
 import tornado.web
 import tornado.ioloop
-from tornado.ioloop import PeriodicCallback
 import os
 from pathlib import Path
 import threading
@@ -25,7 +24,7 @@ class ServerThread(threading.Thread):
                 ioloop.stop()
 
         # Add a healthcheck every 1 second
-        PeriodicCallback(healthcheck, 1000).start()
+        tornado.ioloop.PeriodicCallback(healthcheck, 1000).start()
 
         ioloop.start()
         ioloop.close()
