@@ -83,7 +83,6 @@ class WebApplication(tornado.web.Application):
 
 
 def _get_static_files_path() -> str:
-    # TODO: Overwrite this function on test-suite to move test statics
     return os.path.join(
         os.path.dirname(__file__), 'statics')
 

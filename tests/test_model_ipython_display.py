@@ -1,13 +1,19 @@
 import pytest
+from unittest.mock import patch
 import requests
+import os
 from pringles.models import Coupled
 from .utils import make_queue_top_model_with_events
 
 
 @pytest.fixture(autouse=True)
 def _start_web_display_backend():
-    _start_server()
-    yield
+    with patch("pringles.backends.web_display._get_static_files_path")\
+            as mock_get_static_files_path:
+        mock_get_static_files_path.return_value = os.path.join(
+            os.path.dirname(__file__), "resources/_test_statics")
+        _start_server()
+        yield
 
 
 def test_simple_model_display():
