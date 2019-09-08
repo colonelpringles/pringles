@@ -43,6 +43,7 @@ class WebApplication(tornado.web.Application):
 
     initialized = False
     url_prefix = ''
+    target_url = ''
     # Hacky way to force the ipython render method to wait for the tornado server to start
     started_latch = threading.Semaphore(0)
 
@@ -64,6 +65,7 @@ class WebApplication(tornado.web.Application):
                 tornado.web.StaticFileHandler, {'path': _get_static_files_path()})
         ])
 
+    # TODO: Add try-finally idiom to this method, to release latch on any failure
     @classmethod
     def initialize(cls, url_prefix: str = '', port: int = None, address: str = None):
         if cls.initialized:
@@ -72,9 +74,18 @@ class WebApplication(tornado.web.Application):
         app = cls(url_prefix=url_prefix)
         cls.url_prefix = url_prefix
 
+        def _get_random_free_port() -> int:
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.bind(("", 0))
+            s.listen(1)
+            port = s.getsockname()[1]
+            s.close()
+            return port
+
         if port is None:
-            # TODO: Add random free-port lookup
-            port = 10982
+            port = _get_random_free_port()
+        cls.target_url = 'http://localhost:' + str(port)
 
         # Add logic to grab a random *available* port
         app.listen(port)
@@ -99,5 +110,5 @@ def ipython_inline_display(model: Model) -> bytes:
     single_template = tornado.template.Template(single_model_template)
     return single_template.generate(
         model_source=JsonSerializer.serialize(model),
-        url_prefix="http://localhost:10982"
+        url_prefix=WebApplication.target_url
     )
