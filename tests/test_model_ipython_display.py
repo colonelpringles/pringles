@@ -39,8 +39,8 @@ def test_simple_model_display(test_requester):
 
 
 def test_web_backed_is_alive(test_requester):
-    response = test_requester.get("/test")
-    assert response.text == "holis"
+    response = test_requester.get("/heartbeat")
+    assert response.text == "tutuc"
 
 
 def test_static_is_served(test_requester):

@@ -53,19 +53,17 @@ class WebApplication(tornado.web.Application):
             self.write("Not implemented yet")
 
     class TestGetWithBodyHandler(tornado.web.RequestHandler):
-
         def get(self):
-            written_response = "holis"
+            written_response = "tutuc"
             self.write(written_response)
 
     def __init__(self, url_prefix: str = ''):
         super().__init__([
-            (url_prefix + r'/test', self.TestGetWithBodyHandler),
+            (url_prefix + r'/heartbeat', self.TestGetWithBodyHandler),
             (url_prefix + r'/_static/(.*)',
                 tornado.web.StaticFileHandler, {'path': _get_static_files_path()})
         ])
 
-    # TODO: Add try-finally idiom to this method, to release latch on any failure
     @classmethod
     def initialize(cls, url_prefix: str = '', port: int = None, address: str = None):
         if cls.initialized:
@@ -74,23 +72,25 @@ class WebApplication(tornado.web.Application):
         app = cls(url_prefix=url_prefix)
         cls.url_prefix = url_prefix
 
-        def _get_random_free_port() -> int:
-            import socket
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.bind(("", 0))
-            s.listen(1)
-            port = s.getsockname()[1]
-            s.close()
-            return port
+        try:
+            if port is None:
+                port = cls._get_random_free_port()
+            cls.target_url = 'http://localhost:' + str(port)
 
-        if port is None:
-            port = _get_random_free_port()
-        cls.target_url = 'http://localhost:' + str(port)
+            app.listen(port)
+            cls.initialized = True
+        finally:
+            cls.started_latch.release()
 
-        # Add logic to grab a random *available* port
-        app.listen(port)
-        cls.initialized = True
-        cls.started_latch.release()
+    @staticmethod
+    def _get_random_free_port() -> int:
+        import socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(("", 0))
+        s.listen(1)
+        port = s.getsockname()[1]
+        s.close()
+        return port
 
 
 def _get_static_files_path() -> str:
