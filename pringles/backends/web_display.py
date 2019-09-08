@@ -52,14 +52,14 @@ class WebApplication(tornado.web.Application):
         def get(self):
             self.write("Not implemented yet")
 
-    class TestGetWithBodyHandler(tornado.web.RequestHandler):
+    class HealthcheckHandler(tornado.web.RequestHandler):
         def get(self):
             written_response = "tutuc"
             self.write(written_response)
 
     def __init__(self, url_prefix: str = ''):
         super().__init__([
-            (url_prefix + r'/heartbeat', self.TestGetWithBodyHandler),
+            (url_prefix + r'/heartbeat', self.HealthcheckHandler),
             (url_prefix + r'/_static/(.*)',
                 tornado.web.StaticFileHandler, {'path': _get_static_files_path()})
         ])
