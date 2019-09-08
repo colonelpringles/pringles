@@ -6,6 +6,7 @@ from pringles.simulator import Simulator, SimulationResult
 from pringles.simulator.errors import SimulatorExecutableNotFound
 from pringles.utils import VirtualTime
 from pringles.models import Coupled, Model, AtomicModelBuilder, Event
+from tests.utils import make_queue_top_model_with_events
 
 
 TEST_PATH_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -26,13 +27,13 @@ def test_simulator_executable_not_found_raises():
 
 def test_no_exception_raised_in_simulation():
     simulator = Simulator(CDPP_BIN_PATH)
-    top_model, events = _make_queue_top_model_with_events()
+    top_model, events = make_queue_top_model_with_events()
     simulator.run_simulation(top_model, events=events)
 
 
 def test_process_stdout_is_returned_correctly():
     simulator = Simulator(CDPP_BIN_PATH)
-    top_model, events = _make_queue_top_model_with_events()
+    top_model, events = make_queue_top_model_with_events()
     simulation_result = simulator.run_simulation(top_model, events=events)
     assert simulation_result\
         .get_process_output()\
@@ -41,7 +42,7 @@ def test_process_stdout_is_returned_correctly():
 
 def test_run_simulation_in_custom_wd():
     simulator = Simulator(CDPP_BIN_PATH)
-    top_model, events = _make_queue_top_model_with_events()
+    top_model, events = make_queue_top_model_with_events()
     temp_path = tempfile.mkdtemp()
     simulator.run_simulation(top_model, events=events, simulation_wd=temp_path)
     files_found = False
@@ -78,24 +79,3 @@ def test_parse_output_file_tuple_values():
             assert isinstance(value, tuple)
             for coord in value:
                 assert isinstance(coord, float)
-
-
-def _make_queue_top_model_with_events() -> Tuple[Model, List[Event]]:
-    Queue = AtomicModelBuilder().with_name("Queue").build()
-    sample_queue = Queue("sample_queue", preparation="0:0:5:0")
-    sample_queue.add_inport("in").add_outport("out")
-    top_model = Coupled("top", [sample_queue])\
-        .add_inport("incoming_event")\
-        .add_outport("emitted_signal")\
-        .add_coupling(sample_queue.get_port("out"), "emitted_signal")\
-        .add_coupling("incoming_event", sample_queue.get_port("in"))
-
-    incoming_event_port = top_model.get_port("incoming_event")
-
-    events = [
-        Event(VirtualTime.of_seconds(10), incoming_event_port, 1.5),
-        Event(VirtualTime.of_seconds(20), incoming_event_port, 20.),
-        Event(VirtualTime.of_seconds(30), incoming_event_port, 20.),
-    ]
-
-    return top_model, events
