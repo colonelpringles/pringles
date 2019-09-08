@@ -5,7 +5,7 @@ import os
 from .utils import make_queue_top_model_with_events
 
 
-class TestTimeoutRequester:
+class TimeoutRequester:
     def __init__(self, base_url, timeout):
         self.base_url = base_url
         self.timeout = timeout
@@ -26,9 +26,9 @@ def _start_web_display_backend():
 
 
 @pytest.fixture()
-def test_requester() -> TestTimeoutRequester:
+def test_requester() -> TimeoutRequester:
     from pringles.backends.web_display import WebApplication
-    return TestTimeoutRequester(WebApplication.target_url, 10)
+    return TimeoutRequester(WebApplication.target_url, 10)
 
 
 def test_simple_model_display(test_requester):
