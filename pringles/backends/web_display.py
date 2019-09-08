@@ -36,9 +36,6 @@ class ServerThread(threading.Thread):
         super().join()
 
 
-web_model_display_thread = ServerThread()
-
-
 class WebApplication(tornado.web.Application):
 
     initialized = False
@@ -96,6 +93,9 @@ class WebApplication(tornado.web.Application):
 def _get_static_files_path() -> str:
     return os.path.join(
         os.path.dirname(__file__), 'statics')
+
+
+web_model_display_thread = ServerThread()
 
 
 def ipython_inline_display(model: Model) -> bytes:
