@@ -1,6 +1,6 @@
-import matplotlib.pyplot as plt
-from matplotlib.axes import Axes
-from matplotlib.ticker import FuncFormatter
+import matplotlib.pyplot as plt  # pylint: disable=E0401
+from matplotlib.axes import Axes  # pylint: disable=E0401
+from matplotlib.ticker import FuncFormatter  # pylint: disable=E0401
 from typing import Any
 from .vtime import VirtualTime
 
