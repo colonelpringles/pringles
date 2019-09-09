@@ -127,6 +127,30 @@ class SimulationResult:
         return self.process_result.stdout.decode("utf-8")
 
 
+class Simulation:
+    def __init__(self,
+                 top_model: Model,
+                 duration: Optional[VirtualTime] = None,
+                 events: Optional[List[Event]] = None,
+                 use_simulator_logs: bool = True,
+                 use_simulator_out: bool = True,
+                 working_dir: Optional[str] = None,
+                 override_logged_messages: Optional[str] = None):
+        self.result: Optional[SimulationResult] = None
+
+        self.top_model = top_model
+        self.duration = duration
+        self.events = events
+        self.use_simulator_logs = use_simulator_logs
+        self.use_simulator_out = use_simulator_out
+        self.working_dir = working_dir
+        self.override_logged_messages = override_logged_messages
+
+    @property
+    def was_executed(self) -> bool:
+        return self.result is not None
+
+
 class Simulator:
     CDPP_BIN = 'cd++'
 
@@ -135,75 +159,49 @@ class Simulator:
         self.executable_route = self.find_executable_route(cdpp_bin_path)
         self.atomic_registry = AtomicRegistry(user_models_dir, autodiscover)
 
-    def get_registry(self):
-        return self.atomic_registry
-
     # This is thread-safe mate.
     def run_simulation(self,
-                       top_model: Model,
-                       duration: Optional[VirtualTime] = None,
-                       events: Optional[List[Event]] = None,
-                       use_simulator_logs: bool = True,
-                       use_simulator_out: bool = True,
-                       simulation_wd: Optional[str] = None,
-                       override_logged_messages: Optional[str] = None) -> SimulationResult:
+                       simulation: Simulation) -> SimulationResult:
         """Run the simulation in the targeted CD++ simulator instance.
-
-        :param top_model: The top model of the simulation to be ran
-        :type top_model: Model
-        :param duration: Simulation duration, defaults to None
-        :type duration: Optional[VirtualTime], optional
-        :param events: List of external events, defaults to None
-        :type events: Optional[List[Event]], optional
-        :param use_simulator_logs: True if simulator logs should be generated, defaults to True
-        :type use_simulator_logs: bool, optional
-        :param use_simulator_out: True if simulator outputs should be captured, defaults to True
-        :type use_simulator_out: bool, optional
-        :param simulation_wd: Working directory in which to dump all "compiled"
-            models, logs, outputs and events file, defaults to None, in which case
-            a temporal directory is created, in an OS-specific location.
-        :type simulation_wd: Optional[str], optional
-        :param override_logged_messages: ADVANCED USE. Override logged messages filter.
-        :type override_logged_messages: Optional[str], optional
         :raises SimulatorExecutableNotFound: CD++ executable was not found in the provided directory
         :return: A SimulationResult, containing all data concerning the simulation results.
         :rtype: SimulationResult
         """
         logged_messages = 'XY'
-        if override_logged_messages is not None:
-            logged_messages = override_logged_messages
+        if simulation.override_logged_messages is not None:
+            logged_messages = simulation.override_logged_messages
 
-        if simulation_wd is not None:
+        if simulation.working_dir is not None:
             wd_simulation_subdirectory_name =\
                 datetime.now().strftime("%Y-%m-%d-%H%M%S") + \
                 "-" + str(uuid.uuid4().hex)
-            simulation_wd = os.path.join(simulation_wd,
-                                         wd_simulation_subdirectory_name)
-            os.mkdir(simulation_wd)
+            simulation.working_dir = os.path.join(simulation.working_dir,
+                                                  wd_simulation_subdirectory_name)
+            os.mkdir(simulation.working_dir)
         else:
-            simulation_wd = tempfile.mkdtemp()
+            simulation.working_dir = tempfile.mkdtemp()
 
-        dumped_top_model_path = self.dump_model_in_file(top_model,
-                                                        simulation_wd)
+        dumped_top_model_path = self.dump_model_in_file(simulation.top_model,
+                                                        simulation.working_dir)
         commands_list = [self.executable_route,
                          "-m" + dumped_top_model_path,
                          "-L" + logged_messages]
-        if duration is not None:
-            commands_list.append("-t" + str(duration))
+        if simulation.duration is not None:
+            commands_list.append("-t" + str(simulation.duration))
 
-        if events is not None:
-            events_list = events
-            events_file_path = self.dump_events_in_file(events_list, simulation_wd)
+        if simulation.events is not None:
+            events_list = simulation.events
+            events_file_path = self.dump_events_in_file(events_list, simulation.working_dir)
             commands_list.append("-e" + events_file_path)
 
         # Simulation logs
-        if use_simulator_logs:
-            logs_path = Simulator._new_working_file_named(simulation_wd, "logs")
+        if simulation.use_simulator_logs:
+            logs_path = Simulator._new_working_file_named(simulation.working_dir, "logs")
             commands_list.append("-l" + logs_path)
 
         # Simulation output file
-        if use_simulator_out:
-            output_path = Simulator._new_working_file_named(simulation_wd, "output")
+        if simulation.use_simulator_out:
+            output_path = Simulator._new_working_file_named(simulation.working_dir, "output")
             commands_list.append("-o" + output_path)
 
         process_result = subprocess.run(commands_list, capture_output=True, check=True)
@@ -211,9 +209,13 @@ class Simulator:
         logging.debug("Logs path: %s", logs_path)
         logging.debug("Output path: %s", output_path)
 
-        return SimulationResult(process_result=process_result,
-                                main_log_path=logs_path,
-                                output_path=output_path)
+        simulation.result = SimulationResult(process_result=process_result,
+                                             main_log_path=logs_path,
+                                             output_path=output_path)
+        return simulation.result
+
+    def get_registry(self):
+        return self.atomic_registry
 
     @staticmethod
     def dump_events_in_file(events: List[Event], simulation_wd: str) -> str:
