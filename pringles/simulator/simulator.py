@@ -143,8 +143,17 @@ class Simulation:
         self.events = events
         self.use_simulator_logs = use_simulator_logs
         self.use_simulator_out = use_simulator_out
-        self.working_dir = working_dir
         self.override_logged_messages = override_logged_messages
+
+        self.working_dir = working_dir if working_dir else tempfile.mkdtemp()
+        self.output_dir = self.make_output_dir(self.working_dir)
+
+    @staticmethod
+    def make_output_dir(working_dir: str) -> str:
+        output_dir_name = datetime.now().strftime("%Y-%m-%d-%H%M%S") + "-" + str(uuid.uuid4().hex)
+        absolute_output_dir = os.path.join(working_dir, output_dir_name)
+        os.mkdir(absolute_output_dir)
+        return absolute_output_dir
 
     @property
     def was_executed(self) -> bool:
@@ -171,18 +180,8 @@ class Simulator:
         if simulation.override_logged_messages is not None:
             logged_messages = simulation.override_logged_messages
 
-        if simulation.working_dir is not None:
-            wd_simulation_subdirectory_name =\
-                datetime.now().strftime("%Y-%m-%d-%H%M%S") + \
-                "-" + str(uuid.uuid4().hex)
-            simulation.working_dir = os.path.join(simulation.working_dir,
-                                                  wd_simulation_subdirectory_name)
-            os.mkdir(simulation.working_dir)
-        else:
-            simulation.working_dir = tempfile.mkdtemp()
-
         dumped_top_model_path = self.dump_model_in_file(simulation.top_model,
-                                                        simulation.working_dir)
+                                                        simulation.output_dir)
         commands_list = [self.executable_route,
                          "-m" + dumped_top_model_path,
                          "-L" + logged_messages]
@@ -191,17 +190,17 @@ class Simulator:
 
         if simulation.events is not None:
             events_list = simulation.events
-            events_file_path = self.dump_events_in_file(events_list, simulation.working_dir)
+            events_file_path = self.dump_events_in_file(events_list, simulation.output_dir)
             commands_list.append("-e" + events_file_path)
 
         # Simulation logs
         if simulation.use_simulator_logs:
-            logs_path = Simulator._new_working_file_named(simulation.working_dir, "logs")
+            logs_path = Simulator._new_working_file_named(simulation.output_dir, "logs")
             commands_list.append("-l" + logs_path)
 
         # Simulation output file
         if simulation.use_simulator_out:
-            output_path = Simulator._new_working_file_named(simulation.working_dir, "output")
+            output_path = Simulator._new_working_file_named(simulation.output_dir, "output")
             commands_list.append("-o" + output_path)
 
         process_result = subprocess.run(commands_list, capture_output=True, check=True)
