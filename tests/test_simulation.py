@@ -1,7 +1,6 @@
 import pytest
 import os
 from pringles.simulator import Simulation
-from pringles.simulator.errors import SimulationObjectIsInmutableException
 
 from .utils import make_queue_top_model_with_events
 
