@@ -8,6 +8,7 @@ import subprocess
 import tempfile
 import uuid
 import logging
+import pickle
 from datetime import datetime
 from typing import Optional, List
 
@@ -128,6 +129,8 @@ class SimulationResult:
 
 
 class Simulation:
+    DEFAULT_PICKLEFILE_NAME = 'simulation.pkl'
+
     def __init__(self,
                  top_model: Model,
                  duration: Optional[VirtualTime] = None,
@@ -158,6 +161,19 @@ class Simulation:
     @property
     def was_executed(self) -> bool:
         return self.result is not None
+
+    def to_pickle(self, path=None) -> None:
+        if path is None:
+            path = self.output_dir + self.DEFAULT_PICKLEFILE_NAME
+
+        with open(path, 'w') as pickle_file:
+            pickle_file.write(pickle.dumps(self))
+
+    @classmethod
+    def read_pickle(cls, path) -> Simulation:
+        a_simulation = pickle.load(path)
+        assert isinstance(a_simulation, Simulation)
+        return a_simulation
 
 
 class Simulator:
