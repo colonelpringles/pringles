@@ -3,6 +3,8 @@ import pytest  # noqa
 from pringles.utils import VirtualTime
 from pringles.models import Coupled, Model, AtomicModelBuilder, Event
 
+def empty_coupled() -> Model:
+    return Coupled("empty_coupled", [])
 
 def make_queue_top_model_with_events() -> Tuple[Model, List[Event]]:
     Queue = AtomicModelBuilder().with_name("Queue").build()

@@ -13,6 +13,7 @@ from matplotlib.axes import Axes  # pylint: disable=E0401
 
 from pringles.models import Model, Event
 from pringles.utils import VirtualTime
+from pringles.simulator.errors import AttributeIsImmutableException
 
 
 # This object should contain the following properties:
@@ -121,6 +122,7 @@ class SimulationResult:
 
 
 class Simulation:
+
     DEFAULT_PICKLEFILE_NAME = 'simulation.pkl'
 
     def __init__(self,
@@ -133,15 +135,79 @@ class Simulation:
                  override_logged_messages: Optional[str] = None):
         self.result: Optional[SimulationResult] = None
 
-        self.top_model = top_model
-        self.duration = duration
-        self.events = events
-        self.use_simulator_logs = use_simulator_logs
-        self.use_simulator_out = use_simulator_out
-        self.override_logged_messages = override_logged_messages
+        self._top_model = top_model
+        self._events = events
+        self._duration = duration
+        self._use_simulator_logs = use_simulator_logs
+        self._use_simulator_out = use_simulator_out
+        self._override_logged_messages = override_logged_messages
 
-        self.working_dir = working_dir if working_dir else tempfile.mkdtemp()
-        self.output_dir = self.make_output_dir(self.working_dir)
+        self._working_dir = working_dir if working_dir else tempfile.mkdtemp()
+        self._output_dir = self.make_output_dir(self.working_dir)
+
+    @property
+    def top_model(self):
+        return self._top_model
+
+    @top_model.setter
+    def top_model(self, val):
+        raise AttributeIsImmutableException()
+
+    @property
+    def events(self):
+        return self._events
+
+    @events.setter
+    def events(self, val):
+        raise AttributeIsImmutableException()
+
+    @property
+    def duration(self):
+        return self._duration
+
+    @duration.setter
+    def duration(self, val):
+        raise AttributeIsImmutableException()
+
+    @property
+    def use_simulator_logs(self):
+        return self._use_simulator_logs
+
+    @use_simulator_logs.setter
+    def use_simulator_logs(self, val):
+        raise AttributeIsImmutableException()
+
+    @property
+    def use_simulator_out(self):
+        return self._use_simulator_out
+
+    @use_simulator_out.setter
+    def use_simulator_out(self, val):
+        raise AttributeIsImmutableException()
+
+    @property
+    def override_logged_messages(self):
+        return self._override_logged_messages
+
+    @override_logged_messages.setter
+    def override_logged_messages(self, val):
+        raise AttributeIsImmutableException()
+
+    @property
+    def working_dir(self):
+        return self._working_dir
+
+    @working_dir.setter
+    def working_dir(self, val):
+        raise AttributeIsImmutableException()
+
+    @property
+    def output_dir(self):
+        return self._output_dir
+
+    @output_dir.setter
+    def output_dir(self, val):
+        raise AttributeIsImmutableException()
 
     @staticmethod
     def make_output_dir(working_dir: str) -> str:
