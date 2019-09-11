@@ -18,5 +18,5 @@ def test_to_pickle_and_read_pickle_gets_the_same_simulation():
                               events=events)
     a_simulation.to_pickle()
     unpickled_simulation = Simulation.read_pickle(
-        a_simulation.output_dir + Simulation.DEFAULT_PICKLEFILE_NAME)
-    assert a_simulation.top_model == unpickled_simulation.top_model
+        a_simulation.output_dir + '/' + Simulation.DEFAULT_PICKLEFILE_NAME)
+    assert a_simulation.top_model.name == unpickled_simulation.top_model.name

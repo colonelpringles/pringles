@@ -34,10 +34,14 @@ class AtomicModelBuilder:
         return self
 
     def build(self) -> Any:
-        return type(self.name, (Atomic,), {
+        created_class = type(self.name, (Atomic,), {
             DISCOVERED_INPUT_PORTS_FIELD: self.discovered_input_ports_fields,
             DISCOVERED_OUTPUT_PORTS_FIELD: self.discovered_output_ports_fields
         })
+        # The class is added to the global namespace
+        # This is a workarround for the simulation pickler to find the class
+        globals()[self.name] = created_class
+        return created_class
 
 
 class Model:

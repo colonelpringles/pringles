@@ -164,14 +164,12 @@ class Simulation:
 
     def to_pickle(self, path=None) -> None:
         if path is None:
-            path = self.output_dir + self.DEFAULT_PICKLEFILE_NAME
-
-        with open(path, 'w') as pickle_file:
-            pickle_file.write(pickle.dumps(self))
+            path = self.output_dir + '/' + self.DEFAULT_PICKLEFILE_NAME
+        pickle.dump(self, open(path, "wb"))
 
     @classmethod
     def read_pickle(cls, path) -> Simulation:
-        a_simulation = pickle.load(path)
+        a_simulation = pickle.load(open(path, "rb"))
         assert isinstance(a_simulation, Simulation)
         return a_simulation
 
