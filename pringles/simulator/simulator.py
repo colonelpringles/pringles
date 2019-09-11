@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt  # pylint: disable=E0401
 from matplotlib.axes import Axes  # pylint: disable=E0401
 
 from pringles.simulator.errors import SimulatorExecutableNotFound
-from pringles.simulator.atomic_registry import AtomicRegistry
+from pringles.simulator.registry import AtomicRegistry
 from pringles.models import Model, Event
 from pringles.serializers import MaSerializer
 from pringles.utils import VirtualTime
