@@ -133,6 +133,25 @@ class Simulation:
                  use_simulator_out: bool = True,
                  working_dir: Optional[str] = None,
                  override_logged_messages: Optional[str] = None):
+        """
+        A Simulation is the object you later simulate
+        :param top_model: The top model of the simulation
+        :type top_model: Model
+        :param duration: Simulation duration, defaults to None (until models passivate)
+        :type duration: Optional[VirtualTime], optional
+        :param events: List of external events, defaults to None
+        :type events: Optional[List[Event]], optional
+        :param use_simulator_logs: True if simulator logs should be generated, defaults to True
+        :type use_simulator_logs: bool, optional
+        :param use_simulator_out: True if simulator outputs should be captured, defaults to True
+        :type use_simulator_out: bool, optional
+        :param working_dir: Working directory in which to dump all "compiled"
+            models, logs, outputs and events file, defaults to None, in which case
+            a temporal directory is created, in an OS-specific location.
+        :type working_dir: Optional[str], optional
+        :param override_logged_messages: ADVANCED USE. Override logged messages filter.
+        :type override_logged_messages: Optional[str], optional
+        """
         self.result: Optional[SimulationResult] = None
 
         self._top_model = top_model
