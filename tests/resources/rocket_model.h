@@ -16,8 +16,8 @@
 *  FECHA: 15/10/1999
 *         01/02/2001
 *******************************************************************/
-#ifndef __QUEUE_H
-#define __QUEUE_H
+#ifndef __ROCKET_H
+#define __ROCKET_H
 
 #include <list>
 #include "atomic.h"     	// class Atomic
@@ -25,35 +25,35 @@
 #include "value.h"
 #include "VTime.h"
 
-#define QUEUE_MODEL_NAME "Queue"
+#define ROCKET_MODEL_NAME "Rocket"
 
-class QueueState : public AtomicState {
+class RocketState : public AtomicState {
 
 public:
 
 	typedef std::list<value_ptr> ElementList ;
 	ElementList elements ;
 
-	QueueState(){};
-	virtual ~QueueState(){};
+	RocketState(){};
+	virtual ~RocketState(){};
 
-	QueueState& operator=(QueueState& thisState); //Assignment
-	void copyState(QueueState *);
+	RocketState& operator=(RocketState& thisState); //Assignment
+	void copyState(RocketState *);
 	int  getSize() const;
 
 };
 
 /*
 @ModelMetadata
-name:   Queue
+name:   Rocket
 input_ports: in, done
 output_ports: out
 */
-class Queue : public Atomic
+class Rocket : public Atomic
 {
 public:
-	Queue( const std::string &name = "Queue" );
-	virtual std::string className() const {  return "Queue" ;}
+	Rocket( const std::string &name = "Rocket" );
+	virtual std::string className() const {  return "Rocket" ;}
 protected:
 	Model &initFunction();
 	Model &externalFunction( const ExternalMessage & );
@@ -61,7 +61,7 @@ protected:
 	Model &outputFunction( const CollectMessage & );
 
 	ModelState* allocateState() {
-		return new QueueState;
+		return new RocketState;
 	}
 
 private:
@@ -71,16 +71,16 @@ private:
 
 	VTime preparationTime;
 
-	QueueState::ElementList& elements();
+	RocketState::ElementList& elements();
 
-};	// class Queue
+};	// class Rocket
 
 /*******************************************************************
 * Shortcuts to state paramters
 *********************************************************************/
 inline
-QueueState::ElementList& Queue::elements() {
-	return ((QueueState*)getCurrentState())->elements;
+RocketState::ElementList& Rocket::elements() {
+	return ((RocketState*)getCurrentState())->elements;
 }
 
-#endif   //__QUEUE_H
+#endif   //__ROCKET_H
