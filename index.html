@@ -227,82 +227,6 @@ An event is composed of:</p>
 <span id="simulator"></span><h2>Simulator<a class="headerlink" href="#module-pringles.simulator.simulator" title="Permalink to this headline">¶</a></h2>
 <p>Test simulator docstring</p>
 <dl class="class">
-<dt id="pringles.simulator.simulator.AtomicRegistry">
-<em class="property">class </em><code class="sig-prename descclassname">pringles.simulator.simulator.</code><code class="sig-name descname">AtomicRegistry</code><span class="sig-paren">(</span><em class="sig-param">user_models_dir: Optional[str] = None</em>, <em class="sig-param">autodiscover: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#pringles.simulator.simulator.AtomicRegistry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="pringles.simulator.simulator.AtomicRegistry.SUPPORTED_FILE_EXTENSIONS">
-<code class="sig-name descname">SUPPORTED_FILE_EXTENSIONS</code><em class="property"> = ['.cpp', '.hpp', '.h']</em><a class="headerlink" href="#pringles.simulator.simulator.AtomicRegistry.SUPPORTED_FILE_EXTENSIONS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pringles.simulator.simulator.AtomicRegistry.discover_atomics">
-<code class="sig-name descname">discover_atomics</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#pringles.simulator.simulator.AtomicRegistry.discover_atomics" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pringles.simulator.simulator.SimulationResult">
-<em class="property">class </em><code class="sig-prename descclassname">pringles.simulator.simulator.</code><code class="sig-name descname">SimulationResult</code><span class="sig-paren">(</span><em class="sig-param">process_result</em>, <em class="sig-param">main_log_path=None</em>, <em class="sig-param">output_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pringles.simulator.simulator.SimulationResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="pringles.simulator.simulator.SimulationResult.MESSAGE_TYPE_COL">
-<code class="sig-name descname">MESSAGE_TYPE_COL</code><em class="property"> = 'message_type'</em><a class="headerlink" href="#pringles.simulator.simulator.SimulationResult.MESSAGE_TYPE_COL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pringles.simulator.simulator.SimulationResult.MODEL_DEST_COL">
-<code class="sig-name descname">MODEL_DEST_COL</code><em class="property"> = 'model_dest'</em><a class="headerlink" href="#pringles.simulator.simulator.SimulationResult.MODEL_DEST_COL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pringles.simulator.simulator.SimulationResult.MODEL_ORIGIN_COL">
-<code class="sig-name descname">MODEL_ORIGIN_COL</code><em class="property"> = 'model_origin'</em><a class="headerlink" href="#pringles.simulator.simulator.SimulationResult.MODEL_ORIGIN_COL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pringles.simulator.simulator.SimulationResult.PORT_COL">
-<code class="sig-name descname">PORT_COL</code><em class="property"> = 'port'</em><a class="headerlink" href="#pringles.simulator.simulator.SimulationResult.PORT_COL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pringles.simulator.simulator.SimulationResult.TIME_COL">
-<code class="sig-name descname">TIME_COL</code><em class="property"> = 'time'</em><a class="headerlink" href="#pringles.simulator.simulator.SimulationResult.TIME_COL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pringles.simulator.simulator.SimulationResult.VALUE_COL">
-<code class="sig-name descname">VALUE_COL</code><em class="property"> = 'value'</em><a class="headerlink" href="#pringles.simulator.simulator.SimulationResult.VALUE_COL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pringles.simulator.simulator.SimulationResult.get_process_output">
-<code class="sig-name descname">get_process_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pringles.simulator.simulator.SimulationResult.get_process_output" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the process STDOUT converted to string</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the process STDOUT</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="pringles.simulator.simulator.SimulationResult.plot_port">
-<code class="sig-name descname">plot_port</code><span class="sig-paren">(</span><em class="sig-param">logname: str</em>, <em class="sig-param">portname: str</em>, <em class="sig-param">axes: Optional[matplotlib.axes._axes.Axes] = None</em>, <em class="sig-param">index=0</em><span class="sig-paren">)</span> &#x2192; Optional[matplotlib.axes._axes.Axes]<a class="headerlink" href="#pringles.simulator.simulator.SimulationResult.plot_port" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pringles.simulator.simulator.SimulationResult.successful">
-<code class="sig-name descname">successful</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pringles.simulator.simulator.SimulationResult.successful" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="pringles.simulator.simulator.Simulator">
 <em class="property">class </em><code class="sig-prename descclassname">pringles.simulator.simulator.</code><code class="sig-name descname">Simulator</code><span class="sig-paren">(</span><em class="sig-param">cdpp_bin_path: str</em>, <em class="sig-param">user_models_dir: Optional[str] = None</em>, <em class="sig-param">autodiscover=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pringles.simulator.simulator.Simulator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -333,32 +257,11 @@ An event is composed of:</p>
 
 <dl class="method">
 <dt id="pringles.simulator.simulator.Simulator.run_simulation">
-<code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">top_model: pringles.models.models.Model</em>, <em class="sig-param">duration: Optional[pringles.utils.vtime.VirtualTime] = None</em>, <em class="sig-param">events: Optional[List[pringles.models.events.Event]] = None</em>, <em class="sig-param">use_simulator_logs: bool = True</em>, <em class="sig-param">use_simulator_out: bool = True</em>, <em class="sig-param">simulation_wd: Optional[str] = None</em>, <em class="sig-param">override_logged_messages: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pringles.simulator.simulator.SimulationResult<a class="headerlink" href="#pringles.simulator.simulator.Simulator.run_simulation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run the simulation in the targeted CD++ simulator instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>top_model</strong> (<a class="reference internal" href="#pringles.models.models.Model" title="pringles.models.models.Model"><em>Model</em></a>) – The top model of the simulation to be ran</p></li>
-<li><p><strong>duration</strong> (<em>Optional</em><em>[</em><em>VirtualTime</em><em>]</em><em>, </em><em>optional</em>) – Simulation duration, defaults to None</p></li>
-<li><p><strong>events</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="#pringles.models.events.Event" title="pringles.models.events.Event"><em>Event</em></a><em>]</em><em>]</em><em>, </em><em>optional</em>) – List of external events, defaults to None</p></li>
-<li><p><strong>use_simulator_logs</strong> (<em>bool</em><em>, </em><em>optional</em>) – True if simulator logs should be generated, defaults to True</p></li>
-<li><p><strong>use_simulator_out</strong> (<em>bool</em><em>, </em><em>optional</em>) – True if simulator outputs should be captured, defaults to True</p></li>
-<li><p><strong>simulation_wd</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Working directory in which to dump all “compiled”
-models, logs, outputs and events file, defaults to None, in which case
-a temporal directory is created, in an OS-specific location.</p></li>
-<li><p><strong>override_logged_messages</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – ADVANCED USE. Override logged messages filter.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>SimulatorExecutableNotFound</strong> – CD++ executable was not found in the provided directory</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A SimulationResult, containing all data concerning the simulation results.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pringles.simulator.simulator.SimulationResult" title="pringles.simulator.simulator.SimulationResult">SimulationResult</a></p>
-</dd>
-</dl>
+<code class="sig-name descname">run_simulation</code><span class="sig-paren">(</span><em class="sig-param">simulation: pringles.simulator.simulation.Simulation</em><span class="sig-paren">)</span> &#x2192; pringles.simulator.simulation.SimulationResult<a class="headerlink" href="#pringles.simulator.simulator.Simulator.run_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the simulation in the targeted CD++ simulator instance.
+:raises SimulatorExecutableNotFound: CD++ executable was not found in the provided directory
+:return: A SimulationResult, containing all data concerning the simulation results.
+:rtype: SimulationResult</p>
 </dd></dl>
 
 </dd></dl>

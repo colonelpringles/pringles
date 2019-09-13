@@ -1,5 +1,6 @@
 import pytest
 from typing import Callable
+from pringles.models.errors import AtomicNameIsKeywordException
 from pringles.models.models import Model, AtomicModelBuilder, Coupled, Atomic, InPort, OutPort, IntLink, ExtInputLink, ExtOutputLink, PortNotFoundException
 from pringles.serializers import MaSerializer
 
@@ -48,3 +49,15 @@ def test_non_existing_port():
     with pytest.raises(PortNotFoundException):
         empty_model = Coupled("test_model", [])
         empty_model.get_port("holis")
+
+
+def test_dynamically_built_atomics_are_added_to_module_namespace():
+    TheUniverse = AtomicModelBuilder().with_name('TheUniverse').build()
+    import pringles.models.models as the_module
+
+    assert the_module.TheUniverse is not None
+    assert the_module.TheUniverse == TheUniverse
+
+def test_dynamically_building_of_atomic_fail_when_name_is_module_member():
+    with pytest.raises(AtomicNameIsKeywordException):
+        AtomicModelBuilder().with_name('Model').build()

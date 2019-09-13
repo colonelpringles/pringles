@@ -45,6 +45,6 @@ def test_multiple_ports_are_extracted_correctly():
 
 
 def test_model_cpp_file_with_metadata_is_parsed_correctly():
-    with open("tests/resources/queue.h", "r") as queue_source_file:
-        assert AtomicMetadataExtractor(queue_source_file).extract() == \
-            AtomicMetadata("Queue", ["in", "done"], ["out"])
+    with open("tests/resources/rocket_model.h", "r") as rocket_model_source_file:
+        assert AtomicMetadataExtractor(rocket_model_source_file).extract() == \
+            AtomicMetadata("Rocket", ["in", "done"], ["out"])

@@ -2,11 +2,10 @@ import pytest  # noqa
 import os
 import tempfile
 from typing import List, Tuple
-from pringles.simulator import Simulator, SimulationResult
+from pringles.simulator import Simulator, Simulation, SimulationResult
 from pringles.simulator.errors import SimulatorExecutableNotFound
 from pringles.utils import VirtualTime
 from pringles.models import Coupled, Model, AtomicModelBuilder, Event
-from tests.utils import make_queue_top_model_with_events
 
 
 TEST_PATH_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -25,26 +24,29 @@ def test_simulator_executable_not_found_raises():
         Simulator("a/fake/path")
 
 
-def test_no_exception_raised_in_simulation():
+def test_no_exception_raised_in_simulation(queue_top_model_with_events):
     simulator = Simulator(CDPP_BIN_PATH)
-    top_model, events = make_queue_top_model_with_events()
-    simulator.run_simulation(top_model, events=events)
+    top_model, events = queue_top_model_with_events
+    simulation = Simulation(top_model=top_model, events=events)
+    simulator.run_simulation(simulation)
 
 
-def test_process_stdout_is_returned_correctly():
+def test_process_stdout_is_returned_correctly(queue_top_model_with_events):
     simulator = Simulator(CDPP_BIN_PATH)
-    top_model, events = make_queue_top_model_with_events()
-    simulation_result = simulator.run_simulation(top_model, events=events)
+    top_model, events = queue_top_model_with_events
+    simulation = Simulation(top_model=top_model, events=events)
+    simulation_result = simulator.run_simulation(simulation)
     assert simulation_result\
         .get_process_output()\
         .startswith("PCD++: A Tool to Implement n-Dimensional Cell-DEVS models")
 
 
-def test_run_simulation_in_custom_wd():
+def test_run_simulation_in_custom_wd(queue_top_model_with_events):
     simulator = Simulator(CDPP_BIN_PATH)
-    top_model, events = make_queue_top_model_with_events()
+    top_model, events = queue_top_model_with_events
     temp_path = tempfile.mkdtemp()
-    simulator.run_simulation(top_model, events=events, simulation_wd=temp_path)
+    a_simulation = Simulation(top_model, events=events, working_dir=temp_path) 
+    simulator.run_simulation(a_simulation)
     files_found = False
     for _, _, files in os.walk(temp_path):
         # Assert there are files
