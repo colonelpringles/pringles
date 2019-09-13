@@ -4,7 +4,7 @@ This is the models module docstring
 from __future__ import annotations
 from typing import List, Any, Union
 
-from .errors import AtomicNameIsKeyWordException
+from .errors import AtomicNameIsKeywordException
 
 DISCOVERED_INPUT_PORTS_FIELD = "discovered_input_ports"
 DISCOVERED_OUTPUT_PORTS_FIELD = "discovered_output_ports"
@@ -43,7 +43,7 @@ class AtomicModelBuilder:
         # The class is added to the global namespace
         # This is a workarround for the simulation pickler to find the class
         if self.name in globals():
-            raise AtomicNameIsKeyWordException(self.name)
+            raise AtomicNameIsKeywordException(self.name)
 
         globals()[self.name] = created_class
         return created_class
