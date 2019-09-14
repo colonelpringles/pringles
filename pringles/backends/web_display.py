@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import threading
 import asyncio
+import uuid
 
 from pringles.models import Model
 
@@ -104,5 +105,6 @@ def ipython_inline_display(model: Model) -> bytes:
     single_template = tornado.template.Template(single_model_template)
     return single_template.generate(
         model_source=JsonSerializer.serialize(model),
-        url_prefix=WebApplication.target_url
+        url_prefix=WebApplication.target_url,
+        unique_diagrammer_id=str(uuid.uuid4().hex)
     )
