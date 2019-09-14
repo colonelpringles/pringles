@@ -54,7 +54,7 @@ Canvas.prototype.initialize = function(parameters) {
     
     // 'Width':'90%','Height':'800'
     this.dom_canvas = $('<canvas/>',{'id': this.id });
-    $('#' + unique_diagrammer_id + ' #models-wrapper').append(this.dom_canvas);
+    $('#' + parameters.diagrammer_id + ' #models-wrapper').append(this.dom_canvas);
     this.dom_canvas.attr('width', this.dom_canvas.width());
     this.dom_canvas.attr('height', this.dom_canvas.height());
 

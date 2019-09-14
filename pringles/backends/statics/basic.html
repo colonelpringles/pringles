@@ -14,14 +14,12 @@
   <script src="{{ url_prefix }}/_static/js/JSONModelGraphics.js"></script>
   <script src="{{ url_prefix }}/_static/js/Model.js"></script>
   <script src="{{ url_prefix }}/_static/js/Canvas.js"></script>
-
+ 
   <script type="text/javascript">
-    var unique_diagrammer_id = '{{ unique_diagrammer_id }}'
-    var modelAsJson = '{% raw model_source %}'
     $(document).ready(function () {
       console.info("About to start drawing model");
       menu_init();
-      parse_query_params(modelAsJson);
+      addCanvasFromJson('{% raw model_source %}', '{{ unique_diagrammer_id }}');
     });
   </script>
 
@@ -32,7 +30,7 @@
     <div id='body-wrapper'>
       <div id="models-wrapper"></div>
       <div id="menu-wrapper">
-        <button class="action bp3-button bp3-minimal" type="button" onclick="expand_in_new_canvas_selected();">Expand in new canvas</button>
+        <button id="expand_in_new_canvas_selected" class="action bp3-button bp3-minimal" type="button">Expand in new canvas</button>
         <button class="action bp3-button bp3-minimal" type="button" onclick="remove_selected_top_models();">Remove model</button>
         <button class="action bp3-button bp3-minimal" type="button" onclick="toggle_models_selected();">Expand / Contract</button>
         <button class="action bp3-button bp3-minimal" type="button" onclick="toggle_links_selected();">Show / Hide all links</button>

@@ -64,10 +64,21 @@ function remove_selected_top_models() {
 	}
 }
 
-function expand_in_new_canvas_selected() {
-	
-	while (selected_models.length > 0) {
-		new_model(selected_models[0].structure, selected_models[0].jsonGraphics.json);
+
+document.querySelectorAll("#expand_in_new_canvas_selected")
+        .forEach(function(element) {
+            element.onclick = expand_in_new_canvas_selected;
+        });
+
+function getDiagrammerWrapperIdFor(element) {
+    return element.closest('.devs_diagrammer_wrapper').id;
+}
+
+function expand_in_new_canvas_selected(event) {
+    while (selected_models.length > 0) {
+        new_model(selected_models[0].structure,
+                  selected_models[0].jsonGraphics.json,
+                  getDiagrammerWrapperIdFor(event.target));
 		selected_models[0].toggle_selection(evt);
 	}
 }
@@ -133,13 +144,14 @@ function toggle_port_name_selected() {
 	}
 }
 
-function new_model(structure, jsonGraphics) {
+function new_model(structure, jsonGraphics, diagrammer_id) {
 	canvases.push(new Canvas({
 		structure: structure,
 		jsonGraphics: new JSONModelGraphics({
 			id: jsonGraphics.id,
 			json: $.extend(true, {}, jsonGraphics)
-		})
+        }),
+        diagrammer_id: diagrammer_id
 	}));
 }
 
@@ -286,7 +298,7 @@ function export_colors() {
     downloadLink.click();
 }
 
-function parse_query_params(modelAsJson) {
+function addCanvasFromJson(modelAsJson, diagrammer_id) {
     var structure = JSON.parse(modelAsJson);
-    canvases.push(new Canvas({ json_input: structure }));
+    canvases.push(new Canvas({ json_input: structure, diagrammer_id: diagrammer_id }));
 }
