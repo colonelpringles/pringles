@@ -9,17 +9,17 @@ CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../cdpp/src/bin/')
 
 
 @pytest.fixture
-def test_simulator_with_rocket():
+def simulator_with_rocket_on_registry():
     simulator = Simulator(CDPP_BIN_PATH, "tests/resources/")
     yield simulator
     import pringles.models.models as pringles_models_module
     del pringles_models_module.Rocket
 
 
-def test_extract_metadata_and_instantiate_is_coherent(test_simulator_with_rocket):
-    assert test_simulator_with_rocket.get_registry().Rocket is not None
+def test_extract_metadata_and_instantiate_is_coherent(simulator_with_rocket_on_registry):
+    assert simulator_with_rocket_on_registry.get_registry().Rocket is not None
 
-    awesome_queue = test_simulator_with_rocket.get_registry().Rocket("awesome")
+    awesome_queue = simulator_with_rocket_on_registry.get_registry().Rocket("awesome")
     assert awesome_queue.get_port("in") is not None
     assert awesome_queue.get_port("done") is not None
     assert awesome_queue.get_port("out") is not None
@@ -28,12 +28,12 @@ def test_extract_metadata_and_instantiate_is_coherent(test_simulator_with_rocket
     assert isinstance(awesome_queue.get_port("out"), OutPort)
 
 
-def test_registry_get_by_name_method(test_simulator_with_rocket):
-    registry = test_simulator_with_rocket.get_registry()
+def test_registry_get_by_name_method(simulator_with_rocket_on_registry):
+    registry = simulator_with_rocket_on_registry.get_registry()
     assert registry.Rocket == registry.get_by_name("Rocket")
 
 
-def test_registry_get_by_name_non_existing_atomic(test_simulator_with_rocket):
-    registry = test_simulator_with_rocket.get_registry()
+def test_registry_get_by_name_non_existing_atomic(simulator_with_rocket_on_registry):
+    registry = simulator_with_rocket_on_registry.get_registry()
     with pytest.raises(NonExistingAtomicClassException):
         registry.get_by_name("Falopa")
