@@ -14,7 +14,7 @@ from matplotlib.axes import Axes  # pylint: disable=E0401
 from pringles.models import Model
 from pringles.utils import VirtualTime
 from pringles.simulator.events import Event
-from pringles.simulator.errors import AttributeIsImmutableException
+from pringles.simulator.errors import AttributeIsImmutableException, TopModelNotNamedTopException
 
 
 # This object should contain the following properties:
@@ -155,6 +155,7 @@ class Simulation:
         """
         self.result: Optional[SimulationResult] = None
 
+        self.assert_top_model_named_top(top_model)
         self._top_model = top_model
         self._events = events
         self._duration = duration
@@ -250,3 +251,7 @@ class Simulation:
         a_simulation = pickle.load(open(path, "rb"))
         assert isinstance(a_simulation, Simulation)
         return a_simulation
+
+    def assert_top_model_named_top(self, top_model: Model):
+        if top_model.name != "top":
+            raise TopModelNotNamedTopException()
