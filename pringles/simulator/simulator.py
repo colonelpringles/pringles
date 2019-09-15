@@ -8,10 +8,11 @@ import subprocess
 import logging
 from typing import Optional, List
 
+from pringles.simulator.events import Event
 from pringles.simulator.errors import SimulatorExecutableNotFound
 from pringles.simulator.simulation import SimulationResult, Simulation
 from pringles.simulator.registry import AtomicRegistry
-from pringles.models import Model, Event
+from pringles.models import Model
 from pringles.serializers import MaSerializer
 
 

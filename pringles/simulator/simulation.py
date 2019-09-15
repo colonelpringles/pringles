@@ -11,8 +11,9 @@ import pandas as pd
 import matplotlib.pyplot as plt  # pylint: disable=E0401
 from matplotlib.axes import Axes  # pylint: disable=E0401
 
-from pringles.models import Model, Event
+from pringles.models import Model
 from pringles.utils import VirtualTime
+from pringles.simulator.events import Event
 from pringles.simulator.errors import AttributeIsImmutableException
 
 

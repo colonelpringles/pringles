@@ -1,4 +1,4 @@
-from .models import Port
+from pringles.models import Port
 from pringles.utils import VirtualTime
 from typing import Union, List
 
