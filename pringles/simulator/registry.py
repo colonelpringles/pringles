@@ -8,6 +8,9 @@ from pringles.utils.errors import MetadataParsingException, NonExistingAtomicCla
 
 
 class AtomicRegistry:
+    """A registry where all Atomic model classes are registered into. Usually, this atomics are
+    discovered and populated with the metadata way.
+    """
 
     SUPPORTED_FILE_EXTENSIONS = [".cpp", ".hpp", ".h"]
 
@@ -15,7 +18,7 @@ class AtomicRegistry:
         self.user_models_dir = user_models_dir
         self.discovered_atomics: List[Type[Atomic]] = []
         if autodiscover and user_models_dir is not None:
-            self.discover_atomics()
+            self._discover_atomics()
 
     def _add_atomic_class_as_attribute(self, name: str, atomic_class: Type[Atomic]):
         if hasattr(self, name):
@@ -23,13 +26,22 @@ class AtomicRegistry:
         setattr(self, name, atomic_class)
 
     def get_by_name(self, name: str) -> type:
+        """Retrieves an Atomic class from the registry, by class name. Similar to getattr.
+
+        :param name: The atomic class name
+        :type name: str
+        :raises NonExistingAtomicClassException: The atomic looked for is not present in the
+            registry
+        :return: The atomic class named as the parameter
+        :rtype: type
+        """
         try:
             return getattr(self, name)
         except AttributeError:
             raise NonExistingAtomicClassException(
                 f'Atomic class named {name} is not present in the registry.')
 
-    def discover_atomics(self) -> None:
+    def _discover_atomics(self) -> None:
         assert self.user_models_dir is not None
 
         files_to_extract_from = []
