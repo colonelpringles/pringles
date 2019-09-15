@@ -4,7 +4,7 @@ from typing import Optional, List, Type
 from pringles.models import Atomic, AtomicModelBuilder
 from pringles.simulator.errors import DuplicatedAtomicException
 from pringles.utils import AtomicMetadataExtractor
-from pringles.utils.errors import MetadataParsingException
+from pringles.utils.errors import MetadataParsingException, NonExistingAtomicClassException
 
 
 class AtomicRegistry:
@@ -21,6 +21,13 @@ class AtomicRegistry:
         if hasattr(self, name):
             raise DuplicatedAtomicException(name)
         setattr(self, name, atomic_class)
+
+    def get_by_name(self, name: str) -> type:
+        try:
+            return getattr(self, name)
+        except AttributeError:
+            raise NonExistingAtomicClassException(
+                f'Atomic class named {name} is not present in the registry.')
 
     def discover_atomics(self) -> None:
         assert self.user_models_dir is not None
