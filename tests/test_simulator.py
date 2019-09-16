@@ -2,10 +2,10 @@ import pytest  # noqa
 import os
 import tempfile
 from typing import List, Tuple
-from pringles.simulator import Simulator, Simulation, SimulationResult
+from pringles.simulator import Simulator, Simulation, SimulationResult, Event
 from pringles.simulator.errors import SimulatorExecutableNotFound
 from pringles.utils import VirtualTime
-from pringles.models import Coupled, Model, AtomicModelBuilder, Event
+from pringles.models import Coupled, Model, AtomicModelBuilder
 
 
 TEST_PATH_DIRECTORY = os.path.dirname(os.path.abspath(__file__))

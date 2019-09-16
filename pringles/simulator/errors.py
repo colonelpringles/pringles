@@ -9,3 +9,7 @@ class DuplicatedAtomicException(Exception):
 
 class AttributeIsImmutableException(AttributeError):
     pass
+
+
+class TopModelNotNamedTopException(NameError):
+    pass

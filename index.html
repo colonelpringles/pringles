@@ -201,27 +201,8 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-pringles.models.events">
-<span id="events"></span><h2>Events<a class="headerlink" href="#module-pringles.models.events" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="pringles.models.events.Event">
-<em class="property">class </em><code class="sig-prename descclassname">pringles.models.events.</code><code class="sig-name descname">Event</code><span class="sig-paren">(</span><em class="sig-param">time: pringles.utils.vtime.VirtualTime, port: pringles.models.models.Port, value: Union[float, List[float]]</em><span class="sig-paren">)</span><a class="headerlink" href="#pringles.models.events.Event" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Event is the representation of external influence into the model.
-An event is composed of:</p>
-<ul class="simple">
-<li><p>event time</p></li>
-<li><p>target port, belonging to the top model</p></li>
-<li><p>value</p></li>
-</ul>
-<dl class="method">
-<dt id="pringles.models.events.Event.serialize">
-<code class="sig-name descname">serialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pringles.models.events.Event.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serialize the <a class="reference internal" href="#pringles.models.events.Event" title="pringles.models.events.Event"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a> into a CD++ consumable string.</p>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-pringles.simulator.simulator">
 <span id="simulator"></span><h2>Simulator<a class="headerlink" href="#module-pringles.simulator.simulator" title="Permalink to this headline">¶</a></h2>
@@ -237,7 +218,7 @@ An event is composed of:</p>
 
 <dl class="method">
 <dt id="pringles.simulator.simulator.Simulator.dump_events_in_file">
-<em class="property">static </em><code class="sig-name descname">dump_events_in_file</code><span class="sig-paren">(</span><em class="sig-param">events: List[pringles.models.events.Event], simulation_wd: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pringles.simulator.simulator.Simulator.dump_events_in_file" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">dump_events_in_file</code><span class="sig-paren">(</span><em class="sig-param">events: List[pringles.simulator.events.Event], simulation_wd: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pringles.simulator.simulator.Simulator.dump_events_in_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

@@ -1,7 +1,8 @@
 from typing import List, Tuple
 import pytest  # noqa
 from pringles.utils import VirtualTime
-from pringles.models import Coupled, Model, AtomicModelBuilder, Event
+from pringles.models import Coupled, Model, AtomicModelBuilder
+from pringles.simulator import Event
 
 @pytest.fixture
 def empty_coupled() -> Model:

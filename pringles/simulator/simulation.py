@@ -11,9 +11,10 @@ import pandas as pd
 import matplotlib.pyplot as plt  # pylint: disable=E0401
 from matplotlib.axes import Axes  # pylint: disable=E0401
 
-from pringles.models import Model, Event
+from pringles.models import Model
 from pringles.utils import VirtualTime
-from pringles.simulator.errors import AttributeIsImmutableException
+from pringles.simulator.events import Event
+from pringles.simulator.errors import AttributeIsImmutableException, TopModelNotNamedTopException
 
 
 # This object should contain the following properties:
@@ -123,6 +124,7 @@ class SimulationResult:
 
 class Simulation:
 
+    TOP_MODEL_NAME = "top"
     DEFAULT_PICKLEFILE_NAME = 'simulation.pkl'
 
     def __init__(self,
@@ -154,6 +156,7 @@ class Simulation:
         """
         self.result: Optional[SimulationResult] = None
 
+        self._assert_top_model_named_top(top_model)
         self._top_model = top_model
         self._events = events
         self._duration = duration
@@ -249,3 +252,7 @@ class Simulation:
         a_simulation = pickle.load(open(path, "rb"))
         assert isinstance(a_simulation, Simulation)
         return a_simulation
+
+    def _assert_top_model_named_top(self, top_model: Model):
+        if top_model.name != self.TOP_MODEL_NAME:
+            raise TopModelNotNamedTopException()
