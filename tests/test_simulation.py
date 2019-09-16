@@ -3,7 +3,7 @@ import os
 
 from pringles.utils import VirtualTime
 from pringles.simulator import Simulation
-from pringles.simulator.errors import AttributeIsImmutableException
+from pringles.simulator.errors import AttributeIsImmutableException, TopModelNotNamedTopException
 
 
 def test_to_pickle_generates_file_in_output_dir(queue_top_model_with_events):
@@ -22,6 +22,12 @@ def test_to_pickle_and_read_pickle_gets_the_same_simulation(queue_top_model_with
     unpickled_simulation = Simulation.read_pickle(
         a_simulation.output_dir + '/' + Simulation.DEFAULT_PICKLEFILE_NAME)
     assert a_simulation.top_model.name == unpickled_simulation.top_model.name
+
+def test_simulation_with_top_model_not_named_top_raises(queue_top_model_with_events):
+    a_model, _ = queue_top_model_with_events
+    a_model.name = 'low'
+    with pytest.raises(TopModelNotNamedTopException):
+        Simulation(top_model=a_model)
 
 def test_top_model_and_events_of_simulation_are_immutable(queue_top_model_with_events, empty_coupled):
     a_model, events = queue_top_model_with_events

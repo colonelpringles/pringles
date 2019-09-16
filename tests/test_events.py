@@ -1,5 +1,6 @@
 import pytest
-from pringles.models import Event, Port
+from pringles.models import Port
+from pringles.simulator import Event
 from pringles.utils import VirtualTime
 
 sample_port = Port("sample_port", None)
