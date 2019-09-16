@@ -124,6 +124,7 @@ class SimulationResult:
 
 class Simulation:
 
+    TOP_MODEL_NAME = "top"
     DEFAULT_PICKLEFILE_NAME = 'simulation.pkl'
 
     def __init__(self,
@@ -155,7 +156,7 @@ class Simulation:
         """
         self.result: Optional[SimulationResult] = None
 
-        self.assert_top_model_named_top(top_model)
+        self._assert_top_model_named_top(top_model)
         self._top_model = top_model
         self._events = events
         self._duration = duration
@@ -252,6 +253,6 @@ class Simulation:
         assert isinstance(a_simulation, Simulation)
         return a_simulation
 
-    def assert_top_model_named_top(self, top_model: Model):
-        if top_model.name != "top":
+    def _assert_top_model_named_top(self, top_model: Model):
+        if top_model.name != self.TOP_MODEL_NAME:
             raise TopModelNotNamedTopException()
