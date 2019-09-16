@@ -5,3 +5,7 @@ class BadVirtualTimeValuesError(Exception):
 
 class MetadataParsingException(Exception):
     pass
+
+
+class NonExistingAtomicClassException(Exception):
+    pass

@@ -68,7 +68,7 @@ class Simulator:
                                              output_path=output_path)
         return simulation.result
 
-    def get_registry(self):
+    def get_registry(self) -> AtomicRegistry:
         return self.atomic_registry
 
     @staticmethod
