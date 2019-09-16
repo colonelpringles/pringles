@@ -72,7 +72,8 @@ class SimulationResult:
             log_dir = os.path.dirname(file_path)
             for line in main_log_file:
                 name, path = line.strip().split(' : ')
-                log_file_per_component[name] = path if os.path.isabs(path) else log_dir + '/' + path
+                log_file_per_component[name] = (path if os.path.isabs(path) else
+                                                log_dir + '/' + path.split('/')[-1])
 
         df_converters = {
             cls.VALUE_COL: cls._parse_value,
