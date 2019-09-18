@@ -151,7 +151,7 @@ class Simulation:
         :param override_logged_messages: ADVANCED USE. Override logged messages filter.
         :type override_logged_messages: Optional[str], optional
         """
-        self.result: Optional[SimulationResult] = None
+        self._result: Optional[SimulationResult] = None
 
         self._assert_top_model_named_top(top_model)
         self._top_model = top_model
@@ -227,6 +227,15 @@ class Simulation:
     @output_dir.setter
     def output_dir(self, val):
         raise AttributeIsImmutableException()
+
+    @property
+    def result(self):
+        return self._result
+
+    @result.setter
+    def result(self, aResult: SimulationResult):
+        self._result = aResult
+        self.to_pickle()
 
     @staticmethod
     def make_output_dir(working_dir: str) -> str:
