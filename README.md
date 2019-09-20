@@ -23,3 +23,7 @@ After changes are made you can locally check the same things the CI does by exec
 ```
 make local
 ```
+
+
+#### Pringles Examples
+They can be found in https://github.com/colonelpringles/pringles_examples
