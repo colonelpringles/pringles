@@ -17,7 +17,7 @@ For local development, you can install everything through:
 ```
 make install
 ```
-is the repo root directory.
+in the repo root directory.
 
 After changes are made you can locally check the same things the CI does by executing:
 ```
