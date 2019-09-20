@@ -5,7 +5,7 @@ Pringles is a DEVS model composition library, which makes easy to assemble and l
 
 
 #### Requirements
-- Python 3.7
+- Python 3.7 (check out pyenv if you have a different python version installed)
 
 The library can be installed with pip:
 ```
