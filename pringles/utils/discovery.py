@@ -27,7 +27,7 @@ class AtomicMetadataExtractor:
 
     This should be improved to a more richer metadata, such as:
     ```
-    @ModelMetadata
+    @PringlesModelMetadata
     name: some_name
     input_ports: port1, port2, port3
     output_ports: oport1, oport2
@@ -45,7 +45,7 @@ class AtomicMetadataExtractor:
 
     def _initialize_parser(self):
         port_names_list = delimitedList(Word(alphanums + '-_'))
-        metadata_start_keyword = Literal("@ModelMetadata")
+        metadata_start_keyword = Literal("@PringlesModelMetadata")
         self.parser: ParserElement = metadata_start_keyword +\
             Literal("name:") +\
             Word(alphanums).setResultsName("model_name") +\

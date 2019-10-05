@@ -17,7 +17,7 @@ def test_no_metadata_fails():
 
 def test_just_model_name_in_metadata():
     source = """
-    @ModelMetadata
+    @PringlesModelMetadata
     name:perro
     """
     assert extract_metadata_from_string(source) == AtomicMetadata("perro", [], [])
@@ -25,7 +25,7 @@ def test_just_model_name_in_metadata():
 
 def test_single_output_port_extracted_correctly():
     source = """
-    @ModelMetadata
+    @PringlesModelMetadata
     name:perro
     output_ports: perro, gato
     """
@@ -35,7 +35,7 @@ def test_single_output_port_extracted_correctly():
 
 def test_multiple_ports_are_extracted_correctly():
     source = """
-    @ModelMetadata
+    @PringlesModelMetadata
     name:   perro
     input_ports: ornito, rinco
     output_ports: perro   , gato
