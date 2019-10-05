@@ -44,13 +44,7 @@ class AtomicRegistry:
     def _discover_atomics(self) -> None:
         assert self.user_models_dir is not None
 
-        files_to_extract_from = []
-        for filename in os.listdir(self.user_models_dir):
-            filename_with_path = os.path.join(self.user_models_dir, filename)
-            if os.path.isfile(filename_with_path):
-                _, file_extension = os.path.splitext(filename)
-                if file_extension in AtomicRegistry.SUPPORTED_FILE_EXTENSIONS:
-                    files_to_extract_from.append(filename_with_path)
+        files_to_extract_from = self._discover_metadata_containing_files()
 
         # extract metadata from discovered source files
         for discovered_path in files_to_extract_from:
@@ -58,6 +52,7 @@ class AtomicRegistry:
                 try:
                     discovered_metadata = AtomicMetadataExtractor(discovered_file).extract()
                 except MetadataParsingException:
+                    # If extraction failed, silently pass ignore the error
                     pass
                 else:
                     atomic_class_builder = AtomicModelBuilder().with_name(discovered_metadata.name)
@@ -69,3 +64,13 @@ class AtomicRegistry:
                     self._add_atomic_class_as_attribute(discovered_metadata.name,
                                                         built_class)
                     self.discovered_atomics.append(built_class)
+
+    def _discover_metadata_containing_files(self):
+        files_to_extract_from = []
+        for filename in os.listdir(self.user_models_dir):
+            filename_with_path = os.path.join(self.user_models_dir, filename)
+            if os.path.isfile(filename_with_path):
+                _, file_extension = os.path.splitext(filename)
+                if file_extension in AtomicRegistry.SUPPORTED_FILE_EXTENSIONS:
+                    files_to_extract_from.append(filename_with_path)
+        return files_to_extract_from
