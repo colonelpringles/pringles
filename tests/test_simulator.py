@@ -13,6 +13,20 @@ TEST_EXECUTABLE = os.path.join(TEST_PATH_DIRECTORY, Simulator.CDPP_BIN)
 CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../cdpp/src/bin/')
 
 
+@pytest.mark.parametrize("expected_atomic_name", [
+    ("Transducer"),
+    ("Queue"),
+    ("Generator"),
+    ("CPU"),
+    ("QSS1"),
+    ("QSS2"),
+    ("QSS3")
+])
+def test_simulator_discovers_default_cdpp_atomics(expected_atomic_name: str):
+    simulator = Simulator(CDPP_BIN_PATH)
+    simulator.get_registry().get_by_name(expected_atomic_name)
+
+
 def test_simulator_executable_found_in_library_defined_dir():
     simulator = Simulator(CDPP_BIN_PATH)
     cdpp_bin_executable_path = os.path.join(CDPP_BIN_PATH, Simulator.CDPP_BIN)
@@ -45,7 +59,7 @@ def test_run_simulation_in_custom_wd(queue_top_model_with_events):
     simulator = Simulator(CDPP_BIN_PATH)
     top_model, events = queue_top_model_with_events
     temp_path = tempfile.mkdtemp()
-    a_simulation = Simulation(top_model, events=events, working_dir=temp_path) 
+    a_simulation = Simulation(top_model, events=events, working_dir=temp_path)
     simulator.run_simulation(a_simulation)
     files_found = False
     for _, _, files in os.walk(temp_path):
