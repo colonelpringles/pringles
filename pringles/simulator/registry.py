@@ -17,7 +17,7 @@ class AtomicRegistry:
     def __init__(self, user_models_dir: Optional[str] = None, autodiscover: bool = True):
         self.user_models_dir = user_models_dir
         self.discovered_atomics: List[Type[Atomic]] = []
-        if autodiscover and user_models_dir is not None:
+        if autodiscover:
             self._discover_atomics()
 
     def _add_atomic_class_as_attribute(self, name: str, atomic_class: Type[Atomic]):
@@ -42,9 +42,14 @@ class AtomicRegistry:
                 f'Atomic class named {name} is not present in the registry.')
 
     def _discover_atomics(self) -> None:
-        assert self.user_models_dir is not None
 
-        files_to_extract_from = self._discover_metadata_containing_files()
+        files_to_extract_from = []
+
+        if self.user_models_dir is not None:
+            files_to_extract_from = files_to_extract_from +\
+                self._discover_user_atomics()
+
+        files_to_extract_from = files_to_extract_from + self._discover_boostrapped_atomics()
 
         # extract metadata from discovered source files
         for discovered_path in files_to_extract_from:
@@ -65,12 +70,21 @@ class AtomicRegistry:
                                                         built_class)
                     self.discovered_atomics.append(built_class)
 
-    def _discover_metadata_containing_files(self):
+    def _discover_user_atomics(self):
+        def filter_by_extension(filename: str):
+            _, file_extension = os.path.splitext(filename)
+            return file_extension in AtomicRegistry.SUPPORTED_FILE_EXTENSIONS
+        return self._discover_files_that_match_predicate(self.user_models_dir, filter_by_extension)
+
+    def _discover_boostrapped_atomics(self):
+        return self._discover_files_that_match_predicate(
+            os.path.join(os.path.dirname(__file__), "registry_bootstrap"),
+            lambda filename: True)
+
+    def _discover_files_that_match_predicate(self, folder: str, file_predicate):
         files_to_extract_from = []
-        for filename in os.listdir(self.user_models_dir):
-            filename_with_path = os.path.join(self.user_models_dir, filename)
-            if os.path.isfile(filename_with_path):
-                _, file_extension = os.path.splitext(filename)
-                if file_extension in AtomicRegistry.SUPPORTED_FILE_EXTENSIONS:
-                    files_to_extract_from.append(filename_with_path)
+        for filename in os.listdir(folder):
+            filename_with_path = os.path.join(folder, filename)
+            if os.path.isfile(filename_with_path) and file_predicate(filename_with_path):
+                files_to_extract_from.append(filename_with_path)
         return files_to_extract_from
