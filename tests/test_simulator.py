@@ -38,29 +38,26 @@ def test_simulator_executable_not_found_raises():
         Simulator("a/fake/path")
 
 
-def test_no_exception_raised_in_simulation(queue_top_model_with_events):
-    simulator = Simulator(CDPP_BIN_PATH)
+def test_no_exception_raised_in_simulation(a_simulator, queue_top_model_with_events):
     top_model, events = queue_top_model_with_events
     simulation = Simulation(top_model=top_model, events=events)
-    simulator.run_simulation(simulation)
+    a_simulator.run_simulation(simulation)
 
 
-def test_process_stdout_is_returned_correctly(queue_top_model_with_events):
-    simulator = Simulator(CDPP_BIN_PATH)
+def test_process_stdout_is_returned_correctly(a_simulator, queue_top_model_with_events):
     top_model, events = queue_top_model_with_events
     simulation = Simulation(top_model=top_model, events=events)
-    simulation_result = simulator.run_simulation(simulation)
+    simulation_result = a_simulator.run_simulation(simulation)
     assert simulation_result\
         .get_process_output()\
         .startswith("PCD++: A Tool to Implement n-Dimensional Cell-DEVS models")
 
 
-def test_run_simulation_in_custom_wd(queue_top_model_with_events):
-    simulator = Simulator(CDPP_BIN_PATH)
+def test_run_simulation_in_custom_wd(a_simulator, queue_top_model_with_events):
     top_model, events = queue_top_model_with_events
     temp_path = tempfile.mkdtemp()
     a_simulation = Simulation(top_model, events=events, working_dir=temp_path)
-    simulator.run_simulation(a_simulation)
+    a_simulator.run_simulation(a_simulation)
     files_found = False
     for _, _, files in os.walk(temp_path):
         # Assert there are files

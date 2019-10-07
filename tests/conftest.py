@@ -1,12 +1,19 @@
+import os
 from typing import List, Tuple
 import pytest  # noqa
 from pringles.utils import VirtualTime
 from pringles.models import Coupled, Model, AtomicModelBuilder
-from pringles.simulator import Event
+from pringles.simulator import Event, Simulator
+
+CDPP_BIN_PATH = os.path.join(os.path.dirname(__file__), '../cdpp/src/bin/')
 
 @pytest.fixture
 def empty_coupled() -> Model:
     return Coupled("empty_coupled", [])
+
+@pytest.fixture(scope='function')
+def a_simulator() -> Simulator:
+    return Simulator(CDPP_BIN_PATH)
 
 @pytest.fixture(scope='function')
 def queue_top_model_with_events() -> Tuple[Model, List[Event]]:
