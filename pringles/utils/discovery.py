@@ -34,6 +34,8 @@ class AtomicMetadataExtractor:
     ```
     """
 
+    __supported_name_characters = alphanums + '-_'
+
     def __init__(self, source: TextIO):
         """Main constructor
 
@@ -44,11 +46,14 @@ class AtomicMetadataExtractor:
         self._initialize_parser()
 
     def _initialize_parser(self):
-        port_names_list = delimitedList(Word(alphanums + '-_'))
+        name_matcher = Word(
+            AtomicMetadataExtractor.__supported_name_characters
+        )
+        port_names_list = delimitedList(name_matcher)
         metadata_start_keyword = Literal("@PringlesModelMetadata")
         self.parser: ParserElement = metadata_start_keyword +\
             Literal("name:") +\
-            Word(alphanums).setResultsName("model_name") +\
+            name_matcher.setResultsName("model_name") +\
             Optional(
                 Literal("input_ports:") +
                 port_names_list.setResultsName("input_ports")
