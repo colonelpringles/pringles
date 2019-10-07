@@ -32,7 +32,7 @@ def test_just_model_name_in_metadata():
 ])
 def test_supported_model_names(name: str):
     source = """
-    @ModelMetadata
+    @PringlesModelMetadata
     name:%s
     """ % name
     assert extract_metadata_from_string(source) == AtomicMetadata(name, [], [])
