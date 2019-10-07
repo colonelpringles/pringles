@@ -99,7 +99,7 @@ class SimulationResult:
         data_to_plot = log[log[self.PORT_COL] == portname]
         if data_to_plot.empty:
             return None
-        if isinstance(data_to_plot[self.VALUE_COL][0], tuple):
+        if isinstance(data_to_plot[self.VALUE_COL].iloc[0], tuple):
             y_values = data_to_plot[self.VALUE_COL].map(lambda x: x[index])
         else:
             y_values = data_to_plot[self.VALUE_COL]
