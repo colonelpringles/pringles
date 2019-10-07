@@ -204,6 +204,7 @@ class Coupled(Model):
         from pringles.backends import ipython_inline_display
         return ipython_inline_display(self).decode("utf-8")
 
+
 _KEYWORDS = [cls.__name__ for cls in (AtomicModelBuilder, Model, Port, InPort,
                                       OutPort, Link, ExtInputLink, ExtOutputLink,
                                       IntLink, Atomic, Coupled, AtomicNameIsKeywordException,

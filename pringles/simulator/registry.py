@@ -43,7 +43,7 @@ class AtomicRegistry:
 
     def _discover_atomics(self) -> None:
 
-        files_to_extract_from = []
+        files_to_extract_from: List[str] = []
 
         if self.user_models_dir is not None:
             files_to_extract_from = files_to_extract_from +\
