@@ -9,7 +9,7 @@ with open('requirements.txt', 'r') as f:
 
 setuptools.setup(
     name="pringles-devs",
-    version="1.0.1",
+    version="1.0.3",
     author="Colonel Pringles",
     # author_email="example@email.com",
     description="A DEVS model composition library",
