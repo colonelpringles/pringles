@@ -1,1 +1,2 @@
 recursive-include pringles/backends/statics *
+recursive-include pringles/simulator/registry_bootstrap *
