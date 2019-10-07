@@ -1,0 +1,6 @@
+/*
+@PringlesModelMetadata
+name: Generator
+input_ports: stop
+output_ports: out
+*/

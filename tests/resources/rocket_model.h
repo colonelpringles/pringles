@@ -44,7 +44,7 @@ public:
 };
 
 /*
-@ModelMetadata
+@PringlesModelMetadata
 name:   Rocket
 input_ports: in, done
 output_ports: out

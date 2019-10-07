@@ -1,0 +1,6 @@
+/*
+@PringlesModelMetadata
+name: Queue
+input_ports: in, done
+output_ports: out
+*/

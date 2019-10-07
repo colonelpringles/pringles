@@ -4,14 +4,10 @@ This is the models module docstring
 from __future__ import annotations
 from typing import List, Any, Union
 
-from .errors import AtomicNameIsKeywordException
+from .errors import AtomicNameIsKeywordException, PortNotFoundException
 
 DISCOVERED_INPUT_PORTS_FIELD = "discovered_input_ports"
 DISCOVERED_OUTPUT_PORTS_FIELD = "discovered_output_ports"
-
-
-class PortNotFoundException(Exception):
-    pass
 
 
 class AtomicModelBuilder:
@@ -42,9 +38,8 @@ class AtomicModelBuilder:
         })
         # The class is added to the global namespace
         # This is a workarround for the simulation pickler to find the class
-        if self.name in globals():
+        if self.name in _KEYWORDS:
             raise AtomicNameIsKeywordException(self.name)
-
         globals()[self.name] = created_class
         return created_class
 
@@ -208,3 +203,9 @@ class Coupled(Model):
     def _repr_html_(self) -> str:
         from pringles.backends import ipython_inline_display
         return ipython_inline_display(self).decode("utf-8")
+
+
+_KEYWORDS = [cls.__name__ for cls in (AtomicModelBuilder, Model, Port, InPort,
+                                      OutPort, Link, ExtInputLink, ExtOutputLink,
+                                      IntLink, Atomic, Coupled, AtomicNameIsKeywordException,
+                                      PortNotFoundException)]
