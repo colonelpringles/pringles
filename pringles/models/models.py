@@ -4,14 +4,10 @@ This is the models module docstring
 from __future__ import annotations
 from typing import List, Any, Union
 
-from .errors import AtomicNameIsKeywordException
+from .errors import AtomicNameIsKeywordException, PortNotFoundException
 
 DISCOVERED_INPUT_PORTS_FIELD = "discovered_input_ports"
 DISCOVERED_OUTPUT_PORTS_FIELD = "discovered_output_ports"
-
-
-class PortNotFoundException(Exception):
-    pass
 
 
 class AtomicModelBuilder:
