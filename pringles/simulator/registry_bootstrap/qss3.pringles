@@ -1,0 +1,6 @@
+/*
+@PringlesModelMetadata
+name: QSS3
+input_ports: in
+output_ports: out
+*/

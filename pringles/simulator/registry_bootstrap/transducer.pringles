@@ -1,0 +1,6 @@
+/*
+@PringlesModelMetadata
+name: Transducer
+input_ports: arrived, solved
+output_ports: throughput, cpuusage
+*/
