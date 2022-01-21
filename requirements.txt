@@ -1,5 +1,5 @@
 pandas==0.24.2
-ipython==7.6.1
+ipython==7.16.3
 matplotlib==3.1.1
 asyncio==3.4.3
 tornado==6.0.3
