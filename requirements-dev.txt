@@ -3,5 +3,5 @@ mypy==0.710
 flake8==3.7.7
 pylint==2.3.1
 pytest-cov==2.7.1
-codecov==2.0.15
+codecov==2.0.16
 sphinx==2.1.2
